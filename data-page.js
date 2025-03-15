@@ -1,5 +1,5 @@
-const BEARER_TOKEN = "$2y$10$dPY8.xCTi2H9M.VrPXsLOugow7/.MfQMJv6HgsJ0brQg9Dx0kT0/O";
-        const API_BASE_URL = "https://devapi.custimoo.com/api/vendor/orders";
+const BEARER_TOKEN = "Your Token";
+        const API_BASE_URL = "API urll";
 
         // Reusable function to fetch order data
         let orderData = null; 
