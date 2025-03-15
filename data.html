@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Drawing Sheet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" media="screen" href="uniform.css">
+    <link rel="stylesheet" media="print" href="/print.css" />
+    <script src="data-page.js"></script>
+</head>
+
+<body id="body" class="bg-white p-4">
+
+    <div id="container" class="container border-container w-75">
+
+        <!-- Header Section -->
+        <div id="header" class="row header">
+            <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
+                <div id="customerBox" class="border px-3 py-2 col-auto ">
+                    <p id="customerText" class="font-weight-bold py-1 m-0">Customer</p>
+                </div>
+
+                <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
+                    <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
+                </div>
+
+                <div id="companyBox" class="border px-3 py-2 col-auto">
+                    <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
+                </div>
+            </div>
+
+            <!-- Customer Details -->
+            <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
+                <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
+                    <p class="m-0"><strong class="pe-1">Customer:</strong><span id="customerName"></span> </p>
+                </div>
+                <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
+                    <p id="artNumber" class="m-0"><strong class="pe-1">Art #:</strong></p>
+                </div>
+                <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
+                    <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
+                        <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
+                    </div>
+                    <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
+                        <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color & Page Info -->
+            <div id="colorSection" class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
+                <div id="customerArtBox" class="border py-2 px-3">
+                    <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
+                </div>
+                <div id="colorBox" class="border py-2 px-3 mx-2 flex-grow-1 text-center">
+                    <p id="color" class="m-0"><strong>Color: </strong>
+                        <span>PANTONE 1795 C</span> |
+                        <span>True Blue (Hummel Color)</span>
+                    </p>
+                </div>
+                <div id="pageBox" class="border py-2 px-3">
+                    <p id="page" class="m-0">Page: 1 of 3</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Titles Section -->
+        <div id="titleSection" class="d-flex justify-content-between align-items-center mb-4">
+            <div id="sublimationBox">
+                <h2 id="sublimationTitle" class="section-title">FULL SUBLIMATION</h2>
+            </div>
+            <div id="artWorkBox" class="flex-grow-1 art-work">
+                <h3 id="artWorkTitle" class="art-work-title">Art Work</h3>
+            </div>
+        </div>
+
+        <!-- Images -->
+        <div id="imageFrontContainer" class="text-center mb-4 image-container">
+            <img id="imageFront"
+                src="https://d2u0n1trk0r0nj.cloudfront.net/company_45/45/order/13407/6085/shareable/112226_05032025033556845000_05032025083602061888_67c8b5b20f1c8.png"
+                alt="Front view of the jersey with various labels">
+        </div>
+        <div id="imageBackContainer" class="text-center mb-4 image-container">
+            <img id="imageBack"
+                src="https://d2u0n1trk0r0nj.cloudfront.net/company_45/45/order/13407/6085/shareable/111792_05032025033556861000_05032025083601730744_67c8b5b1b2682.png"
+                alt="Back view of the jersey with various labels">
+        </div>
+
+        <!-- Fabric Description -->
+        <div id="fabricDescription" class="fabri-description container w-100 py-0">
+            <div id="fabricTitleBox" class="border border-black p-2 w-100 no-gutters">
+                <h1 id="fabricTitle" class="h4 font-weight-bold">Fabric Description:-</h1>
+            </div>
+            <div id="fabricDetails" class="row mt-2 no-gutters ">
+                <div id="fabricShellBox" class="col-md-6 border border-black p-2">
+                    <p id="shellFabric1"><strong>Shell Fabric # 1:</strong> <span
+                            class="text-danger font-weight-bold">INTERLOCK 140</span></p>
+                    <p id="shellFabric2"><strong>Shell Fabric # 2:</strong></p>
+                    <p id="shellFabric3"><strong>Shell Fabric # 3:</strong></p>
+                </div>
+                <div id="liningFabricBox" class="col-md-6 p-2 border border-black">
+                    <p id="liningFabric1"><strong>Lining Fabric #1:</strong></p>
+                    <p id="liningFabric2"><strong>Lining Fabric #2:</strong></p>
+                    <p id="liningFabric3"><strong>Lining Fabric #3:</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer id="footer" class="container border border-black mt-2 p-2">
+            <p ><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
+                text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/" target="_blank">Mubasher Sultan</a></strong></p>
+        </footer>
+
+        <!-- Print Button -->
+        <div id="printButtonContainer" class="text-center mt-4 no-print">
+            <button id="printButton" onclick="printDocument()" class="btn btn-primary">Print</button>
+        </div>
+    </div>
+
+    <!-- Print Script -->
+    <script>
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Retrieve order data 
+            function getQueryParam(param) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            }
+
+            // Retrieve the order number from the URL
+            const orderNumber = getQueryParam('orderNumber');
+            if (orderNumber) {
+                console.log("Order Number from URL:", orderNumber);
+
+
+                // Call the reusable dataProcess function
+                const orderData = await dataProcess(orderNumber);
+                console.log(orderData);
+
+
+                populateOrderDetails(orderData);
+
+            } else {
+                console.error("No order number found in the URL.");
+            } function fetchImageUrls(orderData) {
+                const imageUrls = [];
+
+                // Loop through items
+                orderData.items.forEach(item => {
+                    // Loop through factory_products
+                    item.factory_products.forEach(product => {
+                        // Add front and back image URLs to the array
+                        if (product.front_image) {
+                            imageUrls.push(product.front_image);
+                        }
+                        if (product.back_image) {
+                            imageUrls.push(product.back_image);
+                        }
+                    });
+                });
+
+                return imageUrls;
+            }
+
+            function populateOrderDetails(orderData) {
+                if (orderData) {
+                    const imageUrls = fetchImageUrls(orderData);
+
+                    // Display image URLs
+                
+                    document.getElementById('companyName').innerHTML = orderData.company_name;
+                    document.getElementById('customerName').innerHTML = orderData.customer_name;
+                    document.getElementById("imageFront").src=imageUrls[2];
+                    document.getElementById("imageBack").src=imageUrls[3];
+
+                    document.getElementById("orderTitle").innerHTML = `Order #${orderData.order_no}`;
+                    document.getElementById("customerNameValue").innerHTML = orderData.customer_name;
+                    document.getElementById("orderNumberValue").innerHTML = orderData.order_no;
+                    document.getElementById("productNameValue").innerHTML = orderData.items[0]?.factory_products[0]?.sku_name || "N/A";
+                    document.getElementById("productImage").src = orderData.items[0]?.factory_products[0]?.front_image || "";
+                    document.getElementById
+                }
+            }
+
+        });
+
+
+
+        function printDocument() {
+            window.print();
+        }
+    </script>
+
+</body>
+
+</html>

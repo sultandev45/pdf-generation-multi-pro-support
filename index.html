@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="data-page.js"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
+        <h1 class="text-2xl font-bold text-center mb-6">Order Information</h1>
+        <div class="form-group mb-4">
+            <input type="text" id="orderNumber" placeholder="Enter Order Number" required
+                class="w-full p-2 border border-gray-300 rounded-lg">
+            <button id="fetchOrder" class="w-full mt-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                Fetch Order
+            </button>
+        </div>
+        <div id="error" class="text-red-500 text-center mb-4"></div>
+    </div>
+
+    <script>
+  
+
+        // Function to handle the fetched order data
+        document.getElementById('fetchOrder').addEventListener('click', async () => {
+    const orderNumber = document.getElementById('orderNumber').value.trim();
+    const errorDiv = document.getElementById('error');
+
+    if (!orderNumber) {
+        errorDiv.textContent = '⚠ Please enter an order number.';
+        return;
+    }
+
+    try {
+        errorDiv.textContent = "🔄 Fetching order details...";
+
+        // Call the reusable dataProcess function
+        const orderData = await dataProcess(orderNumber);
+     console.log(orderData);
+        // ✅ Display success message
+        errorDiv.textContent = "✅ Order Loaded Successfully!";
+
+        // ✅ Populate the HTML with the fetched data
+        populateOrderDetails(orderNumber);
+    } catch (error) {
+        errorDiv.textContent = error.message;
+    }
+});
+
+// Function to populate the HTML with order data
+function populateOrderDetails(orderNumber) {
+    if (orderNumber) {
+        window.location.href = `data.html?orderNumber=${orderNumber}`;
+     }
+}
+
+    </script>
+</body>
+
+</html>
