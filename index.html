@@ -4,61 +4,1199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Information</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="data-page.js"></script>
+    <title>Technical Drawing Sheet</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" media="screen" href="./source/css/uniform.css">
+    <link rel="stylesheet" media="print" href="./source/css/print.css">
+
+    <style>
+        .third-page .table table {
+            font-size: 12px;
+        }
+
+        * {
+            line-height: 1.2 !important;
+        }
+
+        .table>:not(caption)>*>* {
+            padding: 4px 4px !important;
+        }
+
+        .sublimation,
+        .height,
+        .width {
+            color: rgb(227, 45, 45);
+        }
+        .form-container-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 1); /* Optional: if you want a background */
+        transition: all 0.8s ease;
+        z-index: 1000; /* Ensure it's above other content */
+    }
+    
+    .form-container {
+        width: 100%;
+        max-width: 42rem; /* Adjust as needed */
+        padding: 2rem;
+        background: white; /* Optional: if you want a white background for the form */
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow */
+    }
+    
+    /* For the fade-out effect */
+    .form-container-wrapper.hidden {
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
+    }
+
+        #form {
+            transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
+        }
+ 
+    /* Input field styling */
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+        margin-top: 6px;
+        transition: all 0.3s ease;
+        box-shadow: none;
+        height: calc(3.5rem + 2px); /* Match floating label height */
+    }
+
+    .form-control:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        outline: 0;
+    }
+
+    .form-control:invalid:not(:focus) {
+        border-color: #dc3545;
+    }
+
+    .form-control:valid:not(:focus) {
+        border-color: #198754;
+    }
+
+    /* Floating label styling */
+    .form-floating label {
+        color: #515151;
+        transition: all 0.2s ease;
+        padding: 0.5rem 1.25rem;
+    }
+
+    .form-floating>.form-control:focus~label,
+    .form-floating>.form-control:not(:placeholder-shown)~label {
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        color: #030103;
+        background: white;
+        
+        padding: 0 0.5rem;
+        height: auto;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+        border-radius: 0.375rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+    }
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
+    }
+
+    .btn-primary:active {
+        background-color: #0a58ca;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+    }
+
+    .btn-primary:focus {
+        box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+    }
+
+    /* Button loading state */
+    .btn-primary.loading {
+        position: relative;
+        pointer-events: none;
+    }
+
+    .btn-primary.loading::after {
+        content: "";
+        position: absolute;
+        width: 1.25rem;
+        height: 1.25rem;
+        top: 50%;
+        left: 50%;
+        margin-left: -0.625rem;
+        margin-top: -0.625rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Validation feedback */
+    .valid-feedback {
+        color: #198754;
+        font-size: 0.875rem;
+    }
+
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.875rem;
+    }
+
+ #all-content {
+            display: none;
+            /* Initially hidden */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        
+    </style>
+    <script src="./source/js/data-page.js"></script>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="container bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full">
-        <h1 class="text-2xl font-bold text-center mb-6">Order Information</h1>
-        <div class="form-group mb-4">
-            <input type="text" id="orderNumber" placeholder="Enter Order Number" required
-                class="w-full p-2 border border-gray-300 rounded-lg">
-            <button id="fetchOrder" class="w-full mt-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                Fetch Order
-            </button>
+<body id="body" class="bg-white p-4">
+    <div id="form" class="form-container-wrapper">
+        <div class="form-container max-w-4xl w-100">
+            <form id="dynamicForm" class="needs-validation" novalidate>
+                <!-- Order Number Section -->
+                <fieldset>
+                    <legend>Order Number</legend>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="orderNumber" placeholder="Enter orderNumber"
+                            name="orderNumber" required>
+                        <label for="orderNumber">Order Number</label>
+                        <div class="valid-feedback">✓ Valid</div>
+                        <div class="invalid-feedback">Please provide order number</div>
+                    </div>
+                </fieldset>
+            
+                <!-- Compact Fabric Section -->
+                <fieldset class="mt-4">
+                    <legend>Fabric Details</legend>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="shellFabric1val" 
+                                    name="shellFabric1" placeholder="Shell #2" required >
+                                <label for="shellFabric1val">Shell #1</label>
+                                <div class="valid-feedback">✓ Valid</div>
+                                <div class="invalid-feedback">Please provide fabric details</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="shellFabric2val" 
+                                    name="shellFabric2" placeholder="Shell #2" required>
+                                <label for="shellFabric2val">Shell #2</label>
+                                <div class="valid-feedback">✓ Valid</div>
+                                <div class="invalid-feedback">Please provide fabric details</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="shellFabric3val" 
+                                    name="shellFabric3" placeholder="Shell #3" required>
+                                <label for="shellFabric3val">Shell #3</label>
+                                <div class="valid-feedback">✓ Valid</div>
+                                <div class="invalid-feedback">Please provide fabric details</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="liningFabric1val" 
+                                    name="liningFabric1" placeholder="Lining #1" required>
+                                <label for="liningFabric1val">Lining #1</label>
+                                <div class="valid-feedback">✓ Valid</div>
+                                <div class="invalid-feedback">Please provide lining details</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="liningFabric2val" 
+                                    name="liningFabric2" placeholder="Lining #2" required>
+                                <label for="liningFabric2val">Lining #2</label>
+                                <div class="valid-feedback">✓ Valid</div>
+                                <div class="invalid-feedback">Please provide lining details</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="liningFabric3val" 
+                                    name="liningFabric3" placeholder="Lining #3" required>
+                                <label for="liningFabric3val">Lining #3</label>
+                                <div class="valid-feedback">✓ Valid</div>
+                                <div class="invalid-feedback">Please provide lining details</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            
+                <div class="d-flex justify-content-end mt-4">
+                    <button id="fetchOrder" type="submit" class="btn btn-primary btn-lg">
+                        Fetch Order
+                    </button>
+                </div>
+                <div id="error" class="text-danger text-center mt-3"></div>
+            </form>
         </div>
-        <div id="error" class="text-red-500 text-center mb-4"></div>
+    </div>
+    <div id="all-content">
+        <!-- first page start -->
+        <div id="container" class="container border-container w-75 page first-page">
+
+            <!-- Header Section -->
+            <div id="header" class="row header">
+                <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
+                    <div id="customerBox" class="border px-3 py-2 col-auto ">
+                        <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
+                    </div>
+
+                    <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
+                        <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
+                    </div>
+
+                    <div id="companyBox" class="border px-3 py-2 col-auto">
+                        <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
+                    <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span> </p>
+                    </div>
+                    <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
+                        <p style="    margin-bottom: 0px;" class="artnumber" class="m-0"><strong class="pe-1">Art
+                                #:</strong></p>
+                    </div>
+                    <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
+                        <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
+                            <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
+                        </div>
+                        <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
+                            <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color & Page Info -->
+                <div id="colorSection"
+                    class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
+                    <div id="customerArtBox" class="border py-2 px-3 flex-grow-1">
+                        <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
+                    </div>
+                    <div id="colorBox" class="border py-2 px-3 mx-2  text-center">
+                        <p id="color" class="m-0"><strong>Color: </strong>
+                            <span>PANTONE 1795 C</span> |
+                            <span>True Blue (Hummel Color)</span>
+                        </p>
+                    </div>
+                    <div id="pageBox" class="border py-2 px-3">
+                        <p id="pageNumber" class="m-0 page-number">Page: 1 of 3</p>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                <!-- content  --><!-- Titles Section -->
+                <div id="titleSection" class="d-flex justify-content-between align-items-center mb-4">
+                    <div id="sublimationBox">
+                        <h2 id="sublimationTitle" class=" h4 section-title">FULL SUBLIMATION</h2>
+                    </div>
+                    <div id="artWorkBox" class="flex-grow-1 art-work">
+                        <h3 id="artWorkTitle" class="art-work-title h5">Art Work</h3>
+                    </div>
+                </div>
+                <!-- Images -->
+                <div id="imagecontainer">
+                    <div class="containerimage">
+                        <div id="imageFrontContainer" class="text-center mb-4 image-container">
+                            <img id="imageFront"
+                                src="https://d2u0n1trk0r0nj.cloudfront.net/company_45/45/order/13407/6085/shareable/112226_05032025033556845000_05032025083602061888_67c8b5b20f1c8.png"
+                                alt="Front view of the jersey with various labels">
+                        </div>
+                        <!-- Front Left -->
+                        <div class="label neck-tape">NECK TAPE<br>Color: BLACK/WHITE<br>Size: <span
+                                class="height">H-1.1CM</span> </div>
+                        <div class="arrow arrow-neck"></div>
+
+                        <div class="label hummel-logo">"HUMMEL" LOGO <br><span class="sublimation">SUBLIMATION</span>
+                            <br>Size: <span class="height">H-4CM </span> X <span class="width">W-4.5CM</span>
+                            <p id="color">Color:<span style="margin-left: 2px;" class="color-sample">WHITE</span></p>
+                        </div>
+                        <div class="arrow arrow-hummel"></div>
+                        <div class="label front-number">FRONT NUMBER<br>Size: <span class="height">H-10.1 CM</span>
+                            <p id="color">COLOR:
+
+                                <span class="color-sample "> WHITE</span>
+                                <span class="color-sample " style="background-color: blue;color: #fff; ">True
+                                    blue</span>
+                            </p>
+                        </div>
+                        <div class="arrow arrow-front-number"></div>
+                        <div class="label front-back-fabric">FRONT & BACK IN MAIN FABRIC<br> <span
+                                class="sublimation">SUBLIMATION</span> </div>
+                        <div class="arrow arrow-fabric"></div>
+                        <!-- Front Right -->
+                        <div class="label neck-tape-1">SUBLIMATED SIZE LABEL <br>INSIDE HALF MOON <p class="color">
+                                PANTONE
+                                COOL GRAY 7 C</p>
+                            SIZE: <span class="height">H=2.6CM</span> X <span class="width">W=3.5CM</span>
+                        </div>
+                        <div class="arrow arrow-neck-1"></div>
+                        <div class="label burlington-logo">"BURLINGTON" LOGO <br> <span
+                                class="sublimation">SUBLIMATION</span> <br>Size: <span class="height">H-7.6CM </span> X
+                            <span class="width">W-5.8CM</span> <br>
+                            <p id="color">COLOR:
+
+                                <span class="color-sample " style="background-color: #e4002b; color: #f9f9f9;">
+                                    185C</span>
+                                <span class="color-sample "
+                                    style="background-color: #f1b434; color: #fff; ">143C</span><span
+                                    class="color-sample " style="background-color:  #919d9d;;color: #fff; ">447C</span>
+                            </p>
+                        </div>
+                        <div class="arrow arrow-burlington"></div>
+                        <div class="label front-inside"> INSIDE CARE LABEL</div>
+                        <div class="arrow arrow-inside"></div>
+
+
+                    </div>
+                    <div class="containerimage">
+
+                        <div id="imageBackContainer" class="text-center mb-4 image-container">
+                            <img id="imageBack"
+                                src="https://d2u0n1trk0r0nj.cloudfront.net/company_45/45/order/13407/6085/shareable/111792_05032025033556861000_05032025083601730744_67c8b5b1b2682.png"
+                                alt="Back view of the jersey with various labels">
+                        </div>
+                        <!-- Back Left -->
+                        <div class="label chevrons-logo">"CHEVRONS" LOGO<br> <span
+                                class="sublimation">SUBLIMATION</span><br>SIZE: <span class="height"> H-20CM</span>X
+                            <span class="width">W-5CM</span>
+                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+                        </div>
+                        <div class="arrow arrow-chevrons"></div>
+                        <div class="label flag-logo">"USA FLAG" LOGO<br> <span
+                                class="sublimation">SUBLIMATION</span><br>SIZE: <span class="height">H-20CM</span> X
+                            <span class="width"> W-5CM</span>
+                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+                        </div>
+                        <div class="arrow arrow-flag"></div>
+                        <!-- <svg class="arrow arrow-flag"  width="80" height="2" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="1" x2="80" y2="1" stroke="rgb(84, 122, 239)" stroke-width="2" />
+                    </svg> -->
+                        <div class="label bottom-stich">BOTTOM HEM WITH<br>2NDL TOP STICH</div>
+                        <div class="arrow arrow-bottom-stich"></div>
+                        <!-- Back Right -->
+                        <div class="label back-logo-fabric"> HALF MOON IN MAIN FABRIC</div>
+                        <div class="arrow arrow-back-logo-fabric"></div>
+                        <div class="label name"> <span class="shirt_name">"NAME"</span> <span class="height">H- 5.08
+                                CM</span> <br><span class="sublimation"> SUBLIMATION</span><br>FONT: <span
+                                class="font_name"> DIN CONDENSED</span>
+                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+                        </div>
+                        <div class="arrow arrow-name"></div>
+                        <div class="label arms">SLEEVES IN MAIN FABRIC<br> <span class="sublimation">SUBLIMATION</span>
+                            <br>COLOR:AS PER DESIGN
+                        </div>
+                        <div class="arrow arrow-arms"></div>
+                        <div class="label number"> <span class="shirt_number"> "NUMBER"</span> <span class="height"> H-
+                                20.32 CM</span><br> <span class="sublimation">SUBLIMATION</span> <br>FONT:<span
+                                class="font_name_number">TEAM SPOTIA</span>
+                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+                        </div>
+                        <div class="arrow arrow-number"></div>
+
+
+                    </div>
+                </div>
+                <!-- Fabric Description -->
+                <div id="fabricDescription" class="fabri-description container w-100 py-0">
+                    <div id="fabricTitleBox" class="border border-black p-2 w-100 no-gutters">
+                        <h1 id="fabricTitle" class="h4 font-weight-bold">Fabric Description:-</h1>
+                    </div>
+                    <div id="fabricDetails" class="row mt-2 no-gutters ">
+                        <div id="fabricShellBox" class="col-md-6 border border-black p-2">
+                            <p id="shellFabric1"><strong>Shell Fabric # 1:</strong> <span
+                                    class="text-danger font-weight-bold">INTERLOCK 140</span></p>
+                            <p id="shellFabric2"><strong>Shell Fabric # 2:</strong></p>
+                            <p id="shellFabric3"><strong>Shell Fabric # 3:</strong></p>
+                        </div>
+                        <div id="liningFabricBox" class="col-md-6 p-2 border border-black">
+                            <p id="liningFabric1"><strong>Lining Fabric #1:</strong></p>
+                            <p id="liningFabric2"><strong>Lining Fabric #2:</strong></p>
+                            <p id="liningFabric3"><strong>Lining Fabric #3:</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <!-- Footer -->
+            <footer id="footer" class="container border border-black mt-2 p-2">
+                <p><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
+                text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/"
+                            target="_blank">Mubasher Sultan</a></strong></p>
+            </footer>
+
+
+
+        </div>
+        <!-- first page end -->
+        <!-- 2nd Page Start -->
+        <div id="container" class="container border-container my-4 w-75 page second-page">
+
+            <!-- Header Section -->
+            <div id="header" class="row header">
+                <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
+                    <div id="customerBox" class="border px-3 py-2 col-auto ">
+                        <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
+                    </div>
+
+                    <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
+                        <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
+                    </div>
+
+                    <div id="companyBox" class="border px-3 py-2 col-auto">
+                        <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
+                    <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span> </p>
+                    </div>
+                    <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
+                        <p style="margin-bottom: 0px;" class="artnumber" class="m-0"><strong class="pe-1">Art
+                                #:</strong></p>
+                    </div>
+                    <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
+                        <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
+                            <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
+                        </div>
+                        <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
+                            <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color & Page Info -->
+                <div id="colorSection"
+                    class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
+                    <div id="customerArtBox" class="border py-2  flex-grow-1 px-3">
+                        <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
+                    </div>
+                    <div id="colorBox" class="border py-2 px-3 mx-2 text-center">
+                        <p id="color" class="m-0"><strong>Color: </strong>
+                            <span>PANTONE 1795 C</span> |
+                            <span>True Blue (Hummel Color)</span>
+                        </p>
+                    </div>
+                    <div id="pageBox" class="border py-2 px-3">
+                        <p id="pageNumber" class="m-0 page-number">Page: 1 of 2</p>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                <!-- content  --><!-- Titles Section -->
+                <div id="titleSection" class="d-flex justify-content-center align-items-center mb-4">
+
+                    <div id="artWorkBox" class="mb-2">
+                        <h3 id="artWorkTitle" class="art-work-title text-danger h3">LABEL’S INFORMATION</h3>
+                    </div>
+                </div>
+                <!-- Images -->
+
+                <div class="container">
+                    <div class="row row-1">
+                        <!-- First Column -->
+                        <div class="col col-md-4">
+                            <div class="txt">
+                                <p>"HUMMEL" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-4CM</span> X <span class="width"> W-4.5CM</span></p>
+                                <p id="color">COLOR: <span class="color-sample">WHITE</span> </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/hummel.png" alt="HUMMEL Logo" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Second Column -->
+                        <div class="col col-md-4">
+                            <div class="txt">
+                                <p>"BURLINGTON" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-7.6CM</span> X <span class="width">W-5.8CM</span> </p>
+                                <p id="color">COLOR:
+
+                                    <span class="color-sample" style="background-color: #B93C2D; color: #fff;">185
+                                        C</span>
+                                    <span class="color-sample " style="background-color: #9C6C37;;color: #fff; ">143
+                                        C</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/burlington.png" alt="BURLINGTON Logo" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Third Column -->
+                        <div id="flag" class="col col-md-4 p-0">
+                            <div class="txt">
+                                <p>"USA FLAG" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-3.8CM</span> X <span class="width">W-6CM</span> </p>
+                                <p id="color">COLOR:
+                                    <span class="color-sample" style="background-color: #3C3B6E; color: #fff;">PANTONE
+                                        186 C</span>
+                                    <span class="color-sample white">WHITE</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/USA_FLAG.png" alt="USA FLAG Logo" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-2">
+                        <!-- First Column -->
+                        <div class="col col-md-3">
+                            <div class="txt">
+                                <p>"CHEVRONS" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-20CM </span> X <span class="width">W-5CM</span> </p>
+                                <p id="color">COLOR: <span class="color-sample">WHITE</span> </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/chervons.png" alt="CHEVRONS Logo" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Second Column -->
+                        <div class="col col-md-3">
+                            <div class="txt">
+                                <p>"NAME" <span class="height">H-5.08 CM</span> </p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>FONT: DIN CONDENSED</p>
+                                <p id="color">COLOR:
+                                    <span class="color-sample" style="background-color: #fff; ">WHITE</span>
+                                    <span class="color-sample" style="background-color: #9C6C37; color: #fff; ">143
+                                        C</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img style="height: auto !important;" src="./source/img/name.png" alt="BURLINGTON Logo"
+                                    class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <!-- <div class="double-arrow arrow-horizontal"></div>
+                            <div class="arrow-label label-width">W</div> -->
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Third Column -->
+                        <div id="front_number" class="col col-md-3 p-0">
+                            <div class="txt">
+                                <p>"FRONT NUMBER" </p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>FONT: PROHIBITION </p>
+                                <p> SIZE: <span class="height"> H-10.1 CM</span></p>
+                                <p id="color">COLOR:
+
+                                    <span class="color-sample "> WHITE</span>
+                                    <span class="color-sample " style="background-color: blue;color: #fff; ">True
+                                        blue</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/front_number.png" alt="USA FLAG Logo" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <!-- <div class="double-arrow arrow-horizontal"></div>
+                            <div class="arrow-label label-width">W</div> -->
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                        <!-- 4th column -->
+                        <div id="back_number" class="col col-md-3 p-0">
+                            <div class="txt">
+                                <p>"NUMBER" <span class="height">H- 20.32 CM</span> </p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>FONT: TEAM SPOTIA</p>
+                                <p id="color">COLOR:
+
+                                    <span class="color-sample "> WHITE</span>
+                                    <span class="color-sample " style="background-color: blue;color: #fff; ">True
+                                        blue</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/back_number.png" alt="Back Number" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <!-- <div class="double-arrow arrow-horizontal"></div>
+                            <div class="arrow-label label-width">W</div> -->
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 3rd row -->
+                    <div class="row row-3">
+                        <div class="col col-12 d-flex flex-column align-items-center justify-content-center p-0">
+
+                            <div class="txt ">
+                                <p class="text-center h2 "> NECK TAPE </p>
+                                <p id="color">COLOR: BLACK/WHITE </p>
+                                <p class="text-center  "> SIZE: <span class="height">H-1.1CM</span> </p>
+                            </div>
+                            <div class="image-container">
+                                <img style="height: 20px;" src="./source/img/Neck Tape.svg" alt="Neck Tape"
+                                    class="neck-tape">
+                                <!-- Horizontal arrow (for width) -->
+                                <!-- <div class="double-arrow arrow-horizontal"></div>
+                            <div class="arrow-label label-width">W</div> -->
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="    margin-top: 10px;" class="row row-4 d-flex justify-content-center">
+                        <div class="col col-6  ">
+                            <div class="txt">
+                                <h1 class="h3 text-danger "
+                                    style="text-decoration: underline; margin-bottom: 8px !important;">Instruction Label
+                                </h1>
+                                <h2 class="h6 mb-4  "> <Strong>Position: 8cm Above Hem At Left Side Seam</Strong></h2>
+                            </div>
+                            <div class="image-container">
+                                <img style="height: 250px !important; " src="./source/img/CareLabel.svg"
+                                    alt="Carw Lalble" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <div class="double-arrow bg-danger horizontal arrow-horizontal"></div>
+                                <div class="arrow-label label-width">2.5 cm</div>
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow bg-danger vertical arrow-vertical"></div>
+                                <div class="arrow-label  label-height">4 cm</div>
+                            </div>
+                        </div>
+                        <div class="col col-4">
+                            <div class="txt">
+                                <p> SUBLIMATED SIZE LABEL <br>
+                                    INSIDE HALF MOON <br>
+                                    COLOR: PANTONE COOL GRAY 7 C <br>
+                                    POSITION: INSIDE C.B NECK LINE <br>
+                                    SIZE: <span class="height">H=2.6CM</span> X <span class="width"> W=3.5CM</span></p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/SizeLabel.svg" alt="Size Lable" class="logo">
+                                <!-- Horizontal arrow (for width) -->
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <!-- Vertical arrow (for height) -->
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <!-- Footer -->
+            <footer id="footer" class="container border border-black mt-2 p-2">
+                <p><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
+                text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/"
+                            target="_blank">Mubasher Sultan</a></strong></p>
+            </footer>
+
+
+
+        </div>
+        <!-- 2nd Page End -->
+        <!-- 3rd Page Start -->
+
+        <div id="container" class="container border-container my-4 w-75 page third-page">
+
+            <div id="header" class="row header">
+                <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
+                    <div id="customerBox" class="border px-3 py-2 col-auto ">
+                        <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
+                    </div>
+
+                    <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
+                        <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
+                    </div>
+
+                    <div id="companyBox" class="border px-3 py-2 col-auto">
+                        <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
+                    <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span> </p>
+                    </div>
+                    <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
+                        <p style="    margin-bottom: 0px;" class="artnumber" class="m-0"><strong class="pe-1">Art
+                                #:</strong></p>
+                    </div>
+                    <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
+                        <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
+                            <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
+                        </div>
+                        <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
+                            <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color & Page Info -->
+                <div id="colorSection"
+                    class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
+                    <div id="customerArtBox" class="border py-2 px-3 flex-grow-1">
+                        <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
+                    </div>
+                    <div id="colorBox" class="border py-2 px-3 mx-2  text-center">
+                        <p id="color" class="m-0"><strong>Color: </strong>
+                            <span>PANTONE 1795 C</span> |
+                            <span>True Blue (Hummel Color)</span>
+                        </p>
+                    </div>
+                    <div id="pageBox" class="border py-2 px-3">
+                        <p id="pageNumber" class="m-0 page-number">Page: 3 of 3</p>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+                <!-- content  --><!-- Titles Section -->
+                <div id="titleSection" class="d-flex justify-content-center align-items-center ">
+
+                    <div id="artWorkBox" class="mb-2">
+                        <h3 id="artWorkTitle" class="art-work-title text-danger h3">SIZE CHART</h3>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-12">
+                            <h4 class="h5 mb-2">
+                                Measurement Chart ( ALL UNITS IN CM)
+                            </h4>
+                            <div class="table">
+                                <table class="table table-bordered ">
+                                    <thead style="background-color: #f9f9f9;">
+                                        <tr>
+                                            <th>Description US Sizes</th>
+                                            <th>+/-</th>
+                                            <th>XXS</th>
+                                            <th>XS</th>
+                                            <th>S</th>
+                                            <th>M</th>
+                                            <th>L</th>
+                                            <th>XL</th>
+                                            <th>2XL</th>
+                                            <th>3XL</th>
+                                            <th>4XL</th>
+                                            <th>5XL</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Description EU Sizes</th>
+                                            <th>+/-</th>
+                                            <th>XS</th>
+                                            <th>S</th>
+                                            <th>M</th>
+                                            <th>L</th>
+                                            <th>XL</th>
+                                            <th>2XL</th>
+                                            <th>3XL</th>
+                                            <th>4XL</th>
+                                            <th>5XL</th>
+                                            <th>6XL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>001: 1/2 CHEST WIDTH - MS. 2 CM BELOW ARMHOLE</td>
+                                            <td>1</td>
+                                            <td>46</td>
+                                            <td>49</td>
+                                            <td>52</td>
+                                            <td>55</td>
+                                            <td>58</td>
+                                            <td>61</td>
+                                            <td>65</td>
+                                            <td>71</td>
+                                            <td>76</td>
+                                            <td>81</td>
+                                        </tr>
+                                        <tr>
+                                            <td>004: 1/2 BOTTOM WIDTH</td>
+                                            <td>1</td>
+                                            <td>45</td>
+                                            <td>48</td>
+                                            <td>51</td>
+                                            <td>54</td>
+                                            <td>57</td>
+                                            <td>60</td>
+                                            <td>64</td>
+                                            <td>70</td>
+                                            <td>75</td>
+                                            <td>80</td>
+                                        </tr>
+                                        <tr>
+                                            <td>046: BOTTOM HEM STITCH HEIGHT</td>
+                                            <td>0.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>021: BACK LENGTH - MS. FROM HPS</td>
+                                            <td>1</td>
+                                            <td>70</td>
+                                            <td>71.5</td>
+                                            <td>73</td>
+                                            <td>74.5</td>
+                                            <td>76</td>
+                                            <td>77.5</td>
+                                            <td>78.5</td>
+                                            <td>85</td>
+                                            <td>86</td>
+                                            <td>87</td>
+                                        </tr>
+                                        <tr>
+                                            <td>020: Front LENGTH - MS. FROM HPS</td>
+                                            <td>1</td>
+                                            <td>70</td>
+                                            <td>71.5</td>
+                                            <td>73</td>
+                                            <td>74.5</td>
+                                            <td>76</td>
+                                            <td>77.5</td>
+                                            <td>78.5</td>
+                                            <td>85</td>
+                                            <td>86</td>
+                                            <td>87</td>
+                                        </tr>
+                                        <tr>
+                                            <td>155: BOTTOM DETAIL HEIGHT</td>
+                                            <td>0</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                            <td>0.6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>007: NECK WIDTH - MS. FROM HPS TO HPS</td>
+                                            <td>0.5</td>
+                                            <td>18.5</td>
+                                            <td>19</td>
+                                            <td>19.5</td>
+                                            <td>20</td>
+                                            <td>20.5</td>
+                                            <td>21</td>
+                                            <td>21.5</td>
+                                            <td>22</td>
+                                            <td>22</td>
+                                            <td>22</td>
+                                        </tr>
+                                        <tr>
+                                            <td>009: NECK DROP BACK</td>
+                                            <td>0.5</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>010: SLEEVE LENGTH - MS. FROM CB TO END SLEEVE</td>
+                                            <td>1</td>
+                                            <td>41</td>
+                                            <td>42.5</td>
+                                            <td>44</td>
+                                            <td>45.5</td>
+                                            <td>47</td>
+                                            <td>48</td>
+                                            <td>49</td>
+                                            <td>50.00</td>
+                                            <td>51.00</td>
+                                            <td>52.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>012: ARMHOLE DEPTH - RAGLAN - MS. FROM HPS</td>
+                                            <td>0.5</td>
+                                            <td>25.6</td>
+                                            <td>26.8</td>
+                                            <td>28</td>
+                                            <td>29.15</td>
+                                            <td>30.3</td>
+                                            <td>31.45</td>
+                                            <td>32.8</td>
+                                            <td>33.95</td>
+                                            <td>35.1</td>
+                                            <td>36.25</td>
+                                        </tr>
+                                        <tr>
+                                            <td>013: 1/2 UPPER SLEEVE WIDTH</td>
+                                            <td>0.5</td>
+                                            <td>19</td>
+                                            <td>21</td>
+                                            <td>22</td>
+                                            <td>23</td>
+                                            <td>24</td>
+                                            <td>25</td>
+                                            <td>26.2</td>
+                                            <td>27</td>
+                                            <td>28</td>
+                                            <td>29</td>
+                                        </tr>
+                                        <tr>
+                                            <td>016: 1/2 BOTTOM SLEEVE WIDTH</td>
+                                            <td>0.5</td>
+                                            <td>15.5</td>
+                                            <td>16.25</td>
+                                            <td>17</td>
+                                            <td>17.75</td>
+                                            <td>18.5</td>
+                                            <td>19.25</td>
+                                            <td>20.25</td>
+                                            <td>21</td>
+                                            <td>21.75</td>
+                                            <td>22.5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>045: SLEEVE HEM STITCH HEIGHT</td>
+                                            <td>0.2</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                            <td>1.5</td>
+                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 10px">007: NECK WIDTH - MS FROM HPS TO HPS, 1/2
+                                                    MIN
+                                                    STRETCH WIDTH</th>
+                                                <th>0.5</th>
+                                                <th>30.5</th>
+                                                <th>31</th>
+                                                <th>31.5</th>
+                                                <th>32</th>
+                                                <th>32.5</th>
+                                                <th>33</th>
+                                                <th>33.5</th>
+                                                <th>34</th>
+                                                <th>34</th>
+                                                <th>34</th>
+                                            </tr>
+                                        </thead>
+                                    </tbody>
+                                </table>
+
+                                <!-- Second Table -->
+
+                                <table class="table table-bordered ">
+                                    <thead style="background-color: #41ed38;">
+                                        <tr>
+                                            <th>HANSEN NECKLINE</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>0</th>
+                                            <th>0</th>
+                                            <th>0</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>007: NECK WIDTH - MS. FROM HPS TO HPS - HANSEN</td>
+                                            <td>0.5</td>
+                                            <td>19</td>
+                                            <td>19.5</td>
+                                            <td>20</td>
+                                            <td>20.5</td>
+                                            <td>21</td>
+                                            <td>21.5</td>
+                                            <td>22</td>
+                                            <td>22</td>
+                                            <td>22</td>
+                                            <td>22</td>
+                                        </tr>
+                                        <tr>
+                                            <td>008: NECK DROP FRONT - HANSEN</td>
+                                            <td>0.5</td>
+                                            <td>9.4</td>
+                                            <td>9.7</td>
+                                            <td>10</td>
+                                            <td>10.3</td>
+                                            <td>10.6</td>
+                                            <td>10.9</td>
+                                            <td>11.2</td>
+                                            <td>11.2</td>
+                                            <td>11.2</td>
+                                            <td>11.2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>049: COLLAR HEIGHT - CB - HANSEN</td>
+                                            <td>0.2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-12">
+                            <h4 class="h5 text-danger m-0">
+                                NOTE: FOLLOW US SIZES
+                            </h4>
+                            <div class="image-container"> <img src="./source/img/note_size.png" alt=""></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer id="footer" class="container border border-black mt-2 p-2">
+                <p><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
+            text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/"
+                            target="_blank">Mubasher Sultan</a></strong></p>
+            </footer>
+        </div>
+        <!-- 3rd Page End -->
+        <!-- Print Button -->
+        <div id="printButtonContainer" class="text-center mt-4 no-print">
+            <button id="printButton" onclick="printDocument()" class="btn btn-primary">Print</button>
+        </div>
     </div>
 
-    <script>
-  
+   <script src="./source/js/script.js"></script>
 
-        // Function to handle the fetched order data
-        document.getElementById('fetchOrder').addEventListener('click', async () => {
-    const orderNumber = document.getElementById('orderNumber').value.trim();
-    const errorDiv = document.getElementById('error');
-
-    if (!orderNumber) {
-        errorDiv.textContent = '⚠ Please enter an order number.';
-        return;
-    }
-
-    try {
-        errorDiv.textContent = "🔄 Fetching order details...";
-
-        // Call the reusable dataProcess function
-        const orderData = await dataProcess(orderNumber);
-     console.log(orderData);
-        // ✅ Display success message
-        errorDiv.textContent = "✅ Order Loaded Successfully!";
-
-        // ✅ Populate the HTML with the fetched data
-        populateOrderDetails(orderNumber);
-    } catch (error) {
-        errorDiv.textContent = error.message;
-    }
-});
-
-// Function to populate the HTML with order data
-function populateOrderDetails(orderNumber) {
-    if (orderNumber) {
-        window.location.href = `data.html?orderNumber=${orderNumber}`;
-     }
-}
-
-    </script>
+   
+ 
 </body>
 
 </html>
