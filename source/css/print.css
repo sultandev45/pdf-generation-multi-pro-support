@@ -441,7 +441,7 @@
 
      .burlington-logo {
          top: 98px;
-         right: -8px;
+         right: -48px;
      }
 
      .front-number {
@@ -615,7 +615,8 @@
      .container .row .image-container {
          position: relative;
          display: inline-block;
-         margin: 15px 20px 15px 40px;
+         margin: 15px 20px 15px 30px;
+         padding: 6px 0px 0px 6px;
      }
 
      .txt {
@@ -624,7 +625,7 @@
      }
 
      .second-page .txt #color span {
-         font-size: 80%;
+         font-size: 60% !important;
          margin: -2px !important;
      }
 
@@ -733,7 +734,7 @@
      }
 
      .container .row .image-container .logo {
-         height: 100px;
+         height: 70px;
 
      }
 
@@ -756,14 +757,14 @@
      .label-height {
          top: 50%;
          left: -30px;
-         transform: translateY(-50%) rotate(-90deg);
+         transform: translateY(-50%) ;
      }
 
      /* Color samples for logos */
      .color-sample {
          padding: 2px 4px;
          border: 1px solid #000;
-         margin-right: -3px;
+         margin-right: -4px;
          vertical-align: middle;
      }
 

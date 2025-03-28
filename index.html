@@ -6,17 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technical Drawing Sheet</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-        crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-
+    <!-- Custom CSS -->
     <link rel="stylesheet" media="screen" href="./source/css/uniform.css">
     <link rel="stylesheet" media="print" href="./source/css/print.css">
 
     <style>
+        /* General Styles */
         .third-page .table table {
             font-size: 12px;
         }
@@ -29,170 +27,184 @@
             padding: 4px 4px !important;
         }
 
+        .py-2 {
+            padding-top: 0.2rem !important;
+            padding-bottom: .2rem !important;
+        }
+
+        /* Logo Specific */
+        .container .logo-row .col:nth-child(3) .logo {
+            height: auto !important;
+            max-height: none !important;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Color Styling */
         .sublimation,
         .height,
         .width {
             color: rgb(227, 45, 45);
         }
+
+        /* Form Container */
         .form-container-wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(255, 255, 255, 1); /* Optional: if you want a background */
-        transition: all 0.8s ease;
-        z-index: 1000; /* Ensure it's above other content */
-    }
-    
-    .form-container {
-        width: 100%;
-        max-width: 42rem; /* Adjust as needed */
-        padding: 2rem;
-        background: white; /* Optional: if you want a white background for the form */
-        border-radius: 0.5rem;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Optional: adds subtle shadow */
-    }
-    
-    /* For the fade-out effect */
-    .form-container-wrapper.hidden {
-        opacity: 0;
-        transform: translateY(-20px);
-        pointer-events: none;
-    }
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 1);
+            transition: all 0.8s ease;
+            z-index: 1000;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 42rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Effects */
+        .form-container-wrapper.hidden {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+        }
 
         #form {
             transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
         }
- 
-    /* Input field styling */
-    .form-control {
-        border: 1px solid #ced4da;
-        border-radius: 0.375rem;
-        padding: 1rem 1.25rem;
-        font-size: 1rem;
-        margin-top: 6px;
-        transition: all 0.3s ease;
-        box-shadow: none;
-        height: calc(3.5rem + 2px); /* Match floating label height */
-    }
 
-    .form-control:focus {
-        border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        outline: 0;
-    }
+        /* Form Elements */
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            padding: 1rem 1.25rem;
+            font-size: 1rem;
+            margin-top: 6px;
+            transition: all 0.3s ease;
+            box-shadow: none;
+            height: calc(3.5rem + 2px);
+        }
 
-    .form-control:invalid:not(:focus) {
-        border-color: #dc3545;
-    }
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
 
-    .form-control:valid:not(:focus) {
-        border-color: #198754;
-    }
+        .form-control:invalid:not(:focus) {
+            border-color: #dc3545;
+        }
 
-    /* Floating label styling */
-    .form-floating label {
-        color: #515151;
-        transition: all 0.2s ease;
-        padding: 0.5rem 1.25rem;
-    }
+        .form-control:valid:not(:focus) {
+            border-color: #198754;
+        }
 
-    .form-floating>.form-control:focus~label,
-    .form-floating>.form-control:not(:placeholder-shown)~label {
-        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-        color: #030103;
-        background: white;
-        
-        padding: 0 0.5rem;
-        height: auto;
-    }
+        /* Floating Labels */
+        .form-floating label {
+            color: #515151;
+            transition: all 0.2s ease;
+            padding: 0.5rem 1.25rem;
+        }
 
-    /* Button styling */
-    .btn-primary {
-        background-color: #0d6efd;
-        border: none;
-        border-radius: 0.375rem;
-        padding: 0.75rem 1.5rem;
-        font-size: 1.1rem;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
-    }
+        .form-floating>.form-control:focus~label,
+        .form-floating>.form-control:not(:placeholder-shown)~label {
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+            color: #030103;
+            background: white;
+            padding: 0 0.5rem;
+            height: auto;
+        }
 
-    .btn-primary:hover {
-        background-color: #0b5ed7;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
-    }
+        /* Buttons */
+        .btn-primary {
+            background-color: #0d6efd;
+            border: none;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+        }
 
-    .btn-primary:active {
-        background-color: #0a58ca;
-        transform: translateY(0);
-        box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
-    }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
+        }
 
-    .btn-primary:focus {
-        box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
-    }
+        .btn-primary:active {
+            background-color: #0a58ca;
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+        }
 
-    /* Button loading state */
-    .btn-primary.loading {
-        position: relative;
-        pointer-events: none;
-    }
+        .btn-primary:focus {
+            box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+        }
 
-    .btn-primary.loading::after {
-        content: "";
-        position: absolute;
-        width: 1.25rem;
-        height: 1.25rem;
-        top: 50%;
-        left: 50%;
-        margin-left: -0.625rem;
-        margin-top: -0.625rem;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: white;
-        animation: spin 0.8s linear infinite;
-    }
+        /* Loading State */
+        .btn-primary.loading {
+            position: relative;
+            pointer-events: none;
+        }
 
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
+        .btn-primary.loading::after {
+            content: "";
+            position: absolute;
+            width: 1.25rem;
+            height: 1.25rem;
+            top: 50%;
+            left: 50%;
+            margin-left: -0.625rem;
+            margin-top: -0.625rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
 
-    /* Validation feedback */
-    .valid-feedback {
-        color: #198754;
-        font-size: 0.875rem;
-    }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    .invalid-feedback {
-        color: #dc3545;
-        font-size: 0.875rem;
-    }
+        /* Validation */
+        .valid-feedback {
+            color: #198754;
+            font-size: 0.875rem;
+        }
 
- #all-content {
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+        /* Content Transition */
+        #all-content {
             display: none;
-            /* Initially hidden */
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
         }
-
-        
     </style>
-    <script src="./source/js/data-page.js"></script>
 </head>
 
 <body id="body" class="bg-white p-4">
+    <!-- Form Container -->
     <div id="form" class="form-container-wrapper">
         <div class="form-container max-w-4xl w-100">
-            <form id="dynamicForm" class="needs-validation" novalidate>
+            <form id="dynamicForm" class="needs-validation" novalidate enctype="multipart/form-data">
                 <!-- Order Number Section -->
                 <fieldset>
                     <legend>Order Number</legend>
@@ -204,16 +216,15 @@
                         <div class="invalid-feedback">Please provide order number</div>
                     </div>
                 </fieldset>
-            
-                <!-- Compact Fabric Section -->
+
+                <!-- Fabric Details Section -->
                 <fieldset class="mt-4">
                     <legend>Fabric Details</legend>
-                    
                     <div class="row g-2 mb-3">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="shellFabric1val" 
-                                    name="shellFabric1" placeholder="Shell #2" required >
+                                <input type="text" class="form-control" id="shellFabric1val" name="shellFabric1"
+                                    placeholder="Shell #2" required>
                                 <label for="shellFabric1val">Shell #1</label>
                                 <div class="valid-feedback">✓ Valid</div>
                                 <div class="invalid-feedback">Please provide fabric details</div>
@@ -221,20 +232,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="shellFabric2val" 
-                                    name="shellFabric2" placeholder="Shell #2" required>
+                                <input type="text" class="form-control" id="shellFabric2val" name="shellFabric2"
+                                    placeholder="Shell #2" required>
                                 <label for="shellFabric2val">Shell #2</label>
                                 <div class="valid-feedback">✓ Valid</div>
                                 <div class="invalid-feedback">Please provide fabric details</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="shellFabric3val" 
-                                    name="shellFabric3" placeholder="Shell #3" required>
+                                <input type="text" class="form-control" id="shellFabric3val" name="shellFabric3"
+                                    placeholder="Shell #3" required>
                                 <label for="shellFabric3val">Shell #3</label>
                                 <div class="valid-feedback">✓ Valid</div>
                                 <div class="invalid-feedback">Please provide fabric details</div>
@@ -242,20 +253,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="liningFabric1val" 
-                                    name="liningFabric1" placeholder="Lining #1" required>
+                                <input type="text" class="form-control" id="liningFabric1val" name="liningFabric1"
+                                    placeholder="Lining #1" required>
                                 <label for="liningFabric1val">Lining #1</label>
                                 <div class="valid-feedback">✓ Valid</div>
                                 <div class="invalid-feedback">Please provide lining details</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="liningFabric2val" 
-                                    name="liningFabric2" placeholder="Lining #2" required>
+                                <input type="text" class="form-control" id="liningFabric2val" name="liningFabric2"
+                                    placeholder="Lining #2" required>
                                 <label for="liningFabric2val">Lining #2</label>
                                 <div class="valid-feedback">✓ Valid</div>
                                 <div class="invalid-feedback">Please provide lining details</div>
@@ -263,8 +274,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="liningFabric3val" 
-                                    name="liningFabric3" placeholder="Lining #3" required>
+                                <input type="text" class="form-control" id="liningFabric3val" name="liningFabric3"
+                                    placeholder="Lining #3" required>
                                 <label for="liningFabric3val">Lining #3</label>
                                 <div class="valid-feedback">✓ Valid</div>
                                 <div class="invalid-feedback">Please provide lining details</div>
@@ -272,7 +283,30 @@
                         </div>
                     </div>
                 </fieldset>
-            
+
+                <!-- Graphics Upload Section -->
+                <fieldset class="mt-4">
+                    <legend>Optional Graphics Upload</legend>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="file" class="form-control" id="numberGraphics" name="numberGraphics"
+                                    accept="image/*,.svg,image/svg+xml">
+                                <label for="numberGraphics">Number Graphics (Optional)</label>
+                                <div class="form-text">Accepted formats: JPG, PNG, SVG, WEBP</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="file" class="form-control" id="nameGraphics" name="nameGraphics"
+                                    accept="image/*,.svg,image/svg+xml">
+                                <label for="nameGraphics">Name Graphics (Optional)</label>
+                                <div class="form-text">Accepted formats: JPG, PNG, SVG, WEBP</div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
                 <div class="d-flex justify-content-end mt-4">
                     <button id="fetchOrder" type="submit" class="btn btn-primary btn-lg">
                         Fetch Order
@@ -282,14 +316,15 @@
             </form>
         </div>
     </div>
-    <div id="all-content">
-        <!-- first page start -->
-        <div id="container" class="container border-container w-75 page first-page">
 
+    <!-- Main Content Container -->
+    <div id="all-content">
+        <!-- Page 1: Technical Drawing -->
+        <div id="container" class="container border-container w-75 page first-page">
             <!-- Header Section -->
             <div id="header" class="row header">
                 <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
-                    <div id="customerBox" class="border px-3 py-2 col-auto ">
+                    <div id="customerBox" class="border px-3 py-2 col-auto">
                         <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
                     </div>
 
@@ -303,13 +338,12 @@
                 </div>
 
                 <!-- Customer Details -->
-                <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
+                <div id="customerDetails" class="col-md-12 d-flex align-items-center p-2 w-100 flex-nowrap">
                     <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
-                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span> </p>
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span></p>
                     </div>
                     <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
-                        <p style="    margin-bottom: 0px;" class="artnumber" class="m-0"><strong class="pe-1">Art
-                                #:</strong></p>
+                        <p style="margin-bottom: 0px;" class="artnumber m-0"><strong class="pe-1">Art #:</strong></p>
                     </div>
                     <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
                         <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
@@ -327,8 +361,8 @@
                     <div id="customerArtBox" class="border py-2 px-3 flex-grow-1">
                         <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
                     </div>
-                    <div id="colorBox" class="border py-2 px-3 mx-2  text-center">
-                        <p id="color" class="m-0"><strong>Color: </strong>
+                    <div id="colorBox" class="border py-2 px-3 mx-2 text-center">
+                        <p id="color" class="color-display m-0"><strong>Color: </strong>
                             <span>PANTONE 1795 C</span> |
                             <span>True Blue (Hummel Color)</span>
                         </p>
@@ -338,125 +372,146 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Main Content -->
             <div id="content">
-                <!-- content  --><!-- Titles Section -->
+                <!-- Titles Section -->
                 <div id="titleSection" class="d-flex justify-content-between align-items-center mb-4">
                     <div id="sublimationBox">
-                        <h2 id="sublimationTitle" class=" h4 section-title">FULL SUBLIMATION</h2>
+                        <h2 id="sublimationTitle" class="h4 section-title">FULL SUBLIMATION</h2>
                     </div>
                     <div id="artWorkBox" class="flex-grow-1 art-work">
                         <h3 id="artWorkTitle" class="art-work-title h5">Art Work</h3>
                     </div>
                 </div>
-                <!-- Images -->
+
+                <!-- Images Container -->
                 <div id="imagecontainer">
                     <div class="containerimage">
+                        <!-- Front Image -->
                         <div id="imageFrontContainer" class="text-center mb-4 image-container">
                             <img id="imageFront"
                                 src="https://d2u0n1trk0r0nj.cloudfront.net/company_45/45/order/13407/6085/shareable/112226_05032025033556845000_05032025083602061888_67c8b5b20f1c8.png"
                                 alt="Front view of the jersey with various labels">
                         </div>
-                        <!-- Front Left -->
-                        <div class="label neck-tape">NECK TAPE<br>Color: BLACK/WHITE<br>Size: <span
-                                class="height">H-1.1CM</span> </div>
+
+                        <!-- Front Left Elements -->
+                        <div class="label neck-tape">
+                            NECK TAPE<br>Color: <span class="neck-color">BLACK/WHITE</span>
+                            <br>Size: <span class="height neck-height">H-1.1CM</span>
+                        </div>
                         <div class="arrow arrow-neck"></div>
 
-                        <div class="label hummel-logo">"HUMMEL" LOGO <br><span class="sublimation">SUBLIMATION</span>
+                        <div class="label hummel-logo">
+                            "HUMMEL" LOGO <br><span class="sublimation">SUBLIMATION</span>
                             <br>Size: <span class="height">H-4CM </span> X <span class="width">W-4.5CM</span>
-                            <p id="color">Color:<span style="margin-left: 2px;" class="color-sample">WHITE</span></p>
+                            <p id="color" class="hummel-logo-color">Color:<span style="margin-left: 2px;"
+                                    class="color-sample">WHITE</span></p>
                         </div>
                         <div class="arrow arrow-hummel"></div>
-                        <div class="label front-number">FRONT NUMBER<br>Size: <span class="height">H-10.1 CM</span>
-                            <p id="color">COLOR:
 
-                                <span class="color-sample "> WHITE</span>
-                                <span class="color-sample " style="background-color: blue;color: #fff; ">True
-                                    blue</span>
+                        <div id="front-number" class="label front-number">
+                            FRONT NUMBER<br>Size: <span class="height">H-10.1 CM</span>
+                            <p id="color">COLOR:
+                                <span class="color-sample"> WHITE</span>
+                                <span class="color-sample" style="background-color: blue;color: #fff;">True blue</span>
                             </p>
                         </div>
-                        <div class="arrow arrow-front-number"></div>
-                        <div class="label front-back-fabric">FRONT & BACK IN MAIN FABRIC<br> <span
-                                class="sublimation">SUBLIMATION</span> </div>
+                        <div id="arrow-front-number" class="arrow arrow-front-number"></div>
+
+                        <div class="label front-back-fabric">
+                            FRONT & BACK IN MAIN FABRIC<br> <span class="sublimation">SUBLIMATION</span>
+                        </div>
                         <div class="arrow arrow-fabric"></div>
-                        <!-- Front Right -->
-                        <div class="label neck-tape-1">SUBLIMATED SIZE LABEL <br>INSIDE HALF MOON <p class="color">
-                                PANTONE
-                                COOL GRAY 7 C</p>
+
+                        <!-- Front Right Elements -->
+                        <div class="label neck-tape-1">
+                            SUBLIMATED SIZE LABEL <br>INSIDE HALF MOON
+                            <p class="color">PANTONE COOL GRAY 7 C</p>
                             SIZE: <span class="height">H=2.6CM</span> X <span class="width">W=3.5CM</span>
                         </div>
                         <div class="arrow arrow-neck-1"></div>
-                        <div class="label burlington-logo">"BURLINGTON" LOGO <br> <span
-                                class="sublimation">SUBLIMATION</span> <br>Size: <span class="height">H-7.6CM </span> X
-                            <span class="width">W-5.8CM</span> <br>
-                            <p id="color">COLOR:
 
-                                <span class="color-sample " style="background-color: #e4002b; color: #f9f9f9;">
-                                    185C</span>
-                                <span class="color-sample "
-                                    style="background-color: #f1b434; color: #fff; ">143C</span><span
-                                    class="color-sample " style="background-color:  #919d9d;;color: #fff; ">447C</span>
+                        <div class="label burlington-logo">
+                            "BURLINGTON" LOGO <br> <span class="sublimation">SUBLIMATION</span> <br>
+                            <span class="burlington-logo-size">Size:
+                                <span class="height">H-7.6CM </span> X <span class="width">W-5.8CM</span>
+                            </span> <br>
+                            <p id="color" class="logoColors">COLOR:
+                                <span class="color-sample"
+                                    style="background-color: #e4002b; color: #f9f9f9;">185C</span>
+                                <span class="color-sample" style="background-color: #f1b434; color: #fff;">143C</span>
+                                <span class="color-sample" style="background-color: #919d9d;color: #fff;">447C</span>
                             </p>
                         </div>
                         <div class="arrow arrow-burlington"></div>
-                        <div class="label front-inside"> INSIDE CARE LABEL</div>
+
+                        <div class="label front-inside">INSIDE CARE LABEL</div>
                         <div class="arrow arrow-inside"></div>
-
-
                     </div>
-                    <div class="containerimage">
 
+                    <!-- Back Image Container -->
+                    <div class="containerimage">
                         <div id="imageBackContainer" class="text-center mb-4 image-container">
                             <img id="imageBack"
                                 src="https://d2u0n1trk0r0nj.cloudfront.net/company_45/45/order/13407/6085/shareable/111792_05032025033556861000_05032025083601730744_67c8b5b1b2682.png"
                                 alt="Back view of the jersey with various labels">
                         </div>
-                        <!-- Back Left -->
-                        <div class="label chevrons-logo">"CHEVRONS" LOGO<br> <span
-                                class="sublimation">SUBLIMATION</span><br>SIZE: <span class="height"> H-20CM</span>X
-                            <span class="width">W-5CM</span>
-                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+
+                        <!-- Back Left Elements -->
+                        <div class="label chevrons-logo">
+                            "CHEVRONS" LOGO<br> <span class="sublimation">SUBLIMATION</span><br>
+                            SIZE: <span class="height"> H-20CM</span>X <span class="width">W-5CM</span>
+                            <p id="color" class="chervons-color">Color: <span class="color-sample">WHITE</span></p>
                         </div>
                         <div class="arrow arrow-chevrons"></div>
-                        <div class="label flag-logo">"USA FLAG" LOGO<br> <span
-                                class="sublimation">SUBLIMATION</span><br>SIZE: <span class="height">H-20CM</span> X
-                            <span class="width"> W-5CM</span>
+
+                        <div style="display: none;" class="label flag-logo">
+                            "USA FLAG" LOGO<br> <span class="sublimation">SUBLIMATION</span><br>
+                            SIZE: <span class="height">H-20CM</span> X <span class="width"> W-5CM</span>
                             <p id="color">Color: <span class="color-sample">WHITE</span></p>
                         </div>
-                        <div class="arrow arrow-flag"></div>
-                        <!-- <svg class="arrow arrow-flag"  width="80" height="2" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0" y1="1" x2="80" y2="1" stroke="rgb(84, 122, 239)" stroke-width="2" />
-                    </svg> -->
+                        <div style="display: none;" class="arrow arrow-flag"></div>
+
                         <div class="label bottom-stich">BOTTOM HEM WITH<br>2NDL TOP STICH</div>
                         <div class="arrow arrow-bottom-stich"></div>
-                        <!-- Back Right -->
-                        <div class="label back-logo-fabric"> HALF MOON IN MAIN FABRIC</div>
+
+                        <!-- Back Right Elements -->
+                        <div class="label back-logo-fabric">HALF MOON IN MAIN FABRIC</div>
                         <div class="arrow arrow-back-logo-fabric"></div>
-                        <div class="label name"> <span class="shirt_name">"NAME"</span> <span class="height">H- 5.08
-                                CM</span> <br><span class="sublimation"> SUBLIMATION</span><br>FONT: <span
-                                class="font_name"> DIN CONDENSED</span>
-                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+
+                        <div class="label name">
+                            <span class="shirt_name"><span class="player-name">"NAME"</span></span>
+                            <span class="playernameheight height">H-5.08 CM</span> <br>
+                            <span class="sublimation">SUBLIMATION</span><br>
+                            <span class="font_name player-font-name">FONT: DIN CONDENSED</span>
+                            <p id="color" class="player-name-color">Color: <span class="color-sample">WHITE</span></p>
                         </div>
                         <div class="arrow arrow-name"></div>
-                        <div class="label arms">SLEEVES IN MAIN FABRIC<br> <span class="sublimation">SUBLIMATION</span>
-                            <br>COLOR:AS PER DESIGN
+
+                        <div id="sleeves-color" class="label arms">
+                            SLEEVES IN MAIN FABRIC<br> <span class="sublimation">SUBLIMATION</span>
+                            <br><span class="color-sample">COLOR:AS PER DESIGN</span>
                         </div>
                         <div class="arrow arrow-arms"></div>
-                        <div class="label number"> <span class="shirt_number"> "NUMBER"</span> <span class="height"> H-
-                                20.32 CM</span><br> <span class="sublimation">SUBLIMATION</span> <br>FONT:<span
-                                class="font_name_number">TEAM SPOTIA</span>
-                            <p id="color">Color: <span class="color-sample">WHITE</span></p>
+
+                        <div class="label number">
+                            <span class="player-number shirt_number">"NUMBER"</span>
+                            <span class="playernumberheight height"> H-20.32 CM</span><br>
+                            <span class="sublimation">SUBLIMATION</span> <br>
+                            <span class="player-font-number font_name_number">FONT: TEAM SPOTIA</span>
+                            <p id="color" class="player-number-color">Color: <span class="color-sample">WHITE</span></p>
                         </div>
                         <div class="arrow arrow-number"></div>
-
-
                     </div>
                 </div>
+
                 <!-- Fabric Description -->
                 <div id="fabricDescription" class="fabri-description container w-100 py-0">
                     <div id="fabricTitleBox" class="border border-black p-2 w-100 no-gutters">
                         <h1 id="fabricTitle" class="h4 font-weight-bold">Fabric Description:-</h1>
                     </div>
-                    <div id="fabricDetails" class="row mt-2 no-gutters ">
+                    <div id="fabricDetails" class="row mt-2 no-gutters">
                         <div id="fabricShellBox" class="col-md-6 border border-black p-2">
                             <p id="shellFabric1"><strong>Shell Fabric # 1:</strong> <span
                                     class="text-danger font-weight-bold">INTERLOCK 140</span></p>
@@ -472,29 +527,21 @@
                 </div>
             </div>
 
-
-
-
-
-
             <!-- Footer -->
             <footer id="footer" class="container border border-black mt-2 p-2">
-                <p><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
-                text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/"
-                            target="_blank">Mubasher Sultan</a></strong></p>
+                <p><strong>Designed By: <a
+                            style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12); text-decoration: none;"
+                            id="designedBy" href="https://sultandev45.github.io/portfolio/" target="_blank">Mubasher
+                            Sultan</a></strong></p>
             </footer>
-
-
-
         </div>
-        <!-- first page end -->
-        <!-- 2nd Page Start -->
+
+        <!-- Page 2: Labels Information -->
         <div id="container" class="container border-container my-4 w-75 page second-page">
-
-            <!-- Header Section -->
+            <!-- Header Section (similar to page 1) -->
             <div id="header" class="row header">
                 <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
-                    <div id="customerBox" class="border px-3 py-2 col-auto ">
+                    <div id="customerBox" class="border px-3 py-2 col-auto">
                         <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
                     </div>
 
@@ -508,318 +555,12 @@
                 </div>
 
                 <!-- Customer Details -->
-                <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
+                <div id="customerDetails" class="col-md-12 d-flex align-items-center p-2 w-100 flex-nowrap">
                     <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
-                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span> </p>
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span></p>
                     </div>
                     <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
-                        <p style="margin-bottom: 0px;" class="artnumber" class="m-0"><strong class="pe-1">Art
-                                #:</strong></p>
-                    </div>
-                    <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
-                        <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
-                            <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
-                        </div>
-                        <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
-                            <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Color & Page Info -->
-                <div id="colorSection"
-                    class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
-                    <div id="customerArtBox" class="border py-2  flex-grow-1 px-3">
-                        <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
-                    </div>
-                    <div id="colorBox" class="border py-2 px-3 mx-2 text-center">
-                        <p id="color" class="m-0"><strong>Color: </strong>
-                            <span>PANTONE 1795 C</span> |
-                            <span>True Blue (Hummel Color)</span>
-                        </p>
-                    </div>
-                    <div id="pageBox" class="border py-2 px-3">
-                        <p id="pageNumber" class="m-0 page-number">Page: 1 of 2</p>
-                    </div>
-                </div>
-            </div>
-            <div id="content">
-                <!-- content  --><!-- Titles Section -->
-                <div id="titleSection" class="d-flex justify-content-center align-items-center mb-4">
-
-                    <div id="artWorkBox" class="mb-2">
-                        <h3 id="artWorkTitle" class="art-work-title text-danger h3">LABEL’S INFORMATION</h3>
-                    </div>
-                </div>
-                <!-- Images -->
-
-                <div class="container">
-                    <div class="row row-1">
-                        <!-- First Column -->
-                        <div class="col col-md-4">
-                            <div class="txt">
-                                <p>"HUMMEL" LOGO</p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>SIZE: <span class="height">H-4CM</span> X <span class="width"> W-4.5CM</span></p>
-                                <p id="color">COLOR: <span class="color-sample">WHITE</span> </p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/hummel.png" alt="HUMMEL Logo" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <div class="double-arrow arrow-horizontal"></div>
-                                <div class="arrow-label label-width">W</div>
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-
-                        <!-- Second Column -->
-                        <div class="col col-md-4">
-                            <div class="txt">
-                                <p>"BURLINGTON" LOGO</p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>SIZE: <span class="height">H-7.6CM</span> X <span class="width">W-5.8CM</span> </p>
-                                <p id="color">COLOR:
-
-                                    <span class="color-sample" style="background-color: #B93C2D; color: #fff;">185
-                                        C</span>
-                                    <span class="color-sample " style="background-color: #9C6C37;;color: #fff; ">143
-                                        C</span>
-                                </p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/burlington.png" alt="BURLINGTON Logo" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <div class="double-arrow arrow-horizontal"></div>
-                                <div class="arrow-label label-width">W</div>
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-
-                        <!-- Third Column -->
-                        <div id="flag" class="col col-md-4 p-0">
-                            <div class="txt">
-                                <p>"USA FLAG" LOGO</p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>SIZE: <span class="height">H-3.8CM</span> X <span class="width">W-6CM</span> </p>
-                                <p id="color">COLOR:
-                                    <span class="color-sample" style="background-color: #3C3B6E; color: #fff;">PANTONE
-                                        186 C</span>
-                                    <span class="color-sample white">WHITE</span>
-                                </p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/USA_FLAG.png" alt="USA FLAG Logo" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <div class="double-arrow arrow-horizontal"></div>
-                                <div class="arrow-label label-width">W</div>
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row row-2">
-                        <!-- First Column -->
-                        <div class="col col-md-3">
-                            <div class="txt">
-                                <p>"CHEVRONS" LOGO</p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>SIZE: <span class="height">H-20CM </span> X <span class="width">W-5CM</span> </p>
-                                <p id="color">COLOR: <span class="color-sample">WHITE</span> </p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/chervons.png" alt="CHEVRONS Logo" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <div class="double-arrow arrow-horizontal"></div>
-                                <div class="arrow-label label-width">W</div>
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-
-                        <!-- Second Column -->
-                        <div class="col col-md-3">
-                            <div class="txt">
-                                <p>"NAME" <span class="height">H-5.08 CM</span> </p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>FONT: DIN CONDENSED</p>
-                                <p id="color">COLOR:
-                                    <span class="color-sample" style="background-color: #fff; ">WHITE</span>
-                                    <span class="color-sample" style="background-color: #9C6C37; color: #fff; ">143
-                                        C</span>
-                                </p>
-                            </div>
-                            <div class="image-container">
-                                <img style="height: auto !important;" src="./source/img/name.png" alt="BURLINGTON Logo"
-                                    class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <!-- <div class="double-arrow arrow-horizontal"></div>
-                            <div class="arrow-label label-width">W</div> -->
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-
-                        <!-- Third Column -->
-                        <div id="front_number" class="col col-md-3 p-0">
-                            <div class="txt">
-                                <p>"FRONT NUMBER" </p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>FONT: PROHIBITION </p>
-                                <p> SIZE: <span class="height"> H-10.1 CM</span></p>
-                                <p id="color">COLOR:
-
-                                    <span class="color-sample "> WHITE</span>
-                                    <span class="color-sample " style="background-color: blue;color: #fff; ">True
-                                        blue</span>
-                                </p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/front_number.png" alt="USA FLAG Logo" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <!-- <div class="double-arrow arrow-horizontal"></div>
-                            <div class="arrow-label label-width">W</div> -->
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-                        <!-- 4th column -->
-                        <div id="back_number" class="col col-md-3 p-0">
-                            <div class="txt">
-                                <p>"NUMBER" <span class="height">H- 20.32 CM</span> </p>
-                                <p class="sublimation">SUBLIMATION</p>
-                                <p>FONT: TEAM SPOTIA</p>
-                                <p id="color">COLOR:
-
-                                    <span class="color-sample "> WHITE</span>
-                                    <span class="color-sample " style="background-color: blue;color: #fff; ">True
-                                        blue</span>
-                                </p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/back_number.png" alt="Back Number" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <!-- <div class="double-arrow arrow-horizontal"></div>
-                            <div class="arrow-label label-width">W</div> -->
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 3rd row -->
-                    <div class="row row-3">
-                        <div class="col col-12 d-flex flex-column align-items-center justify-content-center p-0">
-
-                            <div class="txt ">
-                                <p class="text-center h2 "> NECK TAPE </p>
-                                <p id="color">COLOR: BLACK/WHITE </p>
-                                <p class="text-center  "> SIZE: <span class="height">H-1.1CM</span> </p>
-                            </div>
-                            <div class="image-container">
-                                <img style="height: 20px;" src="./source/img/Neck Tape.svg" alt="Neck Tape"
-                                    class="neck-tape">
-                                <!-- Horizontal arrow (for width) -->
-                                <!-- <div class="double-arrow arrow-horizontal"></div>
-                            <div class="arrow-label label-width">W</div> -->
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div style="    margin-top: 10px;" class="row row-4 d-flex justify-content-center">
-                        <div class="col col-6  ">
-                            <div class="txt">
-                                <h1 class="h3 text-danger "
-                                    style="text-decoration: underline; margin-bottom: 8px !important;">Instruction Label
-                                </h1>
-                                <h2 class="h6 mb-4  "> <Strong>Position: 8cm Above Hem At Left Side Seam</Strong></h2>
-                            </div>
-                            <div class="image-container">
-                                <img style="height: 250px !important; " src="./source/img/CareLabel.svg"
-                                    alt="Carw Lalble" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <div class="double-arrow bg-danger horizontal arrow-horizontal"></div>
-                                <div class="arrow-label label-width">2.5 cm</div>
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow bg-danger vertical arrow-vertical"></div>
-                                <div class="arrow-label  label-height">4 cm</div>
-                            </div>
-                        </div>
-                        <div class="col col-4">
-                            <div class="txt">
-                                <p> SUBLIMATED SIZE LABEL <br>
-                                    INSIDE HALF MOON <br>
-                                    COLOR: PANTONE COOL GRAY 7 C <br>
-                                    POSITION: INSIDE C.B NECK LINE <br>
-                                    SIZE: <span class="height">H=2.6CM</span> X <span class="width"> W=3.5CM</span></p>
-                            </div>
-                            <div class="image-container">
-                                <img src="./source/img/SizeLabel.svg" alt="Size Lable" class="logo">
-                                <!-- Horizontal arrow (for width) -->
-                                <div class="double-arrow arrow-horizontal"></div>
-                                <div class="arrow-label label-width">W</div>
-                                <!-- Vertical arrow (for height) -->
-                                <div class="double-arrow arrow-vertical"></div>
-                                <div class="arrow-label label-height">H</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-
-
-            <!-- Footer -->
-            <footer id="footer" class="container border border-black mt-2 p-2">
-                <p><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
-                text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/"
-                            target="_blank">Mubasher Sultan</a></strong></p>
-            </footer>
-
-
-
-        </div>
-        <!-- 2nd Page End -->
-        <!-- 3rd Page Start -->
-
-        <div id="container" class="container border-container my-4 w-75 page third-page">
-
-            <div id="header" class="row header">
-                <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
-                    <div id="customerBox" class="border px-3 py-2 col-auto ">
-                        <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
-                    </div>
-
-                    <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
-                        <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
-                    </div>
-
-                    <div id="companyBox" class="border px-3 py-2 col-auto">
-                        <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
-                    </div>
-                </div>
-
-                <!-- Customer Details -->
-                <div id="customerDetails" class="col-md-12  d-flex align-items-center p-2 w-100 flex-nowrap">
-                    <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
-                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span> </p>
-                    </div>
-                    <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
-                        <p style="    margin-bottom: 0px;" class="artnumber" class="m-0"><strong class="pe-1">Art
-                                #:</strong></p>
+                        <p style="margin-bottom: 0px;" class="artnumber m-0"><strong class="pe-1">Art #:</strong></p>
                     </div>
                     <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
                         <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
@@ -837,21 +578,307 @@
                     <div id="customerArtBox" class="border py-2 px-3 flex-grow-1">
                         <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
                     </div>
-                    <div id="colorBox" class="border py-2 px-3 mx-2  text-center">
-                        <p id="color" class="m-0"><strong>Color: </strong>
+                    <div id="colorBox" class="border py-2 px-3 mx-2 text-center">
+                        <p id="color" class="color-display m-0"><strong>Color: </strong>
                             <span>PANTONE 1795 C</span> |
                             <span>True Blue (Hummel Color)</span>
                         </p>
                     </div>
                     <div id="pageBox" class="border py-2 px-3">
-                        <p id="pageNumber" class="m-0 page-number">Page: 3 of 3</p>
+                        <p id="pageNumber" class="m-0 page-number">Page: 1 of 3</p>
                     </div>
                 </div>
             </div>
-            <div id="content">
-                <!-- content  --><!-- Titles Section -->
-                <div id="titleSection" class="d-flex justify-content-center align-items-center ">
 
+
+            <!-- Content -->
+            <div id="content">
+                <div id="titleSection" class="d-flex justify-content-center align-items-center mb-4">
+                    <div id="artWorkBox" class="mb-2">
+                        <h3 id="artWorkTitle" class="art-work-title text-danger h3">LABEL'S INFORMATION</h3>
+                    </div>
+                </div>
+
+                <!-- Logo Rows -->
+                <div class="container">
+                    <!-- Row 1 -->
+                    <div class="row row-1 logo-row">
+                        <!-- HUMMEL Logo -->
+                        <div class="col col-md-4">
+                            <div class="txt">
+                                <p>"HUMMEL" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-4CM</span> X <span class="width"> W-4.5CM</span></p>
+                                <p id="color" class="hummel-logo-color">COLOR: <span class="color-sample">WHITE</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/hummel.png" alt="HUMMEL Logo" class="logo">
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- BURLINGTON Logo -->
+                        <div class="col col-md-4">
+                            <div class="txt">
+                                <p>"BURLINGTON" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p class="burlington-logo-size">SIZE: <span class="height"><span
+                                            id="burlington-logo-h-">H-7.6CM</span></span> X <span
+                                        class="width">W-5.8CM</span></p>
+                                <p id="color" class="logoColors">COLOR:
+                                    <span class="color-sample" style="background-color: #B93C2D; color: #fff;">185
+                                        C</span>
+                                    <span class="color-sample" style="background-color: #9C6C37;;color: #fff;">143
+                                        C</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img id="burlington-logo" src="./source/img/burlington.png" alt="BURLINGTON Logo"
+                                    class="logo">
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- USA FLAG Logo -->
+                        <div id="flag" class="col col-md-4 p-0">
+                            <div class="txt">
+                                <p>"USA FLAG" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-3.8CM</span> X <span class="width">W-6CM</span></p>
+                                <p id="color">COLOR:
+                                    <span class="color-sample" style="background-color: #3C3B6E; color: #fff;">PANTONE
+                                        186 C</span>
+                                    <span class="color-sample white">WHITE</span>
+                                </p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/USA_FLAG.png" alt="USA FLAG Logo" class="logo">
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div style="margin: 6px 0px;" class="row row-2">
+                        <!-- CHEVRONS Logo -->
+                        <div class="col col-md-3">
+                            <div class="txt">
+                                <p>"CHEVRONS" LOGO</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>SIZE: <span class="height">H-20CM </span> X <span class="width">W-5CM</span></p>
+                                <p id="color" class="chervons-color">COLOR: <span class="color-sample">WHITE</span></p>
+                            </div>
+                            <div class="image-container">
+                                <img src="./source/img/chervons.png" alt="CHEVRONS Logo" class="logo">
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Name -->
+                        <div class="col col-md-3">
+                            <div class="txt">
+                                <p><span class="player-name">"NAME"</span> <span class="playernameheight height">H-5.08
+                                        CM</span></p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p class="player-font-name">FONT: DIN CONDENSED</p>
+                                <p id="color" class="player-name-color">COLOR:
+                                    <span class="color-sample" style="background-color: #fff;">WHITE</span>
+                                    <span class="color-sample" style="background-color: #9C6C37; color: #fff;">143
+                                        C</span>
+                                </p>
+                            </div>
+                            <div class="image-container name-container">
+                                <img class="name-logo" src="./source/img/name.png" alt="Name Graphic" class="logo">
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Front Number -->
+                        <div id="front_number" class="col col-md-3 p-0">
+                            <div class="txt">
+                                <p>"FRONT NUMBER"</p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p>FONT: PROHIBITION</p>
+                                <p>SIZE: <span class="height">H-10.1 CM</span></p>
+                                <p id="color">COLOR:
+                                    <span class="color-sample">WHITE</span>
+                                    <span class="color-sample" style="background-color: blue;color: #fff;">True
+                                        blue</span>
+                                </p>
+                            </div>
+                            <div class="image-container number-container">
+                                <img style="height: 70px!important;" class="number-logo"
+                                    src="./source/img/front_number.png" alt="Number Graphic" class="logo">
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+
+                        <!-- Back Number -->
+                        <div id="back_number" class="col col-md-3 p-0">
+                            <div class="txt">
+                                <p><span class="player-number">"NUMBER"</span> <span
+                                        class="playernumberheight height">H-20.32 CM</span></p>
+                                <p class="sublimation">SUBLIMATION</p>
+                                <p class="player-font-number">FONT: TEAM SPOTIA</p>
+                                <p id="color" class="player-number-color">COLOR:
+                                    <span class="color-sample">WHITE</span>
+                                    <span class="color-sample" style="background-color: blue;color: #fff;">True
+                                        blue</span>
+                                </p>
+                            </div>
+                            <div class="image-container number-container">
+                                <img style="height: 70px!important;" class="number-logo"
+                                    src="./source/img/front_number.png" alt="Number Graphic" class="logo">
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Neck Tape -->
+                    <div class="row row-3">
+                        <div class="col col-12 d-flex flex-column align-items-center justify-content-center p-0">
+                            <div class="txt">
+                                <p class="text-center h2">NECK TAPE</p>
+                                <p id="color">COLOR: BLACK/WHITE</p>
+                                <p class="text-center">SIZE: <span class="height">H-1.1CM</span></p>
+                            </div>
+                            <div class="image-container">
+                                <img style="height: 20px;" src="./source/img/Neck Tape.svg" alt="Neck Tape"
+                                    class="neck-tape">
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Labels -->
+                    <div style="margin-top: 10px;" class="row row-4 d-flex justify-content-center">
+                        <!-- Instruction Label -->
+                        <div class="col col-6">
+                            <div class="txt">
+                                <h1 class="h3 text-danger"
+                                    style="text-decoration: underline; margin-bottom: 8px !important;">
+                                    Instruction Label
+                                </h1>
+                                <h2 class="h6 mb-4"><strong>Position: 8cm Above Hem At Left Side Seam</strong></h2>
+                            </div>
+                            <div class="image-container">
+                                <img style="height: 250px !important;" src="./source/img/CareLabel.svg" alt="Care Label"
+                                    class="logo">
+                                <div class="double-arrow bg-danger horizontal arrow-horizontal"></div>
+                                <div class="arrow-label label-width">2.5 cm</div>
+                                <div class="double-arrow bg-danger vertical arrow-vertical"></div>
+                                <div class="arrow-label label-height">4 cm</div>
+                            </div>
+                        </div>
+
+                        <!-- Size Label -->
+                        <div class="col col-4">
+                            <div class="txt">
+                                <p style="text-align: center;">
+                                    SUBLIMATED SIZE LABEL <br>
+                                    INSIDE HALF MOON <br>
+                                    COLOR: PANTONE COOL GRAY 7 C <br>
+                                    POSITION: INSIDE C.B NECK LINE <br>
+                                    SIZE: <span class="height">H=2.6CM</span> X <span class="width">W=3.5CM</span>
+                                </p>
+                            </div>
+                            <div style="height: 60%; width: 100%;" class="image-container">
+                                <img style="height: 100% !important;" src="./source/img/SizeLabel.svg" alt="Size Label"
+                                    class="logo">
+                                <div class="double-arrow arrow-horizontal"></div>
+                                <div class="arrow-label label-width">W</div>
+                                <div class="double-arrow arrow-vertical"></div>
+                                <div class="arrow-label label-height">H</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer id="footer" class="container border border-black mt-2 p-2">
+                <p><strong>Designed By: <a
+                            style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12); text-decoration: none;"
+                            id="designedBy" href="https://sultandev45.github.io/portfolio/" target="_blank">Mubasher
+                            Sultan</a></strong></p>
+            </footer>
+        </div>
+
+        <!-- Page 3: Size Chart -->
+        <div id="container" class="container border-container my-4 w-75 page third-page">
+            <!-- Header Section (similar to page 1) -->
+            <div id="header" class="row header">
+                <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
+                    <div id="customerBox" class="border px-3 py-2 col-auto">
+                        <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
+                    </div>
+
+                    <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
+                        <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
+                    </div>
+
+                    <div id="companyBox" class="border px-3 py-2 col-auto">
+                        <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div id="customerDetails" class="col-md-12 d-flex align-items-center p-2 w-100 flex-nowrap">
+                    <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span></p>
+                    </div>
+                    <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
+                        <p style="margin-bottom: 0px;" class="artnumber m-0"><strong class="pe-1">Art #:</strong></p>
+                    </div>
+                    <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
+                        <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
+                            <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
+                        </div>
+                        <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
+                            <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color & Page Info -->
+                <div id="colorSection"
+                    class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
+                    <div id="customerArtBox" class="border py-2 px-3 flex-grow-1">
+                        <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
+                    </div>
+                    <div id="colorBox" class="border py-2 px-3 mx-2 text-center">
+                        <p id="color" class="color-display m-0"><strong>Color: </strong>
+                            <span>PANTONE 1795 C</span> |
+                            <span>True Blue (Hummel Color)</span>
+                        </p>
+                    </div>
+                    <div id="pageBox" class="border py-2 px-3">
+                        <p id="pageNumber" class="m-0 page-number">Page: 1 of 3</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Content -->
+            <div id="content">
+                <div id="titleSection" class="d-flex justify-content-center align-items-center">
                     <div id="artWorkBox" class="mb-2">
                         <h3 id="artWorkTitle" class="art-work-title text-danger h3">SIZE CHART</h3>
                     </div>
@@ -860,10 +887,9 @@
                 <div class="container">
                     <div class="row">
                         <div class="col col-12">
-                            <h4 class="h5 mb-2">
-                                Measurement Chart ( ALL UNITS IN CM)
-                            </h4>
+                            <h4 class="h5 mb-2">Measurement Chart (ALL UNITS IN CM)</h4>
                             <div class="table">
+                                <!-- Size Chart Tables -->
                                 <table class="table table-bordered ">
                                     <thead style="background-color: #f9f9f9;">
                                         <tr>
@@ -1169,11 +1195,8 @@
                     </div>
                     <div class="row">
                         <div class="col col-12">
-                            <h4 class="h5 text-danger m-0">
-                                NOTE: FOLLOW US SIZES
-                            </h4>
-                            <div class="image-container"> <img src="./source/img/note_size.png" alt=""></div>
-
+                            <h4 class="h5 text-danger m-0">NOTE: FOLLOW US SIZES</h4>
+                            <div class="image-container"><img src="./source/img/note_size.png" alt=""></div>
                         </div>
                     </div>
                 </div>
@@ -1181,22 +1204,25 @@
 
             <!-- Footer -->
             <footer id="footer" class="container border border-black mt-2 p-2">
-                <p><strong>Designed By: <a style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12);  text-decoration: underline;
-            text-decoration: none; " id="designedBy" href="https://sultandev45.github.io/portfolio/"
-                            target="_blank">Mubasher Sultan</a></strong></p>
+                <p><strong>Designed By: <a
+                            style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12); text-decoration: none;"
+                            id="designedBy" href="https://sultandev45.github.io/portfolio/" target="_blank">Mubasher
+                            Sultan</a></strong></p>
             </footer>
         </div>
-        <!-- 3rd Page End -->
+
         <!-- Print Button -->
         <div id="printButtonContainer" class="text-center mt-4 no-print">
             <button id="printButton" onclick="printDocument()" class="btn btn-primary">Print</button>
         </div>
     </div>
 
-   <script src="./source/js/script.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
-   
- 
+    <!-- Custom JS -->
+    <script src="./source/js/data-page.js"></script>
+    <script src="./source/js/script.js"></script>
 </body>
 
 </html>

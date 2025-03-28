@@ -145,7 +145,7 @@ body {
 
 .burlington-logo {
     top: 80px;
-    right: 0px;
+    right: -40px;
 }
 
 .front-number {
@@ -331,7 +331,7 @@ body {
 .container .row .image-container img {
     display: block;
     max-width: 100%;
-    height: auto;
+    
 }
 
 .double-arrow {
@@ -452,7 +452,7 @@ body {
 }
 
 .container .row .image-container .logo {
-    height: 100px !important;
+    height: 70px !important;
 }
 
 .container .row-3 .image-container .neck-tape {
@@ -475,7 +475,7 @@ body {
 .color-sample {
     padding: 0px 4px;
     border: 1px solid #000;
-    margin-right: -3px;
+    margin-right: -4px;
     vertical-align: middle;
 }
 
