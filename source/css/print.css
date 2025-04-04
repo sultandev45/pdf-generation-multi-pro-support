@@ -6,11 +6,12 @@
          padding: 0;
          box-sizing: border-box;
          font-size: 12px;
-         -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+         -webkit-print-color-adjust: exact !important;
+         /* Chrome, Safari */
          print-color-adjust: exact !important;
-        
+
      }
-    
+
      /* Typography */
      body {
          font-family: Arial, sans-serif;
@@ -20,23 +21,24 @@
          /* Reduced line height */
          color: #333;
      }
+
      .third-page .table table {
-        font-size: 12px;
-    }
+         font-size: 12px;
+     }
 
-    * {
-        line-height: 1.2 !important;
-    }
+     * {
+         line-height: 1.2 !important;
+     }
 
-    .table>:not(caption)>*>* {
-        padding: 4px 4px !important;
-    }
+     .table>:not(caption)>*>* {
+         padding: 4px 4px !important;
+     }
 
-    .sublimation,
-    .height,
-    .width {
-        color: rgb(227, 45, 45);
-    }
+     .sublimation,
+     .height,
+     .width {
+         color: rgb(227, 45, 45);
+     }
 
      h1,
      h2,
@@ -530,9 +532,9 @@
      }
 
      .arrow-front-number {
-        top: 144px;
-        left: 130px;
-        width: 144px;
+         top: 144px;
+         left: 130px;
+         width: 144px;
          transform: rotate(-15deg);
      }
 
@@ -565,9 +567,9 @@
      }
 
      .arrow-arms {
-        bottom: 164px;
-        right: 134px;
-        width: 60px;
+         bottom: 164px;
+         right: 134px;
+         width: 60px;
          transform: rotate(233deg);
      }
 
@@ -694,35 +696,51 @@
          left: -4px;
          transform: rotate(180deg);
      }
-     .second-page .image-container .horizontal::before
-     {
+
+     .second-page .image-container .horizontal::before {
          border-color: transparent #e31616 transparent transparent !important;
-     }.second-page  .image-container .horizontal:after{
+     }
+
+     .second-page .image-container .horizontal:after {
          border-color: transparent transparent transparent #e31616;
      }
-     .second-page .image-container .vertical::before
-     {
+
+     .second-page .image-container .vertical::before {
          border-color: #e31616 transparent transparent transparent;
-     }.second-page  .image-container .vertical:after{
+     }
+
+     .second-page .image-container .vertical:after {
          border-color: transparent transparent #e31616 transparent;
      }
-     .second-page .row-1 .arrow-horizontal,.second-page .row-2 .arrow-horizontal,.second-page .row-1 .arrow-vertical ,.second-page .row-2 .arrow-vertical{
-        background-color:rgb(71, 167, 236) ;
-    }
 
-    
-    .second-page .row-1 .arrow-horizontal::before,.second-page .row-2 .arrow-horizontal::before
-    {
-        border-color: transparent rgb(71, 167, 236) transparent transparent !important;
-    }.second-page .row-1 .arrow-horizontal:after, .second-page .row-2 .arrow-horizontal:after{
-        border-color: transparent transparent transparent rgb(71, 167, 236);
-    }
-    .second-page .row-1 .arrow-vertical::before, .second-page .row-2 .arrow-vertical::before
-    {
-        border-color: rgb(71, 167, 236) transparent transparent transparent;
-    }.second-page .row-1 .arrow-vertical:after , .second-page .row-2 .arrow-vertical:after{
-        border-color: transparent transparent rgb(71, 167, 236) transparent;
-    }
+     .second-page .row-1 .arrow-horizontal,
+     .second-page .row-2 .arrow-horizontal,
+     .second-page .row-1 .arrow-vertical,
+     .second-page .row-2 .arrow-vertical {
+         background-color: rgb(71, 167, 236);
+     }
+
+
+     .second-page .row-1 .arrow-horizontal::before,
+     .second-page .row-2 .arrow-horizontal::before {
+         border-color: transparent rgb(71, 167, 236) transparent transparent !important;
+     }
+
+     .second-page .row-1 .arrow-horizontal:after,
+     .second-page .row-2 .arrow-horizontal:after {
+         border-color: transparent transparent transparent rgb(71, 167, 236);
+     }
+
+     .second-page .row-1 .arrow-vertical::before,
+     .second-page .row-2 .arrow-vertical::before {
+         border-color: rgb(71, 167, 236) transparent transparent transparent;
+     }
+
+     .second-page .row-1 .arrow-vertical:after,
+     .second-page .row-2 .arrow-vertical:after {
+         border-color: transparent transparent rgb(71, 167, 236) transparent;
+     }
+
      .arrow-label {
          position: absolute;
          font-size: 12px;
@@ -736,6 +754,11 @@
      .container .row .image-container .logo {
          height: 70px;
 
+
+     }
+
+     .container .row .image-container .logo:not([src*=".svg"])    {
+         max-height: fit-content !important;
      }
 
      .container .row .image-container img alt:CHEVRONS {
@@ -757,25 +780,27 @@
      .label-height {
          top: 50%;
          left: -30px;
-         transform: translateY(-50%) ;
+         transform: translateY(-50%);
      }
 
      /* Color samples for logos */
      .color-sample {
+        display: inline-block;
          padding: 2px 4px;
          border: 1px solid #000;
          margin-right: -4px;
          vertical-align: middle;
      }
 
-    
-     .first-page .label p{
-        margin-bottom: 0px !important;
-    }
-        #color {
-            margin-top: 4px;
-        }
-    
+
+     .first-page .label p {
+         margin-bottom: 0px !important;
+     }
+
+     #color {
+         margin-top: 4px;
+     }
+
 
 
      .third-page {

@@ -6,6 +6,8 @@ const errorDiv = document.getElementById('error');
 // Utility Functions
 // ========================
 
+
+
 /**
  * Convert centimeters to inches 
  * @param {number} inchValue - Value in inche
@@ -96,7 +98,8 @@ const pantoneToHex = {
     'Blue 072 C': '#10069F',
     'Cool Gray 1 C': '#D9D9D6',
     'Cool Gray 5 C': '#B1B3B3',
-    'Cool Gray 11 C': '#53565A'
+    'Cool Gray 11 C': '#53565A',
+    'Fiery Red': '#D01C1F'
 };
 
 /**
@@ -126,139 +129,139 @@ function filterColorsByPantone(colors, pantoneCodes) {
     }));
 }
 
-     // ========================
-        // Main Data Extraction
-        // ========================
+// ========================
+// Main Data Extraction
+// ========================
 
-        /**
-         * Extract and process jersey data from order JSON
-         * @param {Array} orderData - The order JSON data
-         * @returns {Object|null} Processed jersey data or null if invalid input
-         */
+/**
+ * Extract and process jersey data from order JSON
+ * @param {Array} orderData - The order JSON data
+ * @returns {Object|null} Processed jersey data or null if invalid input
+ */
 
 
 
-        function extractJerseyData(orderData) {
-            if (!orderData || !orderData.length || !orderData[0].factory_products) {
-                console.error('Invalid order data format');
-                return null;
-            }
+function extractJerseyData(orderData) {
+    if (!orderData || !orderData.length || !orderData[0].factory_products) {
+        console.error('Invalid order data format');
+        return null;
+    }
 
-            const product = orderData[0].factory_products[0];
+    const product = orderData[0].factory_products[0];
 
-            // Process logo information
-            const logoInfo = processLogoData(product.custom_logos);
+    // Process logo information
+    const logoInfo = processLogoData(product.custom_logos);
 
-            // Process player name information
-            const playerNameInfo = processNameData(product.product_custom_texts);
+    // Process player name information
+    const playerNameInfo = processNameData(product.product_custom_texts);
 
-            // Process player number information
-            const playerNumberInfo = processNumberData(product.product_custom_texts);
+    // Process player number information
+    const playerNumberInfo = processNumberData(product.product_custom_texts);
 
-            // Process design colors
-            const designColors = processDesignColors(product.svg_groups);
+    // Process design colors
+    const designColors = processDesignColors(product.svg_groups);
 
-            return { logoInfo, playerNameInfo, playerNumberInfo, designColors };
-        }
+    return { logoInfo, playerNameInfo, playerNumberInfo, designColors };
+}
 
-        function processLogoData(logos) {
-            return logos.map(logo => ({
-                logoType: logo.name_of_placement || "Team Logo",
-                logoImageUrl: logo.original_logo_url,
-                logoWidthCm: parseFloat(logo.originalWidth) || 0,
-                logoHeightCm: parseFloat(logo.originalHeight) || 0,
-                logoWidthInche: cmToInches(parseFloat(logo.originalWidth)),
-                logoHeightInche: cmToInches(parseFloat(logo.originalHeight)),
-                logoColors: logo.logo_colors.map(color => ({
-                    colorHex: color.hex,
-                    colorPantone: color.pantone
-                }))
-            }));
-        }
+function processLogoData(logos) {
+    return logos.map(logo => ({
+        logoType: logo.name_of_placement || "Team Logo",
+        logoImageUrl: logo.original_logo_url,
+        logoWidthCm: parseFloat(logo.originalWidth) || 0,
+        logoHeightCm: parseFloat(logo.originalHeight) || 0,
+        logoWidthInche: cmToInches(parseFloat(logo.originalWidth)),
+        logoHeightInche: cmToInches(parseFloat(logo.originalHeight)),
+        logoColors: logo.logo_colors.map(color => ({
+            colorHex: color.hex,
+            colorPantone: color.pantone
+        }))
+    }));
+}
 
-        function processNameData(texts) {
-            const nameText = texts.find(text => text.type === 'name')?.items?.[0] || {};
-            const outlineWidth = parseFloat(nameText.outlineConvertedWidth) || 0;
-            const heightCm = parseFloat(nameText.originalHeight) || 0;
-            const widthCm = parseFloat(nameText.width_px) || 0;
+function processNameData(texts) {
+    const nameText = texts.find(text => text.type === 'name')?.items?.[0] || {};
+    const outlineWidth = parseFloat(nameText.outlineConvertedWidth) || 0;
+    const heightCm = parseFloat(nameText.originalHeight) || 0;
+    const widthCm = parseFloat(nameText.width_px) || 0;
 
-            const totalHeight = heightCm + (outlineWidth > 0 ? outlineWidth : 0);
-            const totalWidth = widthCm > 0 ? widthCm + (outlineWidth > 0 ? outlineWidth : 0) : 0;
+    const totalHeight = heightCm + (outlineWidth > 0 ? outlineWidth : 0);
+    const totalWidth = widthCm > 0 ? widthCm + (outlineWidth > 0 ? outlineWidth : 0) : 0;
 
-            return {
-                namePlayer: nameText.label || "Name",
-                nameFontStyle: nameText.font_family || "Default",
-                nameHeightCm: parseFloat(totalHeight.toFixed(1)),
-                nameWidthCm: totalWidth,
-                nameHeightInche: cmToInches(parseFloat(totalHeight.toFixed(1))),
-                nameWidthInche: widthCm > 0 ? cmToInches(totalWidth) : 0,
-                nameColorHex: nameText.color || "#000000",
-                nameColorPantone: nameText.color_pantone || "N/A",
-                nameColorOutline: nameText.outline_color || "N/A",
-                nameColorOutlinePantone: nameText.outline_color_pantone || "N/A",
-                nameOutlineWidthCm: outlineWidth,
-                nameOutlineWidthInche: cmToInches(outlineWidth),
-                namePlacement: nameText.placement || "Back",
-                hasOutline: outlineWidth > 0
-            };
-        }
+    return {
+        namePlayer: nameText.label || "Name",
+        nameFontStyle: nameText.font_family || "Default",
+        nameHeightCm: parseFloat(totalHeight.toFixed(1)),
+        nameWidthCm: totalWidth,
+        nameHeightInche: cmToInches(parseFloat(totalHeight.toFixed(1))),
+        nameWidthInche: widthCm > 0 ? cmToInches(totalWidth) : 0,
+        nameColorHex: nameText.color || "#000000",
+        nameColorPantone: nameText.color_pantone || "N/A",
+        nameColorOutline: nameText.outline_color || "N/A",
+        nameColorOutlinePantone: nameText.outline_color_pantone || "N/A",
+        nameOutlineWidthCm: outlineWidth,
+        nameOutlineWidthInche: cmToInches(outlineWidth),
+        namePlacement: nameText.placement || "Back",
+        hasOutline: outlineWidth > 0
+    };
+}
 
-        function processNumberData(texts) {
-            const numberTexts = texts.filter(text => text.type === 'number').flatMap(text => text.items) || [];
-            const backNumber = numberTexts.find(item => item.placement === 'Back') || {};
-            const frontNumber = numberTexts.find(item => item.placement === 'Front');
+function processNumberData(texts) {
+    const numberTexts = texts.filter(text => text.type === 'number').flatMap(text => text.items) || [];
+    const backNumber = numberTexts.find(item => item.placement === 'Back') || {};
+    const frontNumber = numberTexts.find(item => item.placement === 'Front');
 
-            const outlineWidth = parseFloat(backNumber.outlineConvertedWidth) || 0;
-            const heightCm = parseFloat(backNumber.originalHeight) || 0;
-            const widthCm = parseFloat(backNumber.width_px) || 0;
+    const outlineWidth = parseFloat(backNumber.outlineConvertedWidth) || 0;
+    const heightCm = parseFloat(backNumber.originalHeight) || 0;
+    const widthCm = parseFloat(backNumber.width_px) || 0;
 
-            const totalHeight = heightCm + (outlineWidth > 0 ? outlineWidth : 0);
-            const totalWidth = widthCm > 0 ? widthCm + (outlineWidth > 0 ? outlineWidth : 0) : 0;
+    const totalHeight = heightCm + (outlineWidth > 0 ? outlineWidth : 0);
+    const totalWidth = widthCm > 0 ? widthCm + (outlineWidth > 0 ? outlineWidth : 0) : 0;
 
-            return {
-                numberPlayer: backNumber.label || "Number",
-                numberFontStyle: backNumber.font_family || "Default",
-                numberHeightCm: parseFloat(totalHeight.toFixed(1)),
-                numberWidthCm: totalWidth,
-                numberHeightInche: cmToInches(parseFloat(totalHeight.toFixed(1))),
-                numberWidthInche: widthCm > 0 ? cmToInches(totalWidth) : 0,
-                numberColorHex: backNumber.color || "#000000",
-                numberColorPantone: backNumber.color_pantone || "N/A",
-                numberColorOutline: backNumber.outline_color || "N/A",
-                numberColorOutlinePantone: backNumber.outline_color_pantone || "N/A",
-                numberOutlineWidthCm: outlineWidth,
-                numberOutlineWidthInche: cmToInches(outlineWidth),
-                numberPlacement: backNumber.placement || "Back",
-                hasOutline: outlineWidth > 0,
-                frontNumber: frontNumber ? processFrontNumberData(frontNumber) : null
-            };
-        }
+    return {
+        numberPlayer: backNumber.label || "Number",
+        numberFontStyle: backNumber.font_family || "Default",
+        numberHeightCm: parseFloat(totalHeight.toFixed(1)),
+        numberWidthCm: totalWidth,
+        numberHeightInche: cmToInches(parseFloat(totalHeight.toFixed(1))),
+        numberWidthInche: widthCm > 0 ? cmToInches(totalWidth) : 0,
+        numberColorHex: backNumber.color || "#000000",
+        numberColorPantone: backNumber.color_pantone || "N/A",
+        numberColorOutline: backNumber.outline_color || "N/A",
+        numberColorOutlinePantone: backNumber.outline_color_pantone || "N/A",
+        numberOutlineWidthCm: outlineWidth,
+        numberOutlineWidthInche: cmToInches(outlineWidth),
+        numberPlacement: backNumber.placement || "Back",
+        hasOutline: outlineWidth > 0,
+        frontNumber: frontNumber ? processFrontNumberData(frontNumber) : null
+    };
+}
 
-        function processFrontNumberData(frontNumber) {
-            return {
-                numberHeightCm: parseFloat(frontNumber.originalHeight) || 0,
-                numberWidthCm: parseFloat(frontNumber.width_px) || 0,
-                numberHeightInche: cmToInches(parseFloat(frontNumber.originalHeight) || 0),
-                numberColorHex: frontNumber.color || "#000000",
-                numberColorPantone: frontNumber.color_pantone || "N/A",
-                numberColorOutline: frontNumber.outline_color || "N/A",
-                numberColorOutlinePantone: frontNumber.outline_color_pantone || "N/A",
-                numberOutlineWidthCm: parseFloat(frontNumber.outlineConvertedWidth) || 0,
-                hasOutline: parseFloat(frontNumber.outlineConvertedWidth) > 0
-            };
-        }
+function processFrontNumberData(frontNumber) {
+    return {
+        numberHeightCm: parseFloat(frontNumber.originalHeight) || 0,
+        numberWidthCm: parseFloat(frontNumber.width_px) || 0,
+        numberHeightInche: cmToInches(parseFloat(frontNumber.originalHeight) || 0),
+        numberColorHex: frontNumber.color || "#000000",
+        numberColorPantone: frontNumber.color_pantone || "N/A",
+        numberColorOutline: frontNumber.outline_color || "N/A",
+        numberColorOutlinePantone: frontNumber.outline_color_pantone || "N/A",
+        numberOutlineWidthCm: parseFloat(frontNumber.outlineConvertedWidth) || 0,
+        hasOutline: parseFloat(frontNumber.outlineConvertedWidth) > 0
+    };
+}
 
-        function processDesignColors(svgGroups) {
-            return svgGroups.reduce((acc, group) => {
-                acc[group.id || "unnamed"] = {
-                    elementName: group.name || "Unnamed Element",
-                    elementId: group.id || "N/A",
-                    colorHex: group.color || "#000000",
-                    colorPantone: group.pantone || "N/A"
-                };
-                return acc;
-            }, {});
-        }
+function processDesignColors(svgGroups) {
+    return svgGroups.reduce((acc, group) => {
+        acc[group.id || "unnamed"] = {
+            elementName: group.name || "Unnamed Element",
+            elementId: group.id || "N/A",
+            colorHex: group.color || "#000000",
+            colorPantone: group.pantone || "N/A"
+        };
+        return acc;
+    }, {});
+}
 
 
 
@@ -267,39 +270,39 @@ function filterColorsByPantone(colors, pantoneCodes) {
 // Handle number graphics upload
 function handleNumberImageUpload(file) {
     if (!file) return;
-    
+
     const reader = new FileReader();
-    
-    reader.onload = function(e) {
+
+    reader.onload = function (e) {
         // Update all number logos
         document.querySelectorAll('.number-logo').forEach(img => {
             img.src = e.target.result;
-           
+
         });
-        
+
         // Show measurement arrows for number containers
-       
+
     };
-    
+
     reader.readAsDataURL(file);
 }
 
 // Handle name graphics upload
 function handleNameImageUpload(file) {
     if (!file) return;
-    
+
     const reader = new FileReader();
-    
-    reader.onload = function(e) {
+
+    reader.onload = function (e) {
         // Update all name logos
         document.querySelectorAll('.name-logo').forEach(img => {
             img.src = e.target.result;
-            
+
         });
-        
-      
+
+
     };
-    
+
     reader.readAsDataURL(file);
 }
 
@@ -323,7 +326,7 @@ form.addEventListener('submit', async function (event) {
     const formData = new FormData(this);
     const numberImage = formData.get('numberGraphics');
     const nameImage = formData.get('nameGraphics');
-    
+
     // Handle number image
     if (numberImage && numberImage.size > 0) {
         if (!validateImageFile(numberImage)) {
@@ -332,7 +335,7 @@ form.addEventListener('submit', async function (event) {
         }
         handleNumberImageUpload(numberImage);
     }
-    
+
     // Handle name image
     if (nameImage && nameImage.size > 0) {
         if (!validateImageFile(nameImage)) {
@@ -450,14 +453,16 @@ function populateOrderDetails(orderData, jerseyData) {
     if (jerseyData) {
         console.log(jerseyData);
 
-        // Get unique colors (no duplicates)
+        // Get truly unique colors (no duplicates by either hex or name)
         const uniqueColors = [];
-        const seenColors = new Set();
+        const seenHex = new Set();
+        const seenNames = new Set();
 
         Object.values(jerseyData.designColors).forEach(design => {
-            const colorKey = `${design.colorHex}-${design.elementName}`;
-            if (!seenColors.has(colorKey)) {
-                seenColors.add(colorKey);
+            // Check if we've seen either this exact hex OR this color name before
+            if (!seenHex.has(design.colorHex) && !seenNames.has(design.elementName)) {
+                seenHex.add(design.colorHex);
+                seenNames.add(design.elementName);
                 uniqueColors.push(design);
             }
         });
@@ -465,7 +470,7 @@ function populateOrderDetails(orderData, jerseyData) {
         // Generate spans for unique colors only
         const colorSpans = uniqueColors.map(design => `<span class="color-sample" style="background-color: ${design.colorHex}; 
                 color: ${getContrastTextColor(design.colorHex)};
-               display: inline-block;
+               display: inline;
               ">  ${design.elementName}</span>`).join('');
 
 
@@ -479,7 +484,7 @@ function populateOrderDetails(orderData, jerseyData) {
             element.innerHTML = `COLOR: <span class="color-sample" 
         style="background-color: ${jerseyData.designColors.chevrons.colorHex}; 
                color: ${getContrastTextColor(jerseyData.designColors.chevrons.colorHex)};
-               display: inline-block;
+               display: inline;
               ">${jerseyData.designColors.chevrons.elementName}</span>`;
 
 
@@ -489,7 +494,7 @@ function populateOrderDetails(orderData, jerseyData) {
                             <br>COLOR: <span class="color-sample" 
         style="background-color: ${jerseyData.designColors.sleeves.colorHex}; 
                color: ${getContrastTextColor(jerseyData.designColors.sleeves.colorHex)};
-               display: inline-block;
+               display: inline;
               ">${jerseyData.designColors.sleeves.elementName}</span>`;
         }
         // If Front Number Not Exist Remove it
@@ -519,19 +524,21 @@ function populateOrderDetails(orderData, jerseyData) {
             document.getElementById('arrow-front-number').style.display = 'none';
         }
         // Get the specific logo colors
-        const hummelOutline = jerseyData.designColors['hummel-logo-outline'];
-        const hummelLogo = jerseyData.designColors['hummel-logo'];
-        document.querySelectorAll(".hummel-logo-color").forEach(element => {
-            element.innerHTML = `COLOR: <span class="color-sample" 
+        if ((jerseyData.designColors['hummel-logo-outline']) && (jerseyData.designColors['hummel-logo'])) {
+            const hummelOutline = jerseyData.designColors['hummel-logo-outline'];
+            const hummelLogo = jerseyData.designColors['hummel-logo'];
+            document.querySelectorAll(".hummel-logo-color").forEach(element => {
+                element.innerHTML = `COLOR: <span class="color-sample" 
         style="background-color: ${hummelLogo.colorHex}; 
                color: ${getContrastTextColor(hummelLogo.colorHex)};
-               display: inline-block;
+               display: inline;
               "> ${hummelLogo.elementName} </span><span class="color-sample" style="background-color: ${hummelOutline.colorHex}; color: ${getContrastTextColor(hummelOutline.colorHex)};
-               display: inline-block;
+               display: inline;
               ">${hummelOutline.elementName}</span>`;
 
 
-        });
+            });
+        }
         // LOGODATA
         document.querySelectorAll(".burlington-logo-size").forEach(element => {
             element.innerHTML = `SIZE: <span class="height"  >H-${jerseyData.logoInfo[0].logoHeightCm}CM</span> X <span class="width">W-${jerseyData.logoInfo[0].logoWidthCm}CM</span>`
@@ -574,7 +581,7 @@ function populateOrderDetails(orderData, jerseyData) {
         <span class="color-sample" 
               style="background-color: ${color.colorHex}; 
                      color: ${textColor};
-                     display: inline-block;">
+                     display: inline;">
           ${color.colorPantone}
         </span>
       `;
@@ -636,13 +643,13 @@ function populateOrderDetails(orderData, jerseyData) {
         <span class="color-sample" 
               style="background-color: ${jerseyData.playerNumberInfo.numberColorHex};
                      color: ${getContrastTextColor(jerseyData.playerNumberInfo.numberColorHex)};
-                     display: inline-block;">
+                     display: inline;">
             ${cleanAndFormatPantone(jerseyData.playerNumberInfo.numberColorPantone)}
         </span>
         <span class="color-sample" 
               style="background-color: ${jerseyData.playerNumberInfo.numberColorOutline};
                      color: ${getContrastTextColor(jerseyData.playerNumberInfo.numberColorOutline)};
-                     display: inline-block;">
+                     display: inline;">
             ${cleanAndFormatPantone(jerseyData.playerNumberInfo.numberColorOutlinePantone)}
         </span>`;
         });
@@ -675,23 +682,37 @@ function populateOrderDetails(orderData, jerseyData) {
       `;
             }).join(' ');
         }
-        // Get the container row (keeping first column)
-        const row = document.querySelector('.logo-row');
-        // Calculate column width based on number of logos (1 static + dynamic logos)
-        const totalLogos = 1 + jerseyData.logoInfo.length;
-        const colWidth = Math.floor(12 / totalLogos); // Bootstrap grid (12 columns)
-        // Update first (static HUMMEL) column width
-        const firstCol = row.querySelector('.col-md-4');
-        firstCol.className = `col col-md-${colWidth}`;
-        // Clear all columns except first
-        while (row.children.length > 1) {
-            row.removeChild(row.lastChild);
+
+        // Adjust styles for responsive layout
+        async function initializeLogoGrid() {
+            const row = document.querySelector('.logo-row');
+            const totalLogos = jerseyData.logoInfo.length;
+            let colWidth = 4;
+            totalLogos >= 3? colWidth = 4 : colWidth = Math.floor(12 / totalLogos);
+            console.log("Col-md-" + colWidth);
+            // Update first (static HUMMEL) column width
+            const firstCol = row.querySelector('.col-md-4');
+            firstCol.className = `col col-md-${colWidth}`;
+
+            // Clear all columns except first
+            while (row.children.length > 0) {
+                row.removeChild(row.lastChild);
+            }
+
+            // Process logos sequentially for better loading control
+            for (const logo of jerseyData.logoInfo) {
+                const col = await createLogoColumn(logo, colWidth);
+                row.appendChild(col);
+            }
+
+            addResponsiveStyles();
         }
 
-        // Add dynamic columns for each logo (skip first if you want to keep HUMMEL static)
-        jerseyData.logoInfo.forEach(logo => {
+        async function createLogoColumn(logo, colWidth) {
             const col = document.createElement('div');
             col.className = `col col-logo col-md-${colWidth}`;
+
+            // Create initial structure with placeholder
             col.innerHTML = `
               <div class="txt">
                 <p>"${logo.logoType.toUpperCase()}" LOGO</p>
@@ -701,7 +722,7 @@ function populateOrderDetails(orderData, jerseyData) {
                 <p id="color" class="logo-colors">COLOR: ${generateColorSamples(logo.logoColors)}</p>
               </div>
               <div class="image-container">
-                <img  src="${logo.logoImageUrl}" alt="${logo.logoType} Logo" class="logo">
+                <img src="" alt="${logo.logoType} Logo" class="logo loading">
                 <div class="double-arrow arrow-horizontal"></div>
                 <div class="arrow-label label-width">W</div>
                 <div class="double-arrow arrow-vertical"></div>
@@ -709,35 +730,101 @@ function populateOrderDetails(orderData, jerseyData) {
               </div>
             `;
 
-            row.appendChild(col);
-        });
-        // Adjust styles for responsive layout
-        document.head.insertAdjacentHTML('beforeend', `
-    <style>
-      .logo-row {
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0 -10px;        
-      }.row-1::-webkit-scrollbar {
-        height: 6px;
-      }.row-1::-webkit-scrollbar-track {
-        background: transparent;
-      }.row-1::-webkit-scrollbar-thumb {
-        background-color: #ddd;
-        border-radius: 3px;
-      }.col-logo {
-        min-width: 150px;
-        flex: 0 0 auto;
-        padding: 0 10px;
-      }.txt {    
-        margin-bottom: 10px;
-      } .arrow-vertical {
-        height: 100%;
-      }.label-height {
-        transform: translateY(-50%);
-      }
-    </style>
-  `);
+            const img = col.querySelector('.logo');
+
+            try {
+                // Set src based on file type
+                img.src = isPdfUrl(logo.logoImageUrl)
+                    ? await loadPDF(logo.logoImageUrl)
+                    : logo.logoImageUrl;
+
+                img.classList.remove('loading');
+            } catch (error) {
+                console.error("Error loading logo image:", error);
+                img.src = logo.logoImageUrl; // Fallback to original URL
+                img.classList.remove('loading');
+            }
+
+            return col;
+        }
+
+        function addResponsiveStyles() {
+            document.head.insertAdjacentHTML('beforeend', `
+                <style>
+                  .logo-row {
+                    display: flex;
+                    padding: 8px !important;
+                    margin-bottom: 12px;
+                    margin: 0 -10px;        
+                  }
+                  .row-1::-webkit-scrollbar {
+                    height: 6px;
+                  }
+                  .row-1::-webkit-scrollbar-track {
+                    background: transparent;
+                  }
+                  .row-1::-webkit-scrollbar-thumb {
+                    background-color: #ddd;
+                    border-radius: 3px;
+                  }
+                  .col-logo {
+                    
+                    flex: 0 0 auto;
+                    padding: 0 10px;
+                  }
+                 
+                  .arrow-vertical {
+                    height: 100%;
+                  }
+                  .label-height {
+                    transform: translateY(-50%);
+                  }
+                  .logo.loading {
+                    background: #f5f5f5;
+                    min-height: 100px;
+                  }
+                </style>
+            `);
+        }
+
+        // Your existing PDF functions
+        async function loadPDF(url) {
+            try {
+                const pdfBlob = await fetchPDF(url);
+                const pngData = await pdfToPNG(pdfBlob);
+                return pngData;
+            } catch (err) {
+                console.error("Failed to load PDF:", err);
+                throw err;
+            }
+        }
+
+        async function fetchPDF(url) {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Failed to fetch PDF");
+            return await response.blob();
+        }
+
+        async function pdfToPNG(pdfBlob, pageNum = 1) {
+            const pdf = await pdfjsLib.getDocument(URL.createObjectURL(pdfBlob)).promise;
+            const page = await pdf.getPage(pageNum);
+            const viewport = page.getViewport({ scale: 2.0 });
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({ canvasContext: ctx, viewport }).promise;
+            return canvas.toDataURL("image/png");
+        }
+
+        function isPdfUrl(url) {
+            return /\.pdf$/i.test(url);
+        }
+
+        // Initialize the grid
+        initializeLogoGrid().catch(console.error);
 
     }
 }

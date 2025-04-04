@@ -311,7 +311,7 @@ body {
 }
 
 .container .row .txt p {
-    font-size: 12px;
+    font-size: 10px;
 }
 
 #flag {
@@ -321,12 +321,10 @@ body {
 .container .row .image-container {
     position: relative;
     display: inline-block;
-    margin: 20px 20px 10px 20px;
+    margin: 10px;
 }
 
-.txt {
-    max-width: fit-content;
-}
+
 
 .container .row .image-container img {
     display: block;
@@ -453,6 +451,7 @@ body {
 
 .container .row .image-container .logo {
     height: 70px !important;
+    max-height: fit-content!important;
 }
 
 .container .row-3 .image-container .neck-tape {
@@ -473,9 +472,12 @@ body {
 
 /* Color samples for logos */
 .color-sample {
-    padding: 0px 4px;
-    border: 1px solid #000;
-    margin-right: -4px;
+    display: inline-block;
+    
+    font-size: 60%;
+    padding: 2px 2px;
+    border: 1px solid #393838; 
+    margin-right: 0px;
     vertical-align: middle;
 }
 
