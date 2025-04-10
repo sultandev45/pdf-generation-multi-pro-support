@@ -396,7 +396,7 @@ async function handleFetchOrder() {
         showContent();
     } catch (error) {
         console.error('Error:', error);
-        errorDiv.textContent = `❌ ${error.message}`;
+        errorDiv.textContent = ` ${error.message}`;
     }
 }
 
@@ -686,9 +686,19 @@ function populateOrderDetails(orderData, jerseyData) {
         // Adjust styles for responsive layout
         async function initializeLogoGrid() {
             const row = document.querySelector('.logo-row');
-            const totalLogos = jerseyData.logoInfo.length;
+            let totalLogos = jerseyData.logoInfo.length;
             let colWidth = 4;
             totalLogos >= 3? colWidth = 4 : colWidth = Math.floor(12 / totalLogos);
+            if (totalLogos >= 7) {
+                // Hide original content
+                document.getElementById('original-content').style.display = 'none';
+            
+                // Show third-page container
+                const thirdPage = document.querySelector('.addition-page');
+                thirdPage.style.display = 'block';
+            
+            }
+            
             console.log("Col-md-" + colWidth);
             // Update first (static HUMMEL) column width
             const firstCol = row.querySelector('.col-md-4');
@@ -770,7 +780,7 @@ function populateOrderDetails(orderData, jerseyData) {
                   .col-logo {
                     
                     flex: 0 0 auto;
-                    padding: 0 10px;
+                    
                   }
                  
                   .arrow-vertical {
@@ -912,6 +922,714 @@ function updateFabricDescription() {
             `<span class="text-muted">Not specified</span>`);
 }
 
+
+
+
+// ######### Make All content Editable ########
+// Global variables
+let editModeEnabled = false;
+let editHistory = [];
+let currentHistoryIndex = -1;
+
+document.getElementById('edit').addEventListener('click', function() {
+    // Toggle edit mode
+    editModeEnabled = !editModeEnabled;
+    
+    if (editModeEnabled) {
+        this.textContent = 'Disable Editing';
+        enableEditing();
+    } else {
+        this.textContent = 'Enable Editing';
+        disableEditing();
+    }
+});
+
+document.getElementById('undo').addEventListener('click', undoEdit);
+document.getElementById('redo').addEventListener('click', redoEdit);
+
+function enableEditing() {
+    // Make elements editable
+    document.querySelectorAll('p,strong,div, h1, h2, h3, h4, h5, h6, span,th,td').forEach(element => {
+        if (!element.closest('form') && !element.querySelector('img') && !element.classList.contains('color-sample')) {
+            element.addEventListener('dblclick', handleTextEdit);
+            element.style.cursor = 'pointer';
+            element.title = 'Double-click to edit';
+        }
+    });
+
+    // Make images editable
+    document.querySelectorAll('img').forEach(img => {
+        img.addEventListener('dblclick', handleImageEdit);
+        img.style.cursor = 'pointer';
+        img.title = 'Double-click to replace image';
+    });
+
+    // Make color samples editable
+    document.querySelectorAll('.color-sample').forEach(colorSample => {
+        colorSample.addEventListener('dblclick', handleColorEdit);
+        colorSample.style.cursor = 'pointer';
+        color.title = 'Double-click to edit color';
+    });
+}
+
+function disableEditing() {
+    // Remove all edit-related event listeners
+    document.querySelectorAll('p,strong,div, h1, h2, h3, h4, h5, h6, span,th,td').forEach(element => {
+        element.removeEventListener('dblclick', handleTextEdit);
+        element.style.cursor = '';
+        element.title = '';
+    });
+
+    document.querySelectorAll('img').forEach(img => {
+        img.removeEventListener('dblclick', handleImageEdit);
+        img.style.cursor = '';
+        img.title = '';
+    });
+
+    document.querySelectorAll('.color-sample').forEach(colorSample => {
+        colorSample.removeEventListener('dblclick', handleColorEdit);
+        colorSample.style.cursor = '';
+        color.title = '';
+    });
+}
+
+function handleTextEdit(e) {
+    e.stopPropagation();
+    const element = this;
+    
+    // Prevent multiple editors
+    if (element.getAttribute('data-editor-active') === 'true') return;
+    element.setAttribute('data-editor-active', 'true');
+
+    const originalHTML = element.innerHTML;
+  
+    // Create editor container
+    const editorContainer = document.createElement('div');
+    editorContainer.style.position = 'relative';
+    editorContainer.style.width = '100%';
+    editorContainer.style.minHeight = '200px';
+    editorContainer.style.border = '1px solid #ddd';
+    editorContainer.style.borderRadius = '4px';
+    editorContainer.style.overflow = 'hidden';
+    editorContainer.style.zIndex = '1000';
+    editorContainer.style.backgroundColor = '#fff';
+    
+    // Create toolbar with multiple rows
+    const toolbar = document.createElement('div');
+    toolbar.style.display = 'flex';
+    toolbar.style.flexDirection = 'column';
+    toolbar.style.gap = '4px';
+    toolbar.style.padding = '4px';
+    toolbar.style.backgroundColor = '#f5f5f5';
+    toolbar.style.borderBottom = '1px solid #ddd';
+    
+    // First toolbar row - basic formatting
+    const row1 = document.createElement('div');
+    row1.style.display = 'flex';
+    row1.style.gap = '4px';
+    row1.style.flexWrap = 'wrap';
+    
+    // Second toolbar row - advanced formatting
+    const row2 = document.createElement('div');
+    row2.style.display = 'flex';
+    row2.style.gap = '4px';
+    row2.style.flexWrap = 'wrap';
+    
+    // Third toolbar row - lists and alignment
+    const row3 = document.createElement('div');
+    row3.style.display = 'flex';
+    row3.style.gap = '4px';
+    row3.style.flexWrap = 'wrap';
+    
+    // Add toolbar rows to main toolbar
+    toolbar.appendChild(row1);
+    toolbar.appendChild(row2);
+    toolbar.appendChild(row3);
+    
+    // Helper function to create toolbar buttons
+    const createToolbarButton = (icon, command, value = null, title = '') => {
+        const btn = document.createElement('button');
+        btn.innerHTML = icon;
+        btn.style.padding = '6px 8px';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '4px';
+        btn.style.backgroundColor = '#fff';
+        btn.style.cursor = 'pointer';
+        btn.title = title;
+        
+        btn.addEventListener('click', () => {
+            document.execCommand(command, false, value);
+            designView.focus();
+        });
+        
+        return btn;
+    };
+    
+    // Helper function to create toolbar dropdowns
+    const createToolbarDropdown = (options, onChange) => {
+        const select = document.createElement('select');
+        select.style.padding = '4px';
+        select.style.borderRadius = '4px';
+        select.style.border = '1px solid #ccc';
+        select.style.backgroundColor = '#fff';
+        
+        options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.value;
+            opt.textContent = option.label;
+            select.appendChild(opt);
+        });
+        
+        select.addEventListener('change', () => {
+            onChange(select.value);
+            designView.focus();
+        });
+        
+        return select;
+    };
+    
+    // Basic formatting buttons (row 1)
+    row1.appendChild(createToolbarButton('<b>B</b>', 'bold', null, 'Bold (Ctrl+B)'));
+    row1.appendChild(createToolbarButton('<i>I</i>', 'italic', null, 'Italic (Ctrl+I)'));
+    row1.appendChild(createToolbarButton('<u>U</u>', 'underline', null, 'Underline (Ctrl+U)'));
+    row1.appendChild(createToolbarButton('<s>S</s>', 'strikeThrough', null, 'Strikethrough'));
+    row1.appendChild(createToolbarButton('H1', 'formatBlock', '<h1>', 'Heading 1'));
+    row1.appendChild(createToolbarButton('H2', 'formatBlock', '<h2>', 'Heading 2'));
+    row1.appendChild(createToolbarButton('H3', 'formatBlock', '<h3>', 'Heading 3'));
+    row1.appendChild(createToolbarButton('P', 'formatBlock', '<p>', 'Paragraph'));
+    
+    // Text color and background color (row 2)
+    const textColorBtn = createToolbarButton(
+        '<span style="color:#000;background:linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);padding:0 8px;">A</span>',
+        'foreColor', null, 'Text Color'
+    );
+    
+    const bgColorBtn = createToolbarButton(
+        '<span style="background:#000;color:#fff;padding:0 8px;">A</span>',
+        'hiliteColor', null, 'Background Color'
+    );
+    
+    row2.appendChild(textColorBtn);
+    row2.appendChild(bgColorBtn);
+    
+    // Font family dropdown (row 2)
+    const fontFamilySelect = createToolbarDropdown(
+        [
+            {value: '', label: 'Font'},
+            {value: 'Arial', label: 'Arial'},
+            {value: 'Verdana', label: 'Verdana'},
+            {value: 'Georgia', label: 'Georgia'},
+            {value: 'Courier New', label: 'Courier'},
+            {value: 'Times New Roman', label: 'Times'},
+            {value: 'Comic Sans MS', label: 'Comic Sans'}
+        ],
+        (value) => document.execCommand('fontName', false, value)
+    );
+    row2.appendChild(fontFamilySelect);
+    
+    // Font size dropdown (row 2)
+    const fontSizeSelect = createToolbarDropdown(
+        [
+            {value: '1', label: 'Size'},
+            {value: '1', label: 'Small'},
+            {value: '3', label: 'Normal'},
+            {value: '6', label: 'Large'},
+            {value: '7', label: 'Huge'}
+        ],
+        (value) => document.execCommand('fontSize', false, value)
+    );
+    row2.appendChild(fontSizeSelect);
+    
+    // Alignment buttons (row 3)
+    row3.appendChild(createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 3h18v2H3zm0 4h12v2H3zm0 4h18v2H3zm0 4h12v2H3z"/></svg>',
+        'justifyLeft', null, 'Align Left'
+    ));
+    row3.appendChild(createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 3h18v2H3zm4 4h10v2H7zm-4 4h18v2H3zm4 4h10v2H7z"/></svg>',
+        'justifyCenter', null, 'Align Center'
+    ));
+    row3.appendChild(createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 3h18v2H3zm6 4h12v2H9zm-6 4h18v2H3zm6 4h12v2H9z"/></svg>',
+        'justifyRight', null, 'Align Right'
+    ));
+    row3.appendChild(createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 3h18v2H3zm2 4h14v2H5zm-2 4h18v2H3zm2 4h14v2H5z"/></svg>',
+        'justifyFull', null, 'Justify'
+    ));
+    
+    // List buttons (row 3)
+    row3.appendChild(createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 12h18v2H3zm0-6h18v2H3zm0 12h18v2H3z"/></svg>',
+        'insertUnorderedList', null, 'Bullet List'
+    ));
+    row3.appendChild(createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 6h2v2H2zm4-2h16v2H6zm-4 6h2v2H2zm4-2h16v2H6zm-4 6h2v2H2zm4-2h16v2H6z"/></svg>',
+        'insertOrderedList', null, 'Numbered List'
+    ));
+    
+    // Link button (row 3)
+    const linkButton = createToolbarButton(
+        '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+        'createLink', null, 'Insert Link'
+    );
+    
+    linkButton.addEventListener('click', () => {
+        const url = prompt('Enter the URL:', 'https://');
+        if (url) {
+            document.execCommand('createLink', false, url);
+        }
+    });
+    row3.appendChild(linkButton);
+    
+    // Create tab buttons
+    const tabContainer = document.createElement('div');
+    tabContainer.style.display = 'flex';
+    tabContainer.style.backgroundColor = '#f5f5f5';
+    tabContainer.style.borderBottom = '1px solid #ddd';
+    
+    const designTab = document.createElement('button');
+    designTab.textContent = 'Design';
+    designTab.style.padding = '8px 16px';
+    designTab.style.border = 'none';
+    designTab.style.backgroundColor = '#fff';
+    designTab.style.cursor = 'pointer';
+    
+    const htmlTab = document.createElement('button');
+    htmlTab.textContent = 'HTML';
+    htmlTab.style.padding = '8px 16px';
+    htmlTab.style.border = 'none';
+    htmlTab.style.backgroundColor = 'transparent';
+    htmlTab.style.cursor = 'pointer';
+    
+    tabContainer.appendChild(designTab);
+    tabContainer.appendChild(htmlTab);
+    
+    // Create content area
+    const contentArea = document.createElement('div');
+    contentArea.style.padding = '10px';
+    contentArea.style.minHeight = '150px';
+    contentArea.style.backgroundColor = '#fff';
+    
+    // Create design view (contentEditable div)
+    const designView = document.createElement('div');
+    designView.contentEditable = true;
+    designView.style.minHeight = '150px';
+    designView.style.outline = 'none';
+    designView.style.fontFamily = 'Arial, sans-serif';
+    designView.style.fontSize = '14px';
+    designView.innerHTML = originalHTML;
+    
+    // Create HTML view (textarea)
+    const htmlView = document.createElement('textarea');
+    htmlView.style.width = '100%';
+    htmlView.style.minHeight = '150px';
+    htmlView.style.padding = '8px';
+    htmlView.style.border = '1px solid #ddd';
+    htmlView.style.borderRadius = '4px';
+    htmlView.style.fontFamily = 'monospace';
+    htmlView.value = originalHTML;
+    htmlView.style.display = 'none';
+    
+    contentArea.appendChild(designView);
+    contentArea.appendChild(htmlView);
+    
+    // Create button container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'flex-end';
+    buttonContainer.style.padding = '8px';
+    buttonContainer.style.backgroundColor = '#f5f5f5';
+    buttonContainer.style.borderTop = '1px solid #ddd';
+    
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.style.marginRight = '8px';
+    cancelButton.style.padding = '6px 12px';
+    cancelButton.style.backgroundColor = '#f0f0f0';
+    cancelButton.style.border = '1px solid #ccc';
+    cancelButton.style.borderRadius = '4px';
+    cancelButton.style.cursor = 'pointer';
+    
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Save';
+    saveButton.style.padding = '6px 12px';
+    saveButton.style.backgroundColor = '#4285f4';
+    saveButton.style.color = 'white';
+    saveButton.style.border = 'none';
+    saveButton.style.borderRadius = '4px';
+    saveButton.style.cursor = 'pointer';
+    
+    buttonContainer.appendChild(cancelButton);
+    buttonContainer.appendChild(saveButton);
+    
+    // Build editor container
+    editorContainer.appendChild(toolbar);
+    editorContainer.appendChild(tabContainer);
+    editorContainer.appendChild(contentArea);
+    editorContainer.appendChild(buttonContainer);
+    
+    // Replace element with editor
+    element.innerHTML = '';
+    element.appendChild(editorContainer);
+    designView.focus();
+    
+    // Tab switching functionality
+    let currentView = 'design';
+    
+    designTab.addEventListener('click', () => {
+        if (currentView === 'html') {
+            designView.innerHTML = htmlView.value;
+        }
+        designView.style.display = 'block';
+        htmlView.style.display = 'none';
+        designTab.style.backgroundColor = '#fff';
+        htmlTab.style.backgroundColor = 'transparent';
+        currentView = 'design';
+        designView.focus();
+    });
+    
+    htmlTab.addEventListener('click', () => {
+        if (currentView === 'design') {
+            htmlView.value = designView.innerHTML;
+        }
+        designView.style.display = 'none';
+        htmlView.style.display = 'block';
+        designTab.style.backgroundColor = 'transparent';
+        htmlTab.style.backgroundColor = '#fff';
+        currentView = 'html';
+        htmlView.focus();
+    });
+    
+    // Button functionality
+    cancelButton.addEventListener('click', () => {
+        element.innerHTML = originalHTML;
+        element.removeAttribute('data-editor-active');
+    });
+    
+    saveButton.addEventListener('click', () => {
+        const newContent = currentView === 'design' ? designView.innerHTML : htmlView.value;
+        addToHistory(element, originalHTML);
+        element.innerHTML = newContent;
+        element.removeAttribute('data-editor-active');
+    });
+    
+    // Save on Ctrl+Enter in HTML view
+    htmlView.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            saveButton.click();
+        }
+    });
+    
+    // Add keyboard shortcuts for common commands
+    designView.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch (e.key.toLowerCase()) {
+                case 'b':
+                    e.preventDefault();
+                    document.execCommand('bold', false, null);
+                    break;
+                case 'i':
+                    e.preventDefault();
+                    document.execCommand('italic', false, null);
+                    break;
+                case 'u':
+                    e.preventDefault();
+                    document.execCommand('underline', false, null);
+                    break;
+            }
+        }
+    });
+    
+    // Handle color pickers
+    textColorBtn.addEventListener('click', () => {
+        const color = prompt('Enter hex color (e.g., #ff0000):', '#000000');
+        if (color) {
+            document.execCommand('foreColor', false, color);
+            designView.focus();
+        }
+    });
+    
+    bgColorBtn.addEventListener('click', () => {
+        const color = prompt('Enter hex color (e.g., #ffff00):', '#ffffff');
+        if (color) {
+            document.execCommand('hiliteColor', false, color);
+            designView.focus();
+        }
+    });
+    
+    // Handle clicks outside the editor to save
+    const handleClickOutside = (event) => {
+        if (!editorContainer.contains(event.target)) {
+            saveButton.click();
+        }
+    };
+    
+    setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+    }, 0);
+    
+    // Clean up when editor closes
+    const cleanup = () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+    
+    cancelButton.addEventListener('click', cleanup);
+    saveButton.addEventListener('click', cleanup);
+}
+
+function handleImageEdit(e) {
+    e.stopPropagation();
+    const imgElement = this;
+    const originalSrc = imgElement.src;
+    
+    // Create history entry before making changes
+    addToHistory(imgElement, originalSrc);
+    
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    
+    input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imgElement.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    input.click();
+}
+
+function handleColorEdit(e) {
+    e.stopPropagation();
+    const colorSample = this;
+    const originalBgColor = colorSample.style.backgroundColor || '';
+    const originalText = colorSample.textContent;
+    const originalHTML = colorSample.innerHTML;
+
+    const editorContainer = document.createElement('div');
+    editorContainer.style.display = 'flex';
+    editorContainer.style.gap = '10px';
+    editorContainer.style.alignItems = 'center';
+    editorContainer.style.padding = '5px';
+    editorContainer.style.backgroundColor = '#f5f5f5';
+    editorContainer.style.borderRadius = '4px';
+    editorContainer.style.position = 'relative';
+
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    textInput.value = originalText;
+    textInput.style.flex = '1';
+    textInput.style.padding = '5px';
+    textInput.style.border = '1px solid #ccc';
+    textInput.style.borderRadius = '3px';
+    textInput.style.minWidth = '100px';
+
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.value = rgbToHex(originalBgColor) || '#ffffff';
+    colorInput.style.width = '40px';
+    colorInput.style.height = '30px';
+    colorInput.style.padding = '0';
+    colorInput.style.border = '1px solid #ccc';
+    colorInput.style.cursor = 'pointer';
+
+    const preview = document.createElement('div');
+    preview.style.width = '30px';
+    preview.style.height = '30px';
+    preview.style.border = '1px solid #ccc';
+    preview.style.borderRadius = '3px';
+    preview.style.backgroundColor = colorInput.value;
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.gap = '5px';
+    buttonContainer.style.position = 'absolute';
+    buttonContainer.style.right = '5px';
+    buttonContainer.style.top = '5px';
+
+    const saveButton = document.createElement('button');
+    saveButton.textContent = '✓';
+    saveButton.style.padding = '2px 6px';
+    saveButton.style.backgroundColor = '#4CAF50';
+    saveButton.style.color = 'white';
+    saveButton.style.border = 'none';
+    saveButton.style.borderRadius = '3px';
+    saveButton.style.cursor = 'pointer';
+    saveButton.style.fontSize = '12px';
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = '✕';
+    cancelButton.style.padding = '2px 6px';
+    cancelButton.style.backgroundColor = '#f44336';
+    cancelButton.style.color = 'white';
+    cancelButton.style.border = 'none';
+    cancelButton.style.borderRadius = '3px';
+    cancelButton.style.cursor = 'pointer';
+    cancelButton.style.fontSize = '12px';
+
+    buttonContainer.appendChild(saveButton);
+    buttonContainer.appendChild(cancelButton);
+
+    const updatePreview = () => {
+        preview.style.backgroundColor = colorInput.value;
+        colorSample.style.backgroundColor = colorInput.value;
+        colorSample.textContent = textInput.value;
+    };
+
+    textInput.addEventListener('input', updatePreview);
+    colorInput.addEventListener('input', updatePreview);
+
+    editorContainer.appendChild(textInput);
+    editorContainer.appendChild(colorInput);
+    editorContainer.appendChild(preview);
+    editorContainer.appendChild(buttonContainer);
+
+    const originalDisplay = colorSample.style.display;
+    colorSample.style.display = 'inline-block';
+    colorSample.innerHTML = '';
+    colorSample.appendChild(editorContainer);
+    textInput.focus();
+
+    const saveChanges = () => {
+        addToHistory(colorSample, originalHTML);
+        colorSample.innerHTML = textInput.value;
+        colorSample.style.backgroundColor = colorInput.value;
+        colorSample.style.display = originalDisplay;
+        removeOutsideClickListener();
+    };
+
+    const cancelChanges = () => {
+        colorSample.innerHTML = originalHTML;
+        colorSample.style.backgroundColor = originalBgColor;
+        colorSample.style.display = originalDisplay;
+        removeOutsideClickListener();
+    };
+
+    textInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            saveChanges();
+        } else if (e.key === 'Escape') {
+            cancelChanges();
+        }
+    });
+
+    saveButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        saveChanges();
+    });
+
+    cancelButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cancelChanges();
+    });
+
+    // === ✅ FIX: Prevent closing on clicks inside editor ===
+    let clickedInside = false;
+
+    const handleClickInside = () => {
+        clickedInside = true;
+        setTimeout(() => { clickedInside = false; }, 0);
+    };
+
+    const handleClickOutside = (event) => {
+        if (!clickedInside && !editorContainer.contains(event.target)) {
+            saveChanges();
+        }
+    };
+
+    editorContainer.addEventListener('mousedown', handleClickInside);
+    saveButton.addEventListener('mousedown', handleClickInside);
+    cancelButton.addEventListener('mousedown', handleClickInside);
+
+    const removeOutsideClickListener = () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+    };
+
+    setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+    }, 0);
+}
+
+
+
+// History management functions
+function addToHistory(element, previousContent) {
+    // Truncate history if we're not at the end
+    if (currentHistoryIndex < editHistory.length - 1) {
+        editHistory = editHistory.slice(0, currentHistoryIndex + 1);
+    }
+    
+    // Add new history entry
+    editHistory.push({
+        element: element,
+        content: previousContent,
+        type: element.tagName === 'IMG' ? 'image' : 'content'
+    });
+    
+    currentHistoryIndex = editHistory.length - 1;
+    updateUndoRedoButtons();
+}
+
+function undoEdit() {
+    if (currentHistoryIndex >= 0) {
+        const entry = editHistory[currentHistoryIndex];
+        
+        // Store current state for redo
+        const currentContent = entry.element.tagName === 'IMG' 
+            ? entry.element.src 
+            : entry.element.innerHTML;
+        
+        // Restore previous state
+        if (entry.type === 'image') {
+            entry.element.src = entry.content;
+        } else {
+            entry.element.innerHTML = entry.content;
+        }
+        
+        // Add to redo history
+        editHistory[currentHistoryIndex].content = currentContent;
+        
+        currentHistoryIndex--;
+        updateUndoRedoButtons();
+    }
+}
+
+function redoEdit() {
+    if (currentHistoryIndex < editHistory.length - 1) {
+        currentHistoryIndex++;
+        const entry = editHistory[currentHistoryIndex];
+        
+        if (entry.type === 'image') {
+            entry.element.src = entry.content;
+        } else {
+            entry.element.innerHTML = entry.content;
+        }
+        
+        updateUndoRedoButtons();
+    }
+}
+
+function updateUndoRedoButtons() {
+    document.getElementById('undo').disabled = currentHistoryIndex < 0;
+    document.getElementById('redo').disabled = currentHistoryIndex >= editHistory.length - 1;
+}
+
+// Helper function to convert RGB to HEX
+function rgbToHex(rgb) {
+    if (!rgb || rgb === 'transparent') return '#ffffff';
+    const match = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*\d+\.?\d*)?\)$/);
+    if (!match) return rgb.startsWith('#') ? rgb : '#ffffff';
+    return '#' + [match[1], match[2], match[3]].map(x => {
+        const hex = parseInt(x).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+}
 // Function to print the document
 function printDocument() {
     window.print();

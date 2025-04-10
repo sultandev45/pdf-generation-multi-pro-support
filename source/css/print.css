@@ -428,7 +428,7 @@
 
      .hummel-logo {
          top: 40px;
-         left: -14px;
+         left: -55px;
      }
 
      .chevrons-logo {
@@ -505,9 +505,9 @@
 
      .arrow-hummel {
          top: 76px;
-         left: 134px;
-         width: 100px;
-         transform: rotate(0deg);
+         left: 148px;
+         width: 88px;
+         transform: rotate(15deg);
      }
 
      .arrow-chevrons {
@@ -525,10 +525,10 @@
      }
 
      .arrow-burlington {
-         top: 98px;
-         right: 150px;
-         width: 90px;
-         transform: rotate(200deg);
+        top: 106px;
+        right: 116px;
+        width: 124px;
+        transform: rotate(200deg);
      }
 
      .arrow-front-number {
@@ -743,7 +743,7 @@
 
      .arrow-label {
          position: absolute;
-         font-size: 12px;
+         font-size: 10px;
          font-weight: bold;
          color: #000;
          background-color: rgb(255 255 255 / 62%);
@@ -757,9 +757,11 @@
 
      }
 
-     .container .row .image-container .logo:not([src*=".svg"])    {
+     .container .row .image-container .logo:not([src*=".svg"]) {
          max-height: fit-content !important;
-     }
+     }.addition-page .row .image-container .logo {
+        height: 220px !important;
+    }
 
      .container .row .image-container img alt:CHEVRONS {
          height: 200px;
@@ -785,7 +787,7 @@
 
      /* Color samples for logos */
      .color-sample {
-        display: inline-block;
+         display: inline-block;
          padding: 2px 4px;
          border: 1px solid #000;
          margin-right: -4px;
@@ -843,9 +845,9 @@
          /* Define the footer as a running element */
          text-align: center;
          font-size: 10px;
-         /* Reduced font size */
+
          padding: 4px;
-         /* Reduced padding */
+
          border-top: 1px solid #000;
      }
 
@@ -886,4 +888,5 @@
          box-sizing: border-box;
          /* Include padding in the element's dimensions */
      }
+
  }

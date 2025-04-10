@@ -1,5 +1,5 @@
 // Configuration
-const BEARER_TOKEN = "$2y$10$dPY8.xCTi2H9M.VrPXsLOugow7/.MfQMJv6HgsJ0brQg9Dx0kT0/O";
+const BEARER_TOKEN = "$2y$10$Tq4eYtrjmBHJ.58xf12E8.RSwwmYeBtidjB0PtYKF6mt6J4PzsfIu";
 const API_BASE_URL = "https://devapi.custimoo.com/api/vendor/order";
 
 // Reusable function to fetch order data
@@ -13,7 +13,8 @@ const dataProcess = async (orderNumber) => {
         });
 
         if (!response.ok) {
-            throw new Error('❌ Failed to fetch order details. Please check the order number.');
+            
+            throw new Error( `HTTP error! status: ${response.status} ❌ Please check the order number.`);
         }
 
         const data = await response.json();

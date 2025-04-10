@@ -31,9 +31,12 @@ body {
     margin: 0px 0px 0px 14%;
 }
 
-.image-container img {
+ .second-page .row-4 .image-container img {
     width: 100%;
-    max-width: 300px;
+   
+}.first-page  .image-container img {
+    width: 50%;
+   
 }
 
 .fabric-description {
@@ -119,12 +122,12 @@ body {
 /* Positioning labels and arrows */
 .neck-tape {
     left: 30px;
-    bottom: 280px;
+    top: -32px;
 }
 
 .neck-tape-1 {
     right: 20px;
-    bottom: 260px;
+    bottom: 300px;
 }
 
 
@@ -145,7 +148,7 @@ body {
 
 .burlington-logo {
     top: 80px;
-    right: -40px;
+    right: 0px;
 }
 
 .front-number {
@@ -209,7 +212,7 @@ body {
     top: 76px;
     left: 130px;
     width: 150px;
-    transform: rotate(0deg);
+    transform: rotate(12deg);
 }
 
 .arrow-chevrons {
@@ -230,7 +233,7 @@ body {
     top: 98px;
     right: 154px;
     width: 125px;
-    transform: rotate(200deg);
+    transform: rotate(186deg);
 }
 
 .arrow-front-number {
@@ -340,7 +343,7 @@ body {
 .arrow-horizontal {
     width: 100%;
     height: 2px;
-    top: -20px;
+    top: -10px;
     /* Position above the image */
     left: 0;
 }
@@ -441,25 +444,29 @@ body {
 
 .arrow-label {
     position: absolute;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     color: #000;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 2px 5px;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 .container .row .image-container .logo {
     height: 70px !important;
-    max-height: fit-content!important;
+   
 }
-
+.container .row .image-container .logo:not([src*=".svg"]){
+    max-height: fit-content!important;
+}.addition-page .row .image-container .logo {
+    height: 220px !important;
+}
 .container .row-3 .image-container .neck-tape {
     height: 16px;
 }
 
 .label-width {
-    top: -30px;
+    top: -18px;
     left: 50%;
     transform: translateX(-50%);
 }
