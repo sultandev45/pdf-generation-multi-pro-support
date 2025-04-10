@@ -1793,7 +1793,20 @@ function safePrint() {
             page-break-after: always;
             /* For printing */
         }
-
+@media print {
+  body, html {
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .no-break {
+    page-break-inside: avoid;
+  }
+  /* Hide non-printable elements */
+  .no-print {
+    display: none !important;
+  }
+}
 
         /* Footer styling - stays at bottom of each page */
         #footer {
@@ -1856,152 +1869,9 @@ function safePrint() {
             color: rgb(227, 45, 45);
         }
 
-        /* Form Container */
-        .form-container-wrapper {
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 1);
-            transition: all 0.8s ease;
-            z-index: 1000;
-        }
 
-        .form-container {
-            width: 100%;
-            max-width: 42rem;
-            padding: 2rem;
-            background: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        }
-
-        /* Form Effects */
-        .form-container-wrapper.hidden {
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
-        }
-
-        #form {
-            transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
-        }
-
-        /* Form Elements */
-        .form-control {
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 1rem 1.25rem;
-            font-size: 1rem;
-            margin-top: 6px;
-            transition: all 0.3s ease;
-            box-shadow: none;
-            height: calc(3.5rem + 2px);
-        }
-
-        .form-control:focus {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-
-        .form-control:invalid:not(:focus) {
-            border-color: #dc3545;
-        }
-
-        .form-control:valid:not(:focus) {
-            border-color: #198754;
-        }
-
-        /* Floating Labels */
-        .form-floating label {
-            color: #515151;
-            transition: all 0.2s ease;
-            padding: 0.5rem 1.25rem;
-        }
-
-        .form-floating>.form-control:focus~label,
-        .form-floating>.form-control:not(:placeholder-shown)~label {
-            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-            color: #030103;
-            background: white;
-            padding: 0 0.5rem;
-            height: auto;
-        }
-
-        /* Buttons */
-        .btn-primary {
-            background-color: #0d6efd;
-            border: none;
-            border-radius: 0.375rem;
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
-        }
-
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
-        }
-
-        .btn-primary:active {
-            background-color: #0a58ca;
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
-        }
-
-        .btn-primary:focus {
-            box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
-        }
-
-        /* Loading State */
-        .btn-primary.loading {
-            position: relative;
-            pointer-events: none;
-        }
-
-        .btn-primary.loading::after {
-            content: "";
-            position: absolute;
-            width: 1.25rem;
-            height: 1.25rem;
-            top: 50%;
-            left: 50%;
-            margin-left: -0.625rem;
-            margin-top: -0.625rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Validation */
-        .valid-feedback {
-            color: #198754;
-            font-size: 0.875rem;
-        }
-
-        .invalid-feedback {
-            color: #dc3545;
-            font-size: 0.875rem;
-        }
-
-        /* Content Transition */
-        #all-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
-        }
+       
     </style>
         </head>
         <body style="margin-top: 14px;">
