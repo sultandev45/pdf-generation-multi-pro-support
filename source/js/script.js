@@ -1794,10 +1794,7 @@ function safePrint() {
             /* For printing */
         }
 @media print {
-  body, html {
-    height: auto !important;
-    padding: 0 !important;
-  }
+  
   .no-break {
     page-break-inside: avoid;
   }
