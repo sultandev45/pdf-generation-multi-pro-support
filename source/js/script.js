@@ -387,7 +387,9 @@ async function handleFetchOrder() {
         // Process the data
         updateFabricDescription();
         // Call the function to update page numbers
-        updatePageNumbers();
+        setTimeout(() => {
+            updatePageNumbers();
+          }, 300); // 1000ms = 1 second delay
 
         // Hide form with fade-out effect
         hideForm();
@@ -426,22 +428,25 @@ function fetchImageUrls(orderData) {
 }
 
 // Function to populate order details in the UI
+function addheaderDetail(orderData){
+    // Update customer and company names
+    document.querySelectorAll('.customerName').forEach(element => {
+        element.innerHTML = orderData.customer_name || 'N/A';
+    });
+
+    document.querySelectorAll('#companyName').forEach(element => {
+        element.innerHTML = orderData.company_name || 'N/A';
+    });
+    document.querySelectorAll(".artnumber").forEach(element => {
+        element.innerHTML = `<strong class="pe-1" >Art#:</strong>${orderData.order_no}`
+    })
+}
 function populateOrderDetails(orderData, jerseyData) {
     if (orderData) {
         const imageUrls = fetchImageUrls(orderData);
         console.log('Image URLs:', imageUrls);
-
-        // Update customer and company names
-        document.querySelectorAll('.customerName').forEach(element => {
-            element.innerHTML = orderData.customer_name || 'N/A';
-        });
-
-        document.querySelectorAll('#companyName').forEach(element => {
-            element.innerHTML = orderData.company_name || 'N/A';
-        });
-        document.querySelectorAll(".artnumber").forEach(element => {
-            element.innerHTML = `<strong class="pe-1" >Art#:</strong>${orderData.order_no}`
-        })
+  setTimeout(addheaderDetail(orderData),300);
+        
         // Update image sources
         if (imageUrls[0]) {
             document.getElementById("imageFront").src = imageUrls[0];
@@ -477,9 +482,9 @@ function populateOrderDetails(orderData, jerseyData) {
 
 
         // Update all .color-display elements
-        document.querySelectorAll('.color-display').forEach(element => {
+       setTimeout( document.querySelectorAll('.color-display').forEach(element => {
             element.innerHTML = `<strong>Colors: </strong>${colorSpans}`;
-        });
+        }),300);
         document.querySelectorAll(".chervons-color").forEach(element => {
             element.innerHTML = `COLOR: <span class="color-sample" 
         style="background-color: ${jerseyData.designColors.chevrons.colorHex}; 
@@ -694,8 +699,125 @@ function populateOrderDetails(orderData, jerseyData) {
                 document.getElementById('original-content').style.display = 'none';
             
                 // Show third-page container
-                const thirdPage = document.querySelector('.addition-page');
-                thirdPage.style.display = 'block';
+                const addpage = document.querySelector('.addition-page');
+                addpage.style.display = 'block';
+                addpage.innerHTML=` 
+        <div id="container" class="container border-container my-4 w-75 page third-page addition-page">
+                 <div id="header" class="row header">
+                <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
+                    <div id="customerBox" class="border px-3 py-2 col-auto">
+                        <p id="customerText" class="font-weight-bold py-1 m-0">&nbsp;</p>
+                    </div>
+
+                    <div id="titleBox" class="border px-3 py-2 mx-2 flex-grow-1 text-center">
+                        <h1 id="title" class="h4 font-weight-bold m-0">Technical Drawing Sheet</h1>
+                    </div>
+
+                    <div id="companyBox" class="border px-3 py-2 col-auto">
+                        <h2 id="companyName" class="h4 font-weight-bold m-0 text-center"></h2>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div id="customerDetails" class="col-md-12 d-flex align-items-center p-2 w-100 flex-nowrap">
+                    <div id="customerNameBox" class="border py-2 px-2 flex-grow-1">
+                        <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName"></span></p>
+                    </div>
+                    <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
+                        <p style="margin-bottom: 0px;" class="artnumber m-0"><strong class="pe-1">Art #:</strong></p>
+                    </div>
+                    <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
+                        <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
+                            <p id="artName" class="m-0"><strong class="pe-1">Art Name:</strong> BURLINGTON SOCCER</p>
+                        </div>
+                        <div id="samplingBox" class="border py-2 px-2 w-100 flex-grow-1">
+                            <p id="sampling" class="m-0"><strong>Sampling:</strong> 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color & Page Info -->
+                <div id="colorSection"
+                    class="col-md-12 d-flex justify-content-between align-items-center p-2 flex-wrap">
+                    <div id="customerArtBox" class="border py-2 px-3 flex-grow-1">
+                        <p id="customerArt" class="m-0"><strong>Customer Art #:</strong> UNIFORM FALL 25</p>
+                    </div>
+                    <div id="colorBox" class="border py-2 px-3 mx-2 text-center">
+                        <p id="color" class="color-display m-0"><strong>Color: </strong>
+                            <span>PANTONE 1795 C</span> |
+                            <span>True Blue (Hummel Color)</span>
+                        </p>
+                    </div>
+                    <div id="pageBox" class="border py-2 px-3">
+                        <p id="pageNumber" class="m-0 page-number">Page: 1 of 3</p>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+
+                <div id="neck" style="margin-top: -10px;" class="row row-3">
+                    <div class="col col-12 d-flex flex-column align-items-center justify-content-center p-0">
+                        <div class="txt">
+                            <p class="text-center h2">NECK TAPE</p>
+                            <p id="color">COLOR: BLACK/WHITE</p>
+                            <p class="text-center">SIZE: <span class="height">H-1.1CM</span></p>
+                        </div>
+                        <div style="margin-top: -4px;" class="image-container">
+                            <img style="height: 12px;" src="./source/img/Neck Tape.svg" alt="Neck Tape"
+                                class="neck-tape">
+                            <div class="double-arrow arrow-vertical"></div>
+                            <div class="arrow-label label-height">H</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;" class="row row-4 d-flex justify-content-center">
+                    <!-- Instruction Label -->
+                    <div class="col col-6">
+                        <div class="txt">
+                            <h1 class="h3 text-danger"
+                                style="text-decoration: underline; margin-bottom: 4px !important;">
+                                Instruction Label
+                            </h1>
+                            <h2 class="h6 mb-4"><strong>Position: 8cm Above Hem At Left Side Seam</strong></h2>
+                        </div>
+                        <div class="image-container">
+                            <img style="height: 120px ;" src="./source/img/CareLabel.svg" alt="Care Label" class="logo">
+                            <div class="double-arrow bg-danger horizontal arrow-horizontal"></div>
+                            <div class="arrow-label label-width">2.5 cm</div>
+                            <div class="double-arrow bg-danger vertical arrow-vertical"></div>
+                            <div class="arrow-label label-height">4 cm</div>
+                        </div>
+                    </div>
+
+                    <!-- Size Label -->
+                    <div style="text-align: center;" class="col col-4">
+                        <div class="txt">
+                            <p style="text-align: center;">
+                                SUBLIMATED SIZE LABEL <br>
+                                INSIDE HALF MOON <br>
+                                COLOR: PANTONE COOL GRAY 7 C <br>
+                                POSITION: INSIDE C.B NECK LINE <br>
+                                SIZE: <span class="height">H=2.6CM</span> X <span class="width">W=3.5CM</span>
+                            </p>
+                        </div>
+                        <div class="image-container">
+                            <img src="./source/img/SizeLabel.svg" alt="Size Label" class="logo">
+                            <div class="double-arrow arrow-horizontal"></div>
+                            <div class="arrow-label label-width">W</div>
+                            <div class="double-arrow arrow-vertical"></div>
+                            <div class="arrow-label label-height">H</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer style="padding: 4px;" id="footer" class="container  ">
+                <p><strong>Designed By: <a
+                            style="font-size: 16px; font-weight: 600; color: rgb(53, 3, 12); text-decoration: none;"
+                            id="designedBy" href="https://sultandev45.github.io/portfolio/" target="_blank">Mubasher
+                            Sultan</a></strong></p>
+            </footer>
+            </div>`
             
             }
             
