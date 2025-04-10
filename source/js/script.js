@@ -1071,7 +1071,7 @@ document.getElementById('redo').addEventListener('click', redoEdit);
 
 function enableEditing() {
     // Make elements editable
-    document.querySelectorAll('p,strong,div, h1, h2, h3, h4, h5, h6, span,th,td').forEach(element => {
+    document.querySelectorAll('p,strong,div:not(#editpdf), h1, h2, h3, h4, h5, h6, span,th,td').forEach(element => {
         if (!element.closest('form') && !element.querySelector('img') && !element.classList.contains('color-sample')) {
             element.addEventListener('dblclick', handleTextEdit);
             element.style.cursor = 'pointer';
@@ -1128,7 +1128,7 @@ function handleTextEdit(e) {
     // Create editor container
     const editorContainer = document.createElement('div');
     editorContainer.style.position = 'relative';
-    editorContainer.style.width = '100%';
+    editorContainer.style.width = '300px';
     editorContainer.style.minHeight = '200px';
     editorContainer.style.border = '1px solid #ddd';
     editorContainer.style.borderRadius = '4px';
