@@ -1796,7 +1796,6 @@ function safePrint() {
 @media print {
   body, html {
     height: auto !important;
-    margin: 0 !important;
     padding: 0 !important;
   }
   .no-break {
