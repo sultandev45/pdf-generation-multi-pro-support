@@ -1887,6 +1887,7 @@ function safePrint() {
   // Usage: Call safePrint() instead of window.print()
 function printDocument() {
     if (!isPrintModified()) {
+        console.log(isPrintModified());
         console.warn("A browser extension is modifying window.print()");
         safePrint(); // Fallback to iframe method
       } else {
