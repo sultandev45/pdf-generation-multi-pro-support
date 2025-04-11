@@ -1076,7 +1076,7 @@ document.getElementById('redo').addEventListener('click', redoEdit);
 
 function enableEditing() {
     // Make elements editable
-    document.querySelectorAll('p,strong,div:not(#editpdf), h1, h2, h3, h4, h5, h6, span,th,td').forEach(element => {
+    document.querySelectorAll('p,strong,div:not(#editpdf), h1, h2, h3, h4, h5, h6, span:not(.color-sample),th,td').forEach(element => {
         if (!element.closest('form') && !element.querySelector('img') && !element.classList.contains('color-sample')) {
             element.addEventListener('dblclick', handleTextEdit);
             element.style.cursor = 'pointer';
@@ -1091,12 +1091,12 @@ function enableEditing() {
         img.title = 'Double-click to replace image';
     });
 
-    // Make color samples editable
-    // document.querySelectorAll('.color-sample').forEach(colorSample => {
-    //     colorSample.addEventListener('dblclick', handleColorEdit);
-    //     colorSample.style.cursor = 'pointer';
-    //     color.title = 'Double-click to edit color';
-    // });
+   // Make color samples editable
+    document.querySelectorAll('.color-sample').forEach(colorSample => {
+        colorSample.addEventListener('dblclick', handleColorEdit);
+        colorSample.style.cursor = 'pointer';
+        color.title = 'Double-click to edit color';
+    });
 }
 
 function disableEditing() {
@@ -1531,157 +1531,103 @@ function handleImageEdit(e) {
     
     input.click();
 }
+function handleColorEdit(e) {
+    e.stopPropagation();
 
-// function handleColorEdit(e) {
-//     e.stopPropagation();
-//     const colorSample = this;
-//     const originalBgColor = colorSample.style.backgroundColor || '';
-//     const originalText = colorSample.textContent;
-//     const originalHTML = colorSample.innerHTML;
+    const colorSample = this;
+    const originalText = colorSample.textContent.trim();
+    const originalBg = window.getComputedStyle(colorSample).backgroundColor;
+    const rect = colorSample.getBoundingClientRect();
 
-//     const editorContainer = document.createElement('div');
-//     editorContainer.style.display = 'flex';
-//     editorContainer.style.gap = '10px';
-//     editorContainer.style.alignItems = 'center';
-//     editorContainer.style.padding = '5px';
-//     editorContainer.style.backgroundColor = '#f5f5f5';
-//     editorContainer.style.borderRadius = '4px';
-//     editorContainer.style.position = 'relative';
+    // Remove any existing editor
+    const existing = document.querySelector('#floating-color-editor');
+    if (existing) existing.remove();
 
-//     const textInput = document.createElement('input');
-//     textInput.type = 'text';
-//     textInput.value = originalText;
-//     textInput.style.flex = '1';
-//     textInput.style.padding = '5px';
-//     textInput.style.border = '1px solid #ccc';
-//     textInput.style.borderRadius = '3px';
-//     textInput.style.minWidth = '100px';
+    // Create floating editor
+    const editor = document.createElement('div');
+    editor.id = 'floating-color-editor';
+    editor.style.position = 'absolute';
+    editor.style.left = `${rect.left + window.scrollX}px`;
+    editor.style.top = `${rect.bottom + window.scrollY + 4}px`;
+    editor.style.zIndex = 1000;
+    editor.style.background = '#fff';
+    editor.style.border = '1px solid #ccc';
+    editor.style.borderRadius = '5px';
+    editor.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+    editor.style.padding = '10px';
+    editor.style.display = 'flex';
+    editor.style.gap = '10px';
+    editor.style.alignItems = 'center';
 
-//     const colorInput = document.createElement('input');
-//     colorInput.type = 'color';
-//     colorInput.value = rgbToHex(originalBgColor) || '#ffffff';
-//     colorInput.style.width = '40px';
-//     colorInput.style.height = '30px';
-//     colorInput.style.padding = '0';
-//     colorInput.style.border = '1px solid #ccc';
-//     colorInput.style.cursor = 'pointer';
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    textInput.value = originalText;
+    textInput.style.padding = '5px';
 
-//     const preview = document.createElement('div');
-//     preview.style.width = '30px';
-//     preview.style.height = '30px';
-//     preview.style.border = '1px solid #ccc';
-//     preview.style.borderRadius = '3px';
-//     preview.style.backgroundColor = colorInput.value;
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.value = rgbToHex(originalBg);
+    colorInput.style.width = '40px';
+    colorInput.style.height = '30px';
 
-//     const buttonContainer = document.createElement('div');
-//     buttonContainer.style.display = 'flex';
-//     buttonContainer.style.gap = '5px';
-//     buttonContainer.style.position = 'absolute';
-//     buttonContainer.style.right = '5px';
-//     buttonContainer.style.top = '5px';
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = '✓';
+    saveBtn.style.background = '#4CAF50';
+    saveBtn.style.color = '#fff';
+    saveBtn.style.border = 'none';
+    saveBtn.style.borderRadius = '3px';
+    saveBtn.style.padding = '5px 8px';
+    saveBtn.style.cursor = 'pointer';
 
-//     const saveButton = document.createElement('button');
-//     saveButton.textContent = '✓';
-//     saveButton.style.padding = '2px 6px';
-//     saveButton.style.backgroundColor = '#4CAF50';
-//     saveButton.style.color = 'white';
-//     saveButton.style.border = 'none';
-//     saveButton.style.borderRadius = '3px';
-//     saveButton.style.cursor = 'pointer';
-//     saveButton.style.fontSize = '12px';
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = '✕';
+    cancelBtn.style.background = '#f44336';
+    cancelBtn.style.color = '#fff';
+    cancelBtn.style.border = 'none';
+    cancelBtn.style.borderRadius = '3px';
+    cancelBtn.style.padding = '5px 8px';
+    cancelBtn.style.cursor = 'pointer';
 
-//     const cancelButton = document.createElement('button');
-//     cancelButton.textContent = '✕';
-//     cancelButton.style.padding = '2px 6px';
-//     cancelButton.style.backgroundColor = '#f44336';
-//     cancelButton.style.color = 'white';
-//     cancelButton.style.border = 'none';
-//     cancelButton.style.borderRadius = '3px';
-//     cancelButton.style.cursor = 'pointer';
-//     cancelButton.style.fontSize = '12px';
+    editor.append(textInput, colorInput, saveBtn, cancelBtn);
+    document.body.appendChild(editor);
 
-//     buttonContainer.appendChild(saveButton);
-//     buttonContainer.appendChild(cancelButton);
+    // Keep the original values
+    const originalHTML = colorSample.innerHTML;
+    const originalBgColor = colorSample.style.backgroundColor;
 
-//     const updatePreview = () => {
-//         preview.style.backgroundColor = colorInput.value;
-//         colorSample.style.backgroundColor = colorInput.value;
-//         colorSample.textContent = textInput.value;
-//     };
+    // Events
+    saveBtn.onclick = () => {
+        colorSample.textContent = textInput.value;
+        colorSample.style.backgroundColor = colorInput.value;
+        editor.remove();
+    };
 
-//     textInput.addEventListener('input', updatePreview);
-//     colorInput.addEventListener('input', updatePreview);
+    cancelBtn.onclick = () => {
+        editor.remove();
+    };
 
-//     editorContainer.appendChild(textInput);
-//     editorContainer.appendChild(colorInput);
-//     editorContainer.appendChild(preview);
-//     editorContainer.appendChild(buttonContainer);
+    textInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveBtn.click();
+        if (e.key === 'Escape') cancelBtn.click();
+    });
 
-//     const originalDisplay = colorSample.style.display;
-//     colorSample.style.display = 'inline-block';
-//     colorSample.innerHTML = '';
-//     colorSample.appendChild(editorContainer);
-//     textInput.focus();
+    // Prevent click outside from killing it instantly
+    setTimeout(() => {
+        document.addEventListener('mousedown', onClickOutside);
+    }, 0);
 
-//     const saveChanges = () => {
-//         addToHistory(colorSample, originalHTML);
-//         colorSample.innerHTML = textInput.value;
-//         colorSample.style.backgroundColor = colorInput.value;
-//         colorSample.style.display = originalDisplay;
-//         removeOutsideClickListener();
-//     };
+    function onClickOutside(e) {
+        if (!editor.contains(e.target) && e.target !== colorSample) {
+            document.removeEventListener('mousedown', onClickOutside);
+            editor.remove();
+        }
+    }
 
-//     const cancelChanges = () => {
-//         colorSample.innerHTML = originalHTML;
-//         colorSample.style.backgroundColor = originalBgColor;
-//         colorSample.style.display = originalDisplay;
-//         removeOutsideClickListener();
-//     };
+    textInput.focus();
+}
 
-//     textInput.addEventListener('keydown', function (e) {
-//         if (e.key === 'Enter') {
-//             saveChanges();
-//         } else if (e.key === 'Escape') {
-//             cancelChanges();
-//         }
-//     });
 
-//     saveButton.addEventListener('click', (e) => {
-//         e.stopPropagation();
-//         saveChanges();
-//     });
 
-//     cancelButton.addEventListener('click', (e) => {
-//         e.stopPropagation();
-//         cancelChanges();
-//     });
-
-//     // === ✅ FIX: Prevent closing on clicks inside editor ===
-//     let clickedInside = false;
-
-//     const handleClickInside = () => {
-//         clickedInside = true;
-//         setTimeout(() => { clickedInside = false; }, 0);
-//     };
-
-//     const handleClickOutside = (event) => {
-//         if (!clickedInside && !editorContainer.contains(event.target)) {
-//             saveChanges();
-//         }
-//     };
-
-//     editorContainer.addEventListener('mousedown', handleClickInside);
-//     saveButton.addEventListener('mousedown', handleClickInside);
-//     cancelButton.addEventListener('mousedown', handleClickInside);
-
-//     const removeOutsideClickListener = () => {
-//         document.removeEventListener('mousedown', handleClickOutside);
-//     };
-
-//     setTimeout(() => {
-//         document.addEventListener('mousedown', handleClickOutside);
-//     }, 0);
-// }
 
 
 
