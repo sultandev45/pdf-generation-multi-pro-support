@@ -1092,11 +1092,11 @@ function enableEditing() {
     });
 
     // Make color samples editable
-    document.querySelectorAll('.color-sample').forEach(colorSample => {
-        colorSample.addEventListener('dblclick', handleColorEdit);
-        colorSample.style.cursor = 'pointer';
-        color.title = 'Double-click to edit color';
-    });
+    // document.querySelectorAll('.color-sample').forEach(colorSample => {
+    //     colorSample.addEventListener('dblclick', handleColorEdit);
+    //     colorSample.style.cursor = 'pointer';
+    //     color.title = 'Double-click to edit color';
+    // });
 }
 
 function disableEditing() {
@@ -1532,156 +1532,156 @@ function handleImageEdit(e) {
     input.click();
 }
 
-function handleColorEdit(e) {
-    e.stopPropagation();
-    const colorSample = this;
-    const originalBgColor = colorSample.style.backgroundColor || '';
-    const originalText = colorSample.textContent;
-    const originalHTML = colorSample.innerHTML;
+// function handleColorEdit(e) {
+//     e.stopPropagation();
+//     const colorSample = this;
+//     const originalBgColor = colorSample.style.backgroundColor || '';
+//     const originalText = colorSample.textContent;
+//     const originalHTML = colorSample.innerHTML;
 
-    const editorContainer = document.createElement('div');
-    editorContainer.style.display = 'flex';
-    editorContainer.style.gap = '10px';
-    editorContainer.style.alignItems = 'center';
-    editorContainer.style.padding = '5px';
-    editorContainer.style.backgroundColor = '#f5f5f5';
-    editorContainer.style.borderRadius = '4px';
-    editorContainer.style.position = 'relative';
+//     const editorContainer = document.createElement('div');
+//     editorContainer.style.display = 'flex';
+//     editorContainer.style.gap = '10px';
+//     editorContainer.style.alignItems = 'center';
+//     editorContainer.style.padding = '5px';
+//     editorContainer.style.backgroundColor = '#f5f5f5';
+//     editorContainer.style.borderRadius = '4px';
+//     editorContainer.style.position = 'relative';
 
-    const textInput = document.createElement('input');
-    textInput.type = 'text';
-    textInput.value = originalText;
-    textInput.style.flex = '1';
-    textInput.style.padding = '5px';
-    textInput.style.border = '1px solid #ccc';
-    textInput.style.borderRadius = '3px';
-    textInput.style.minWidth = '100px';
+//     const textInput = document.createElement('input');
+//     textInput.type = 'text';
+//     textInput.value = originalText;
+//     textInput.style.flex = '1';
+//     textInput.style.padding = '5px';
+//     textInput.style.border = '1px solid #ccc';
+//     textInput.style.borderRadius = '3px';
+//     textInput.style.minWidth = '100px';
 
-    const colorInput = document.createElement('input');
-    colorInput.type = 'color';
-    colorInput.value = rgbToHex(originalBgColor) || '#ffffff';
-    colorInput.style.width = '40px';
-    colorInput.style.height = '30px';
-    colorInput.style.padding = '0';
-    colorInput.style.border = '1px solid #ccc';
-    colorInput.style.cursor = 'pointer';
+//     const colorInput = document.createElement('input');
+//     colorInput.type = 'color';
+//     colorInput.value = rgbToHex(originalBgColor) || '#ffffff';
+//     colorInput.style.width = '40px';
+//     colorInput.style.height = '30px';
+//     colorInput.style.padding = '0';
+//     colorInput.style.border = '1px solid #ccc';
+//     colorInput.style.cursor = 'pointer';
 
-    const preview = document.createElement('div');
-    preview.style.width = '30px';
-    preview.style.height = '30px';
-    preview.style.border = '1px solid #ccc';
-    preview.style.borderRadius = '3px';
-    preview.style.backgroundColor = colorInput.value;
+//     const preview = document.createElement('div');
+//     preview.style.width = '30px';
+//     preview.style.height = '30px';
+//     preview.style.border = '1px solid #ccc';
+//     preview.style.borderRadius = '3px';
+//     preview.style.backgroundColor = colorInput.value;
 
-    const buttonContainer = document.createElement('div');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.gap = '5px';
-    buttonContainer.style.position = 'absolute';
-    buttonContainer.style.right = '5px';
-    buttonContainer.style.top = '5px';
+//     const buttonContainer = document.createElement('div');
+//     buttonContainer.style.display = 'flex';
+//     buttonContainer.style.gap = '5px';
+//     buttonContainer.style.position = 'absolute';
+//     buttonContainer.style.right = '5px';
+//     buttonContainer.style.top = '5px';
 
-    const saveButton = document.createElement('button');
-    saveButton.textContent = '✓';
-    saveButton.style.padding = '2px 6px';
-    saveButton.style.backgroundColor = '#4CAF50';
-    saveButton.style.color = 'white';
-    saveButton.style.border = 'none';
-    saveButton.style.borderRadius = '3px';
-    saveButton.style.cursor = 'pointer';
-    saveButton.style.fontSize = '12px';
+//     const saveButton = document.createElement('button');
+//     saveButton.textContent = '✓';
+//     saveButton.style.padding = '2px 6px';
+//     saveButton.style.backgroundColor = '#4CAF50';
+//     saveButton.style.color = 'white';
+//     saveButton.style.border = 'none';
+//     saveButton.style.borderRadius = '3px';
+//     saveButton.style.cursor = 'pointer';
+//     saveButton.style.fontSize = '12px';
 
-    const cancelButton = document.createElement('button');
-    cancelButton.textContent = '✕';
-    cancelButton.style.padding = '2px 6px';
-    cancelButton.style.backgroundColor = '#f44336';
-    cancelButton.style.color = 'white';
-    cancelButton.style.border = 'none';
-    cancelButton.style.borderRadius = '3px';
-    cancelButton.style.cursor = 'pointer';
-    cancelButton.style.fontSize = '12px';
+//     const cancelButton = document.createElement('button');
+//     cancelButton.textContent = '✕';
+//     cancelButton.style.padding = '2px 6px';
+//     cancelButton.style.backgroundColor = '#f44336';
+//     cancelButton.style.color = 'white';
+//     cancelButton.style.border = 'none';
+//     cancelButton.style.borderRadius = '3px';
+//     cancelButton.style.cursor = 'pointer';
+//     cancelButton.style.fontSize = '12px';
 
-    buttonContainer.appendChild(saveButton);
-    buttonContainer.appendChild(cancelButton);
+//     buttonContainer.appendChild(saveButton);
+//     buttonContainer.appendChild(cancelButton);
 
-    const updatePreview = () => {
-        preview.style.backgroundColor = colorInput.value;
-        colorSample.style.backgroundColor = colorInput.value;
-        colorSample.textContent = textInput.value;
-    };
+//     const updatePreview = () => {
+//         preview.style.backgroundColor = colorInput.value;
+//         colorSample.style.backgroundColor = colorInput.value;
+//         colorSample.textContent = textInput.value;
+//     };
 
-    textInput.addEventListener('input', updatePreview);
-    colorInput.addEventListener('input', updatePreview);
+//     textInput.addEventListener('input', updatePreview);
+//     colorInput.addEventListener('input', updatePreview);
 
-    editorContainer.appendChild(textInput);
-    editorContainer.appendChild(colorInput);
-    editorContainer.appendChild(preview);
-    editorContainer.appendChild(buttonContainer);
+//     editorContainer.appendChild(textInput);
+//     editorContainer.appendChild(colorInput);
+//     editorContainer.appendChild(preview);
+//     editorContainer.appendChild(buttonContainer);
 
-    const originalDisplay = colorSample.style.display;
-    colorSample.style.display = 'inline-block';
-    colorSample.innerHTML = '';
-    colorSample.appendChild(editorContainer);
-    textInput.focus();
+//     const originalDisplay = colorSample.style.display;
+//     colorSample.style.display = 'inline-block';
+//     colorSample.innerHTML = '';
+//     colorSample.appendChild(editorContainer);
+//     textInput.focus();
 
-    const saveChanges = () => {
-        addToHistory(colorSample, originalHTML);
-        colorSample.innerHTML = textInput.value;
-        colorSample.style.backgroundColor = colorInput.value;
-        colorSample.style.display = originalDisplay;
-        removeOutsideClickListener();
-    };
+//     const saveChanges = () => {
+//         addToHistory(colorSample, originalHTML);
+//         colorSample.innerHTML = textInput.value;
+//         colorSample.style.backgroundColor = colorInput.value;
+//         colorSample.style.display = originalDisplay;
+//         removeOutsideClickListener();
+//     };
 
-    const cancelChanges = () => {
-        colorSample.innerHTML = originalHTML;
-        colorSample.style.backgroundColor = originalBgColor;
-        colorSample.style.display = originalDisplay;
-        removeOutsideClickListener();
-    };
+//     const cancelChanges = () => {
+//         colorSample.innerHTML = originalHTML;
+//         colorSample.style.backgroundColor = originalBgColor;
+//         colorSample.style.display = originalDisplay;
+//         removeOutsideClickListener();
+//     };
 
-    textInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            saveChanges();
-        } else if (e.key === 'Escape') {
-            cancelChanges();
-        }
-    });
+//     textInput.addEventListener('keydown', function (e) {
+//         if (e.key === 'Enter') {
+//             saveChanges();
+//         } else if (e.key === 'Escape') {
+//             cancelChanges();
+//         }
+//     });
 
-    saveButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        saveChanges();
-    });
+//     saveButton.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//         saveChanges();
+//     });
 
-    cancelButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        cancelChanges();
-    });
+//     cancelButton.addEventListener('click', (e) => {
+//         e.stopPropagation();
+//         cancelChanges();
+//     });
 
-    // === ✅ FIX: Prevent closing on clicks inside editor ===
-    let clickedInside = false;
+//     // === ✅ FIX: Prevent closing on clicks inside editor ===
+//     let clickedInside = false;
 
-    const handleClickInside = () => {
-        clickedInside = true;
-        setTimeout(() => { clickedInside = false; }, 0);
-    };
+//     const handleClickInside = () => {
+//         clickedInside = true;
+//         setTimeout(() => { clickedInside = false; }, 0);
+//     };
 
-    const handleClickOutside = (event) => {
-        if (!clickedInside && !editorContainer.contains(event.target)) {
-            saveChanges();
-        }
-    };
+//     const handleClickOutside = (event) => {
+//         if (!clickedInside && !editorContainer.contains(event.target)) {
+//             saveChanges();
+//         }
+//     };
 
-    editorContainer.addEventListener('mousedown', handleClickInside);
-    saveButton.addEventListener('mousedown', handleClickInside);
-    cancelButton.addEventListener('mousedown', handleClickInside);
+//     editorContainer.addEventListener('mousedown', handleClickInside);
+//     saveButton.addEventListener('mousedown', handleClickInside);
+//     cancelButton.addEventListener('mousedown', handleClickInside);
 
-    const removeOutsideClickListener = () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-    };
+//     const removeOutsideClickListener = () => {
+//         document.removeEventListener('mousedown', handleClickOutside);
+//     };
 
-    setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-    }, 0);
-}
+//     setTimeout(() => {
+//         document.addEventListener('mousedown', handleClickOutside);
+//     }, 0);
+// }
 
 
 
@@ -1886,11 +1886,11 @@ function safePrint() {
   
   // Usage: Call safePrint() instead of window.print()
 function printDocument() {
-    if (!isPrintModified()) {
-        console.log(isPrintModified());
+    if (isPrintModified()) {
+      //  console.log(isPrintModified());
         console.warn("A browser extension is modifying window.print()");
         safePrint(); // Fallback to iframe method
-      } else {
+      } else {// console.log(isPrintModified());
         window.print();
       }
 }
