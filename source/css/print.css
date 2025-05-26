@@ -787,7 +787,7 @@
 
      /* Color samples for logos */
      .color-sample {
-         display: inline-block;
+         display: inline;
          padding: 2px 4px;
          border: 1px solid #000;
          margin-right: -4px;

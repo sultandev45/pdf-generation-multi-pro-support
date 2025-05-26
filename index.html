@@ -49,48 +49,48 @@
 
         #editpdf {
             margin: 10px auto;
-    max-width: 50%;
-  
-    padding: 10px 0px;
-   
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-   
-}
+            max-width: 50%;
 
-#editpdf button {
-    padding: 10px 20px;
-    font-size: 15px;
-    font-weight: 500;
-    border: none;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    min-width: 100px;
-}
+            padding: 10px 0px;
 
-#editpdf .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-}
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
-#editpdf .btn-primary:hover {
-    background-color: #0069d9;
-}
+        }
 
-#editpdf .btn-secondary {
-    background-color: #6c757d;
-    color: #fff;
-}
+        #editpdf button {
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 100px;
+        }
 
-#editpdf .btn-secondary:disabled {
-    background-color: #c2c6ca;
-    cursor: not-allowed;
-}
+        #editpdf .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
 
-#editpdf .btn-secondary:hover:enabled {
-    background-color: #5a6268;
-}
+        #editpdf .btn-primary:hover {
+            background-color: #0069d9;
+        }
+
+        #editpdf .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        #editpdf .btn-secondary:disabled {
+            background-color: #c2c6ca;
+            cursor: not-allowed;
+        }
+
+        #editpdf .btn-secondary:hover:enabled {
+            background-color: #5a6268;
+        }
 
 
         .third-page .table table {
@@ -394,17 +394,19 @@
             </form>
         </div>
     </div>
-
-    <!-- Main Content Container -->
-    <div id="all-content">
-        <div class="no-print d-flex justify-content-end align-items-center" id="editpdf">
+    <div style="display: none;" id="editControl" class="no-print">
+        <div class="d-flex justify-content-end align-items-center" id="editpdf">
             <button class="btn btn-primary " style="margin: auto;" id="edit">Enable Editing</button>
 
             <button id="undo" style="margin: auto;" class="btn btn-secondary" disabled>Undo</button>
             <button id="redo" style="margin: auto;" class="btn btn-secondary" disabled>Redo</button>
         </div>
+    </div>
+    <!-- Main Content Container -->
+    <div id="all-content">
+        
         <!-- Page 1: Technical Drawing -->
-        <div  id="container" class="container border-container w-75 page first-page">
+        <div id="container" class="container border-container w-75 page first-page">
             <!-- Header Section -->
             <div id="header" class="row header">
                 <div id="headerRow" class="col-md-12 d-flex justify-content-between align-items-center p-2">
@@ -909,9 +911,10 @@
             </footer>
         </div>
 
+
         <!-- This is hidden by default and shown when totalLogos >= 7 -->
-         <div class="addition-page" style="display: none;"></div>
-         
+        <div class="addition-page" style="display: none;"></div>
+
         <!-- Page 4: Size Chart -->
         <div id="container" class="container border-container my-4 w-75 page third-page">
             <!-- Header Section (similar to page 1) -->
@@ -1302,26 +1305,30 @@
             </footer>
         </div>
 
-        <!-- Print Button -->
-        <div id="printButtonContainer" class="text-center mt-4 no-print">
-            <button id="printButton" onclick="printDocument()" class="btn btn-primary">Print</button>
-        </div>
+       
+
     </div>
+    <div style="display: none;" id="printBtnWrapper" class="no-print"> <!-- Print Button -->
+        <div id="printButtonContainer" class="text-center mt-4 ">
+            <button id="printButton" onclick="printDocument()" class="btn btn-primary">Print</button>
+        </div></div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Load PDF.js from CDN -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-    
-    <!-- Set the worker path -->
-    <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
-    </script>
     <!-- Custom JS -->
-    <script src="./source/js/data-page.js"></script>
+    <!-- <script src="./source/js/data-page.js"></script> -->
+    <script src="./source/js/filedata.js"></script>
+    <script src="./source/js/logo.js"></script>
+   
+    <script src="./source/js/editable.js"></script>
+    <script src="./source/js/UtilityFunctions.js"></script>
+    <script src="./source/js/formhandling.js"></script>
+    <!-- <script src="./source/js/myscript.js"></script> -->
+
     <script src="./source/js/script.js"></script>
+
+
 </body>
 
 </html>

@@ -479,7 +479,7 @@ body {
 
 /* Color samples for logos */
 .color-sample {
-    display: inline-block;
+    display: inline;
     
     font-size: 60%;
     padding: 2px 2px;

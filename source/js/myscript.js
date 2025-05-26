@@ -654,7 +654,7 @@ function generateBackElements(jerseyData) {
             <span class="color-sample" style="background-color: ${jerseyData.playerNameInfo.nameColorHex};color:${getContrastTextColor(jerseyData.playerNameInfo.nameColorHex)};">
                 ${cleanAndFormatPantone(jerseyData.playerNameInfo.nameColorPantone)}
             </span>
-            <span class="color-sample" style="background-color: ${jerseyData.playerNameInfo.nameColorOutline};color:${getContrastTextColor(jerseyData.playerNameInfo.nameColorOutline)};">
+            <span class="color-sample" style="background-color: ${jerseyData.playerNameInfo.nameColorOutline};color:${getContrastTextColor(jerseyData.playerNameInfo.nameColorHex)};">
                 ${cleanAndFormatPantone(jerseyData.playerNameInfo.nameColorOutlinePantone)}
             </span>
         </p>
@@ -663,7 +663,7 @@ function generateBackElements(jerseyData) {
 
     <div id="sleeves-color" class="label arms">
         SLEEVES IN MAIN FABRIC<br> <span class="sublimation">SUBLIMATION</span>
-        <br>COLOR: <span class="color-sample" style="background-color: ${jerseyData.designColors.sleeves.colorHex};color:${getContrastTextColor(jerseyData.designColors.sleeves.colorHex)}; ">
+        <br>COLOR: <span class="color-sample" style="background-color: ${jerseyData.designColors.sleeves.colorHex}">
         ${jerseyData.designColors.sleeves.elementName}</span>
     </div>
     <div class="arrow arrow-arms"></div>
@@ -677,7 +677,7 @@ function generateBackElements(jerseyData) {
             <span class="color-sample" style="background-color: ${jerseyData.playerNumberInfo.numberColorHex};color:${getContrastTextColor(jerseyData.playerNumberInfo.numberColorHex)};">
                 ${cleanAndFormatPantone(jerseyData.playerNumberInfo.numberColorPantone)}
             </span>
-            <span class="color-sample" style="background-color: ${jerseyData.playerNumberInfo.numberColorOutline};color:${getContrastTextColor(jerseyData.playerNumberInfo.numberColorOutline)};">
+            <span class="color-sample" style="background-color: ${jerseyData.playerNumberInfo.numberColorOutline};color:${getContrastTextColor(jerseyData.playerNumberInfo.numberColorHex)};">
                 ${cleanAndFormatPantone(jerseyData.playerNumberInfo.numberColorOutlinePantone)}
             </span>
         </p>
