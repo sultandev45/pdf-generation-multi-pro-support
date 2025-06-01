@@ -523,8 +523,8 @@ function generateFirstPage(orderData, jerseyData) {
             </div>
         </div>
 
-        <div id="imagecontainer">
-            <div class="containerimage">
+        <div id="imagecontainer multi-hide" data-section-name="Front View Container">
+            <div class="containerimage multi-hide">
                 <!-- Front Image -->
                 <div id="imageFrontContainer" class="text-center mb-4 image-container">
                     <img id="imageFront" src="${frontImage}" 
@@ -534,7 +534,7 @@ function generateFirstPage(orderData, jerseyData) {
                 ${generateFrontElements(jerseyData)}
             </div>
 
-            <div class="containerimage">
+            <div class="containerimage multi-hide">
                 <!-- Back Image -->
                 <div id="imageBackContainer" class="text-center mb-4 image-container">
                     <img id="imageBack" src="${backImage}" 

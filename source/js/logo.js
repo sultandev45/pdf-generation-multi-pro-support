@@ -1,7 +1,7 @@
 // Adjust styles for responsive layout
 function additionalPage(jerseyData) {
     return `<div id="neck" style="margin-top: -10px;" class="row row-3">
-                    <div class="col col-12 d-flex flex-column align-items-center justify-content-center p-0">
+                    <div class="col  col-12 d-flex flex-column align-items-center justify-content-center p-0">
                         <div class="txt">
                             <p class="text-center h2">NECK TAPE</p>
                             <p id="color">COLOR: BLACK/WHITE</p>
@@ -234,7 +234,7 @@ function staticLogo(jerseyData) {
 
 async function createLogoColumn(logo, colWidth) {
     const col = document.createElement('div');
-    col.className = `col col-logo col-md-${colWidth}`;
+    col.className = `col col-logo multi-hide col-md-${colWidth}`;
 
     col.innerHTML = `
         <div class="txt">

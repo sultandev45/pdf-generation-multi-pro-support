@@ -278,8 +278,8 @@ function processNameData(texts) {
     const totalWidth = widthCm > 0 ? widthCm + (outlineWidth > 0 ? outlineWidth : 0) : 0;
 
     return {
-        namePlayer: nameText.label || "Name",
-        nameFontStyle: nameText.font_family || "Default",
+        namePlayer: texts[0].value || "Name",
+        nameFontStyle: texts[0].font_family || "Default",
         nameHeightCm: parseFloat(totalHeight.toFixed(1)),
         nameWidthCm: totalWidth,
         nameHeightInche: cmToInches(parseFloat(totalHeight.toFixed(1))),
@@ -313,8 +313,8 @@ function processNumberData(texts) {
     const totalWidth = widthCm > 0 ? widthCm + (outlineWidth > 0 ? outlineWidth : 0) : 0;
 
     return {
-        numberPlayer: backNumber.label || "Number",
-        numberFontStyle: backNumber.font_family || "Default",
+        numberPlayer: texts[1].value || "Number",
+        numberFontStyle: texts[1].font_family || "Default",
         numberHeightCm: parseFloat(totalHeight.toFixed(1)),
         numberWidthCm: totalWidth,
         numberHeightInche: cmToInches(parseFloat(totalHeight.toFixed(1))),
@@ -327,7 +327,7 @@ function processNumberData(texts) {
         numberOutlineWidthInche: cmToInches(outlineWidth),
         numberPlacement: backNumber.placement || "Back",
         hasOutline: outlineWidth > 0,
-        frontNumber: frontNumber ? processFrontNumberData(frontNumber) : null
+        frontNumber: frontNumber ? processFrontNumberData(frontNumber,texts) : null
     };
 }
 
@@ -336,10 +336,10 @@ function processNumberData(texts) {
  * @param {Object} frontNumber - Raw front number data
  * @returns {Object} - Processed front number data
  */
-function processFrontNumberData(frontNumber) {
+function processFrontNumberData(frontNumber,texts) {
     return {
-        numberPlayer: frontNumber.label || "Number",
-        numberFontStyle: frontNumber.font_family || "Default",
+        numberPlayer: texts[1].value || "Number",
+        numberFontStyle: texts[1].font_family || "Default",
         numberHeightCm: parseFloat(frontNumber.originalHeight) || 0,
         numberWidthCm: parseFloat(frontNumber.width_px) || 0,
         numberHeightInche: cmToInches(parseFloat(frontNumber.originalHeight) || 0),
@@ -361,7 +361,7 @@ function processDesignColors(svgGroups) {
     return (svgGroups || []).reduce((acc, group) => {
         const groupId = group.id || "unnamed";
         acc[groupId] = {
-            elementName: group.name || "Unnamed color",
+            elementName: group.pantone ? group.pantone : (group.name ? group.name : "Unnamed color"),
             elementId: groupId,
             colorHex: group.color || "#000000",
             colorPantone: group.pantone || "N/A"
@@ -405,7 +405,8 @@ function generateHeader(jerseyData, orderData, pageNumber, totalPages, productNa
                 <p class="m-0"><strong class="pe-1">Customer:</strong><span class="customerName">${orderData.customer_name || ''}</span></p>
             </div>
             <div id="artNumberBox" class="border py-2 px-2 mx-2 flex-grow-1">
-                <p style="margin-bottom: 0px;" class="artnumber m-0"><strong class="pe-1">Art #:</strong>${orderData.order_no || '&nbsp;'} ${orderData.art_number || ''}</p>
+                
+            <p style="margin-bottom: 0px; width: 90px;" class="artnumber m-0"><strong class="pe-1">Art #:</strong>${orderData.order_no || '&nbsp;'} </p>
             </div>
             <div id="artDetails" class="d-flex align-items-center art-1 ps-2" style="flex: 0 0 60.5%;">
                 <div id="artNameBox" class="border py-2 art-2 px-2" style="flex: 0 0 64.5%;">
@@ -524,7 +525,7 @@ function generateFirstPage(orderData, jerseyData) {
         </div>
 
         <div id="imagecontainer">
-            <div class="containerimage">
+            <div class="containerimage multi-hide">
                 <!-- Front Image -->
                 <div id="imageFrontContainer" class="text-center mb-4 image-container">
                     <img id="imageFront" src="${frontImage}" 
@@ -534,7 +535,7 @@ function generateFirstPage(orderData, jerseyData) {
                 ${generateFrontElements(jerseyData)}
             </div>
 
-            <div class="containerimage">
+            <div class="containerimage multi-hide">
                 <!-- Back Image -->
                 <div id="imageBackContainer" class="text-center mb-4 image-container">
                     <img id="imageBack" src="${backImage}" 
@@ -605,7 +606,7 @@ function generateFrontElements(jerseyData) {
     <div class="arrow arrow-neck-1"></div>
 
     <div class="label burlington-logo">
-        "BURLINGTON" LOGO <br> <span class="sublimation">SUBLIMATION</span> <br>
+        "${jerseyData.logoInfo[0].logoType.toUpperCase()}" LOGO <br> <span class="sublimation">SUBLIMATION</span> <br>
         <span class="burlington-logo-size">Size:
             <span class="height">H-${jerseyData.logoInfo[0].logoHeightCm}CM </span> X 
             <span class="width">W-${jerseyData.logoInfo[0].logoWidthCm}CM</span>

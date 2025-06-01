@@ -20,7 +20,20 @@ document.getElementById('edit').addEventListener('click', function () {
 document.getElementById('undo').addEventListener('click', undoEdit);
 document.getElementById('redo').addEventListener('click', redoEdit);
 
-function enableEditing() {
+async function enableEditing() {
+    // Setup multi-hide containers
+
+
+    // Initialize multi-hide control
+    document.getElementById('multiHideControl').style.display = 'block';
+    await setupMultiSelectCheckboxes();
+
+    // Show multi-select button
+    const multiSelectBtn = document.getElementById('multiSelectBtn');
+    if (multiSelectBtn) {
+        multiSelectBtn.style.display = 'inline-block';
+
+    } initMultiSelectControls();
     // Make elements editable
     document.querySelectorAll('p,strong,div:not(#editpdf), h1, h2, h3, h4, h5, h6, span:not(.color-sample),th,td').forEach(element => {
         if (!element.closest('form') && !element.querySelector('img') && !element.classList.contains('color-sample')) {
@@ -46,6 +59,12 @@ function enableEditing() {
 }
 
 function disableEditing() {
+
+    const multiSelectBtn = document.getElementById('multiSelectBtn');
+    if (multiSelectBtn) {
+        multiSelectBtn.style.display = 'none';
+    }
+    toggleMultiSelectMode(false);
     // Remove all edit-related event listeners
     document.querySelectorAll('p,strong,div, h1, h2, h3, h4, h5, h6, span,th,td').forEach(element => {
         element.removeEventListener('dblclick', handleTextEdit);
@@ -65,6 +84,197 @@ function disableEditing() {
         color.title = '';
     });
 }
+
+async function setupMultiSelectCheckboxes() {
+    
+    document.querySelectorAll('.multi-hide').forEach((container, index) => {
+       
+        // Skip if checkbox already exists
+        if (container.querySelector('.multi-select-checkbox')) return;
+
+        const checkboxId = `multi-select-${index}`;
+
+        // Create checkbox input
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = checkboxId;
+        checkbox.className = 'multi-select-checkbox no-print';
+        checkbox.style.cssText = `
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 10;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            cursor: pointer;
+            margin: 0;
+        `;
+
+        // Create visible label
+        const label = document.createElement('label');
+        label.htmlFor = checkboxId;
+        label.className="no-print";
+        label.style.cssText = `
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            z-index: 9;
+            cursor: pointer;
+            margin: 0;
+        `;
+
+        // Insert elements
+        container.style.position = 'relative'; // Ensure positioning context
+        container.insertAdjacentElement('afterbegin', label);
+        container.insertAdjacentElement('afterbegin', checkbox);
+
+        // Add visual feedback for checked state
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                label.style.background = '#4285f4';
+                label.style.borderColor = '#4285f4';
+                label.innerHTML = '✓';
+                label.style.color = 'white';
+                label.style.display = 'flex';
+                label.style.alignItems = 'center';
+                label.style.justifyContent = 'center';
+            } else {
+                label.style.background = 'white';
+                label.style.borderColor = '#ddd';
+                label.innerHTML = '';
+            }
+            updateMultiSelectCount();
+        });
+        container.addEventListener('click', function (e) {
+            console.log('Container clicked', e.target);
+        });
+
+        checkbox.addEventListener('click', function (e) {
+            console.log('Checkbox clicked', e);
+            e.stopPropagation();
+        });
+
+        label.addEventListener('click', function (e) {
+            console.log('Label clicked', e);
+            e.stopPropagation();
+        });
+    });
+}
+function toggleMultiSelectMode(enable) {
+    document.body.classList.toggle('multi-select-mode', enable);
+    const toolbar = document.getElementById('multiSelectToolbar');
+    console.log('ToolBar:'+ enable);
+    
+    if (toolbar) {
+        toolbar.style.display = 'block' ;
+    }
+if (enable) {
+        toolbar.style.display = 'block' ;
+    }
+    if (!enable) {
+        toolbar.style.display = 'none' ;
+
+        document.querySelectorAll('.multi-select-checkbox').forEach(cb => {
+            cb.checked = false;
+        });
+        updateMultiSelectCount();
+    }
+}
+
+function updateMultiSelectCount() {
+    const selectedCount = document.querySelectorAll('.multi-select-checkbox:checked').length;
+    const countElement = document.getElementById('multiSelectCount');
+    if (countElement) {
+        countElement.textContent = `${selectedCount} Selected`;
+    }
+}
+
+function applyMultiSelectAction(action) {
+    const selected = document.querySelectorAll('.multi-select-checkbox:checked');
+
+    if (selected.length === 0) return;
+
+    // Begin a batch operation for all changes
+    editHistory.beginBatch();
+
+    selected.forEach(checkbox => {
+        const container = checkbox.closest('.multi-hide');
+        if (container) {
+            // Capture complete before state including computed styles
+            const beforeState = {
+                type: 'multi-hide-container',
+                style: {
+                    display: container.style.display || getComputedStyle(container).display,
+                    visibility: container.style.visibility || getComputedStyle(container).visibility
+                },
+                attributes: {
+                    'data-hidden': container.getAttribute('data-hidden')
+                },
+                classes: Array.from(container.classList),
+                wasHidden: container.style.display === 'none' ||
+                    container.getAttribute('data-hidden') === 'true' ||
+                    getComputedStyle(container).display === 'none'
+            };
+
+            // Apply the change
+            if (action === 'hide') {
+                container.style.display = 'none';
+                container.setAttribute('data-hidden', 'true');
+            } else {
+                container.style.display = beforeState.style.display === 'none' ? '' : beforeState.style.display;
+                container.removeAttribute('data-hidden');
+            }
+
+            // Add to history
+            editHistory.addEntry(container, beforeState, 'multi-select-action');
+        }
+    });
+
+    // End the batch operation
+    editHistory.endBatch();
+    toggleMultiSelectMode(false);
+}
+// 2. Then define the main initialization function
+function initMultiSelectControls() {
+    // Ensure elements exist before adding event listeners
+    const multiSelectBtn = document.getElementById('multiSelectBtn');
+    const cancelBtn = document.getElementById('cancelMultiSelect');
+    const hideBtn = document.getElementById('hideSelected');
+    const showBtn = document.getElementById('showSelected');
+
+    if (multiSelectBtn) {
+        multiSelectBtn.addEventListener('click', () => toggleMultiSelectMode(true));
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => toggleMultiSelectMode(false));
+    }
+
+    if (hideBtn) {
+        hideBtn.addEventListener('click', () => applyMultiSelectAction('hide'));
+    }
+
+    if (showBtn) {
+        showBtn.addEventListener('click', () => applyMultiSelectAction('show'));
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.multi-hide') &&
+            e.target.closest('#multiSelectToolbar') &&
+            document.body.classList.contains('multi-select-mode')) {
+            toggleMultiSelectMode(false);
+        }
+    });
+}
+
+
+
 
 // Function to Edit TextBox
 function handleTextEdit(e) {
@@ -377,7 +587,7 @@ function handleTextEdit(e) {
     hideButton.style.borderRadius = '4px';
     hideButton.style.cursor = 'pointer';
 
- 
+
 
     elementControls.appendChild(hideButton);
 
@@ -448,16 +658,16 @@ function handleTextEdit(e) {
     });
 
     // Setup element controls
-   hideButton.addEventListener('click', (e) => {
+    hideButton.addEventListener('click', (e) => {
         e.stopPropagation();
-        
+
         // Capture state before change
         const beforeState = {
             display: element.style.display,
             visibility: element.style.visibility,
             wasHidden: element.style.display === 'none' || element.getAttribute('data-hidden') === 'true'
         };
-        
+
         if (element.style.display === 'none') {
             element.style.display = originalDisplay || '';
             element.style.visibility = originalVisibility || '';
@@ -468,12 +678,12 @@ function handleTextEdit(e) {
             element.setAttribute('data-hidden', 'true');
             hideButton.textContent = 'Show';
         }
-        
+
         // Add to history
         editHistory.addEntry(element, beforeState, 'visibility-change');
     });
 
- 
+
 
 
     // Editor controls functionality
@@ -490,15 +700,15 @@ function handleTextEdit(e) {
 
     saveButton.addEventListener('click', () => {
         const newContent = currentView === 'design' ? designView.innerHTML : htmlView.value;
-        
+
         // Only add to history if content actually changed
-        if (newContent !== originalHTML || 
-            element.style.display !== originalDisplay || 
+        if (newContent !== originalHTML ||
+            element.style.display !== originalDisplay ||
             element.style.visibility !== originalVisibility) {
-            
+
             // Begin a batch operation in case multiple properties change
             editHistory.beginBatch();
-            
+
             // Add the HTML/content change
             editHistory.addEntry(element, {
                 type: 'content',
@@ -509,7 +719,7 @@ function handleTextEdit(e) {
                     visibility: originalVisibility
                 }
             }, 'content-edit');
-            
+
             // Add visibility/display changes if they occurred
             if (element.getAttribute('data-hidden') === 'true') {
                 editHistory.addEntry(element, {
@@ -519,7 +729,7 @@ function handleTextEdit(e) {
                     wasHidden: false
                 }, 'visibility-change');
             }
-            
+
             // End the batch operation
             editHistory.endBatch();
         }
@@ -948,13 +1158,59 @@ class EditHistoryManager {
             }
         };
     }
+    /**
+     * Special handling for multi-hide div visibility changes
+     * @param {HTMLElement} element - The multi-hide container element
+     * @param {object} state - The state to apply
+     */
+    applyMultiHideState(element, state) {
+        if (!element || !state) return;
 
+        // Restore display state
+        if (state.wasHidden) {
+            element.style.display = 'none';
+            element.setAttribute('data-hidden', 'true');
+        } else {
+            element.style.display = state.style.display || '';
+            element.removeAttribute('data-hidden');
+        }
+
+        // Restore other styles
+        if (state.style) {
+            if (state.style.visibility) {
+                element.style.visibility = state.style.visibility;
+            }
+        }
+
+        // Restore classes if they were modified
+        if (state.classes) {
+            element.className = state.classes.join(' ');
+        }
+    }
     /**
      * Gets the current state of an element with enhanced color sample support
      * @param {HTMLElement} element - The DOM element
      * @returns {object} Element state representation
      */
     getElementState(element) {
+        // Handle multi-hide containers specifically
+        if (element.classList.contains('multi-hide')) {
+            return {
+                type: 'multi-hide-container',
+                style: {
+                    display: element.style.display || getComputedStyle(element).display,
+                    visibility: element.style.visibility || getComputedStyle(element).visibility
+                },
+                attributes: {
+                    'data-hidden': element.getAttribute('data-hidden')
+                },
+                classes: Array.from(element.classList),
+                wasHidden: element.style.display === 'none' ||
+                    element.getAttribute('data-hidden') === 'true' ||
+                    getComputedStyle(element).display === 'none'
+            };
+        }
+
         // Special handling for color samples
         if (element.classList.contains('color-sample')) {
             return {
@@ -991,6 +1247,9 @@ class EditHistoryManager {
                     type: 'input',
                     value: element.value
                 };
+            case 'multi-hide-div':
+                this.applyMultiHideState(element, state);
+                break;
             default:
                 return {
                     type: 'content',
@@ -1014,253 +1273,263 @@ class EditHistoryManager {
     applyElementState(element, state) {
         if (!element || !state) return;
 
-        try {
+        try {// Handle multi-hide divs specifically
+           
+                // Handle multi-hide containers
+                if (state.type === 'multi-hide-container' || element.classList.contains('multi-hide')) {
+                    this.applyMultiHideState(element, state);
+                    return;
+                }
+
+            
+            
+        
             // Special handling for color samples
             if (state.type === 'color-sample' || element.classList.contains('color-sample')) {
-                element.textContent = state.text || '';
+            element.textContent = state.text || '';
 
-                // Apply background color with priority to inline style
-                if (state.style?.backgroundColor) {
-                    element.style.backgroundColor = state.style.backgroundColor;
-                } else if (state.backgroundColor) {
-                    element.style.backgroundColor = state.backgroundColor;
-                }
-
-                // Apply other styles if they exist
-                if (state.style) {
-                    if (state.style.color) element.style.color = state.style.color;
-                    if (state.style.fontSize) element.style.fontSize = state.style.fontSize;
-                    if (state.style.fontWeight) element.style.fontWeight = state.style.fontWeight;
-                }
-
-                // Restore classes if they were captured
-                if (state.classList) {
-                    element.className = ''; // Clear existing classes
-                    state.classList.forEach(className => {
-                        element.classList.add(className);
-                    });
-                }
-                return;
+            // Apply background color with priority to inline style
+            if (state.style?.backgroundColor) {
+                element.style.backgroundColor = state.style.backgroundColor;
+            } else if (state.backgroundColor) {
+                element.style.backgroundColor = state.backgroundColor;
             }
 
-            // Default element handling
-            switch (state.type) {
-                case 'image':
-                    element.src = state.src;
-                    if (state.alt) element.alt = state.alt;
-                    if (state.width) element.width = state.width;
-                    if (state.height) element.height = state.height;
-                    break;
-                case 'input':
-                    element.value = state.value;
-                    break;
-                case 'content':
-                    element.innerHTML = state.html;
-                    if (state.style) {
-                        Object.keys(state.style).forEach(prop => {
-                            if (state.style[prop] !== undefined) {
-                                element.style[prop] = state.style[prop];
-                            }
-                        });
-                    }
-                    break;
+            // Apply other styles if they exist
+            if (state.style) {
+                if (state.style.color) element.style.color = state.style.color;
+                if (state.style.fontSize) element.style.fontSize = state.style.fontSize;
+                if (state.style.fontWeight) element.style.fontWeight = state.style.fontWeight;
             }
-        } catch (error) {
-            console.error('Error applying history state:', error);
-        }
-    }
 
-    /**
-     * Adds a new entry to the history stack with color sample awareness
-     * @param {HTMLElement} element - The edited element
-     * @param {string|object} previousState - Previous state of the element
-     * @param {string} [actionType] - Type of action performed
-     */
-    addEntry(element, previousState, actionType = 'edit') {
-        // If we're in the middle of the stack, truncate future history
-        if (this.currentIndex < this.historyStack.length - 1) {
-            this.historyStack = this.historyStack.slice(0, this.currentIndex + 1);
-        }
-
-        // If we're batching operations, queue this entry
-        if (this.batchOperations > 0) {
-            this.batchQueue.push({ element, previousState, actionType });
+            // Restore classes if they were captured
+            if (state.classList) {
+                element.className = ''; // Clear existing classes
+                state.classList.forEach(className => {
+                    element.classList.add(className);
+                });
+            }
             return;
         }
 
-        // Handle color samples specifically
-        const isColorSample = element.classList.contains('color-sample');
-        const entry = {
-            element,
-            actionType: isColorSample ? 'color-edit' : actionType,
-            previousState: typeof previousState === 'string'
-                ? {
-                    type: isColorSample ? 'color-sample' : 'content',
-                    text: element.textContent,
-                    backgroundColor: window.getComputedStyle(element).backgroundColor,
-                    html: previousState
+        // Default element handling
+        switch (state.type) {
+            case 'image':
+                element.src = state.src;
+                if (state.alt) element.alt = state.alt;
+                if (state.width) element.width = state.width;
+                if (state.height) element.height = state.height;
+                break;
+            case 'input':
+                element.value = state.value;
+                break;
+            case 'content':
+                element.innerHTML = state.html;
+                if (state.style) {
+                    Object.keys(state.style).forEach(prop => {
+                        if (state.style[prop] !== undefined) {
+                            element.style[prop] = state.style[prop];
+                        }
+                    });
                 }
-                : previousState,
-            currentState: this.getElementState(element),
-            timestamp: Date.now()
-        };
+                break;
+        }
+    } catch(error) {
+        console.error('Error applying history state:', error);
+    }
+}
 
-        this.historyStack.push(entry);
-        this.currentIndex = this.historyStack.length - 1;
+/**
+ * Adds a new entry to the history stack with color sample awareness
+ * @param {HTMLElement} element - The edited element
+ * @param {string|object} previousState - Previous state of the element
+ * @param {string} [actionType] - Type of action performed
+ */
+addEntry(element, previousState, actionType = 'edit') {
+    // If we're in the middle of the stack, truncate future history
+    if (this.currentIndex < this.historyStack.length - 1) {
+        this.historyStack = this.historyStack.slice(0, this.currentIndex + 1);
+    }
 
-        // Enforce maximum history size
-        if (this.historyStack.length > this.maxHistorySize) {
-            this.historyStack.shift();
-            this.currentIndex--;
+    // If we're batching operations, queue this entry
+    if (this.batchOperations > 0) {
+        this.batchQueue.push({ element, previousState, actionType });
+        return;
+    }
+
+    // Handle color samples specifically
+    const isColorSample = element.classList.contains('color-sample');
+    const entry = {
+        element,
+        actionType: isColorSample ? 'color-edit' : actionType,
+        previousState: typeof previousState === 'string'
+            ? {
+                type: isColorSample ? 'color-sample' : 'content',
+                text: element.textContent,
+                backgroundColor: window.getComputedStyle(element).backgroundColor,
+                html: previousState
+            }
+            : previousState,
+        currentState: this.getElementState(element),
+        timestamp: Date.now()
+    };
+
+    this.historyStack.push(entry);
+    this.currentIndex = this.historyStack.length - 1;
+
+    // Enforce maximum history size
+    if (this.historyStack.length > this.maxHistorySize) {
+        this.historyStack.shift();
+        this.currentIndex--;
+    }
+
+    this.updateUI();
+}
+
+
+/**
+ * Starts a batch operation (multiple edits count as one undo step)
+ */
+beginBatch() {
+    this.batchOperations++;
+}
+
+/**
+ * Ends a batch operation
+ */
+endBatch() {
+    this.batchOperations = Math.max(0, this.batchOperations - 1);
+
+    if (this.batchOperations === 0 && this.batchQueue.length > 0) {
+        if (this.batchQueue.length === 1) {
+            const { element, previousState, actionType } = this.batchQueue[0];
+            this.addEntry(element, previousState, actionType);
+        } else {
+            // Create a compound entry for batch operations
+            const batchEntry = {
+                actionType: 'batch',
+                changes: this.batchQueue.map(item => ({
+                    element: item.element,
+                    previousState: item.previousState,
+                    currentState: this.getElementState(item.element)
+                })),
+                timestamp: Date.now()
+            };
+
+            this.historyStack.push(batchEntry);
+            this.currentIndex = this.historyStack.length - 1;
+        }
+
+        this.batchQueue = [];
+        this.updateUI();
+    }
+}
+
+/**
+ * Undo the last operation
+ */
+undo() {
+    if (this.currentIndex < 0) return false;
+
+    const entry = this.historyStack[this.currentIndex];
+
+    try {
+        if (entry.changes) {
+            // Handle batch undo
+            entry.changes.forEach(change => {
+                this.applyElementState(change.element, change.previousState);
+            });
+        } else {
+            this.applyElementState(entry.element, entry.previousState);
+        }
+
+        this.currentIndex--;
+        this.updateUI();
+        return true;
+    } catch (error) {
+        console.error('Undo failed:', error);
+        return false;
+    }
+}
+
+/**
+ * Redo the last undone operation
+ */
+redo() {
+    if (this.currentIndex >= this.historyStack.length - 1) return false;
+
+    this.currentIndex++;
+    const entry = this.historyStack[this.currentIndex];
+
+    try {
+        if (entry.changes) {
+            // Handle batch redo
+            entry.changes.forEach(change => {
+                this.applyElementState(change.element, change.currentState);
+            });
+        } else {
+            this.applyElementState(entry.element, entry.currentState);
         }
 
         this.updateUI();
+        return true;
+    } catch (error) {
+        console.error('Redo failed:', error);
+        return false;
     }
+}
 
+/**
+ * Clears the history stack
+ */
+clear() {
+    this.historyStack = [];
+    this.currentIndex = -1;
+    this.updateUI();
+}
 
-    /**
-     * Starts a batch operation (multiple edits count as one undo step)
-     */
-    beginBatch() {
-        this.batchOperations++;
-    }
+/**
+ * Updates UI controls based on current history state
+ */
+updateUI() {
+    const undoButton = document.getElementById('undo');
+    const redoButton = document.getElementById('redo');
 
-    /**
-     * Ends a batch operation
-     */
-    endBatch() {
-        this.batchOperations = Math.max(0, this.batchOperations - 1);
+    if (undoButton) undoButton.disabled = this.currentIndex < 0;
+    if (redoButton) redoButton.disabled = this.currentIndex >= this.historyStack.length - 1;
+}
 
-        if (this.batchOperations === 0 && this.batchQueue.length > 0) {
-            if (this.batchQueue.length === 1) {
-                const { element, previousState, actionType } = this.batchQueue[0];
-                this.addEntry(element, previousState, actionType);
-            } else {
-                // Create a compound entry for batch operations
-                const batchEntry = {
-                    actionType: 'batch',
-                    changes: this.batchQueue.map(item => ({
-                        element: item.element,
-                        previousState: item.previousState,
-                        currentState: this.getElementState(item.element)
-                    })),
-                    timestamp: Date.now()
-                };
+/**
+ * Checks if undo is available
+ * @returns {boolean}
+ */
+canUndo() {
+    return this.currentIndex >= 0;
+}
 
-                this.historyStack.push(batchEntry);
-                this.currentIndex = this.historyStack.length - 1;
-            }
+/**
+ * Checks if redo is available
+ * @returns {boolean}
+ */
+canRedo() {
+    return this.currentIndex < this.historyStack.length - 1;
+}
 
-            this.batchQueue = [];
-            this.updateUI();
-        }
-    }
+/**
+ * Gets the count of undo steps available
+ * @returns {number}
+ */
+undoCount() {
+    return this.currentIndex + 1;
+}
 
-    /**
-     * Undo the last operation
-     */
-    undo() {
-        if (this.currentIndex < 0) return false;
-
-        const entry = this.historyStack[this.currentIndex];
-
-        try {
-            if (entry.changes) {
-                // Handle batch undo
-                entry.changes.forEach(change => {
-                    this.applyElementState(change.element, change.previousState);
-                });
-            } else {
-                this.applyElementState(entry.element, entry.previousState);
-            }
-
-            this.currentIndex--;
-            this.updateUI();
-            return true;
-        } catch (error) {
-            console.error('Undo failed:', error);
-            return false;
-        }
-    }
-
-    /**
-     * Redo the last undone operation
-     */
-    redo() {
-        if (this.currentIndex >= this.historyStack.length - 1) return false;
-
-        this.currentIndex++;
-        const entry = this.historyStack[this.currentIndex];
-
-        try {
-            if (entry.changes) {
-                // Handle batch redo
-                entry.changes.forEach(change => {
-                    this.applyElementState(change.element, change.currentState);
-                });
-            } else {
-                this.applyElementState(entry.element, entry.currentState);
-            }
-
-            this.updateUI();
-            return true;
-        } catch (error) {
-            console.error('Redo failed:', error);
-            return false;
-        }
-    }
-
-    /**
-     * Clears the history stack
-     */
-    clear() {
-        this.historyStack = [];
-        this.currentIndex = -1;
-        this.updateUI();
-    }
-
-    /**
-     * Updates UI controls based on current history state
-     */
-    updateUI() {
-        const undoButton = document.getElementById('undo');
-        const redoButton = document.getElementById('redo');
-
-        if (undoButton) undoButton.disabled = this.currentIndex < 0;
-        if (redoButton) redoButton.disabled = this.currentIndex >= this.historyStack.length - 1;
-    }
-
-    /**
-     * Checks if undo is available
-     * @returns {boolean}
-     */
-    canUndo() {
-        return this.currentIndex >= 0;
-    }
-
-    /**
-     * Checks if redo is available
-     * @returns {boolean}
-     */
-    canRedo() {
-        return this.currentIndex < this.historyStack.length - 1;
-    }
-
-    /**
-     * Gets the count of undo steps available
-     * @returns {number}
-     */
-    undoCount() {
-        return this.currentIndex + 1;
-    }
-
-    /**
-     * Gets the count of redo steps available
-     * @returns {number}
-     */
-    redoCount() {
-        return this.historyStack.length - this.currentIndex - 1;
-    }
+/**
+ * Gets the count of redo steps available
+ * @returns {number}
+ */
+redoCount() {
+    return this.historyStack.length - this.currentIndex - 1;
+}
 
 }
 
