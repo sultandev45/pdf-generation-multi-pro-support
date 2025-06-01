@@ -61,6 +61,7 @@ async function enableEditing() {
 function disableEditing() {
 
     const multiSelectBtn = document.getElementById('multiSelectBtn');
+     removeAllMultiSelectElements();
     if (multiSelectBtn) {
         multiSelectBtn.style.display = 'none';
     }
@@ -114,7 +115,7 @@ async function setupMultiSelectCheckboxes() {
         // Create visible label
         const label = document.createElement('label');
         label.htmlFor = checkboxId;
-        label.className="no-print";
+        label.className="checkbox-label no-print";
         label.style.cssText = `
             position: absolute;
             top: 8px;
@@ -165,7 +166,34 @@ async function setupMultiSelectCheckboxes() {
             e.stopPropagation();
         });
     });
+}/**
+ * Removes all multi-select related elements and resets styles
+ */
+function removeAllMultiSelectElements() {
+    // Remove all checkbox inputs
+    document.querySelectorAll('.multi-select-checkbox').forEach(checkbox => {
+        checkbox.remove();
+    });
+    
+    // Remove all checkbox labels (adjust class name if different)
+    document.querySelectorAll('.checkbox-label, label[for^="multi-select-"]').forEach(label => {
+        label.remove();
+    });
+    
+    // Reset container elements
+    document.querySelectorAll('.multi-hide').forEach(container => {
+        // Remove positioning if it was added
+        container.style.position = '';
+        
+        // Remove any temporary classes
+        container.classList.remove('multi-select-selected');
+        
+        // Reset cursor style
+        container.style.cursor = '';
+    });
+     updateMultiSelectCount();
 }
+   
 function toggleMultiSelectMode(enable) {
     document.body.classList.toggle('multi-select-mode', enable);
     const toolbar = document.getElementById('multiSelectToolbar');
